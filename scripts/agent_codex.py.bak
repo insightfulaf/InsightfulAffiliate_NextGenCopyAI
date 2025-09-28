@@ -36,6 +36,7 @@ import argparse
 import html
 import os
 import re
+from sre_compile import isstring
 import subprocess
 import sys
 import tempfile
@@ -198,7 +199,7 @@ def echo_output(prompt: str, doc_name: str, content: str) -> str:
 
 # ----------------------------- Validation -----------------------------------
 
-def validate_output(ext: str, text: str) -> Tuple[bool, List<String]]:
+def validate_output(ext: str, text: str) -> Tuplebool, List[str]]
     """
     Very light validation:
       - Always: not empty, no NUL bytes

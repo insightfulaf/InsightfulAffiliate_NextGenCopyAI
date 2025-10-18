@@ -11,7 +11,7 @@ This tracker helps you organise the assets required by your unified site setup. 
 
 | Asset | Suggested filename | Replace in | Notes |
 |---|---|---|---|
-| Unified CSS | `ngcai.css` | `{{NGCAI_CSS_URL}}` | Upload the CSS file located at `website_code_block_ORGANIZED/assets/ngcai.css`. Copy the public URL from Systeme and paste into `headers/head-snippet-v7-production.html`. |
+| Unified CSS | `ngcai.css` | `{{https://d1yei2z3i6k35z.cloudfront.net/13254463/68f2c16438884_ngcai.css}}` | Upload the CSS file located at `website_code_block_ORGANIZED/assets/ngcai.css`. Copy the public URL from Systeme and paste into `headers/head-snippet-v7-production.html`. |
 | Favicon (ICO) | `favicon.ico` | `{{FAVICON_ICO_URL}}` | Use a 32×32 or 64×64 `.ico` file. Upload and copy its URL. |
 | Apple touch icon | `apple-touch-icon.png` | `{{APPLE_TOUCH_ICON_URL}}` | 180×180 PNG for iOS homescreen bookmarking. |
 | Maskable icon | `maskable-512x512.png` | `{{ICON_512_MASKABLE_URL}}` & `{{MASKABLE_ICON_URL}}` | Use a 512×512 PNG with safe margins for Android adaptive icons. |

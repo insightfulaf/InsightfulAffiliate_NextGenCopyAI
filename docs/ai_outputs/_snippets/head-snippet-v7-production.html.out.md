@@ -1,4 +1,5 @@
 ### Head Snippet v7 (Production)
+
 **Where to paste in Systeme.io:** Funnel page → Settings → Edit Header
 
 ```html
@@ -18,7 +19,7 @@
   content="Download the AI Affiliate Launchpad: plug‑and‑play Systeme.io funnel templates, 7 email scripts and a 60‑minute quickstart. Perfect for beginners who want to build a compliant affiliate funnel today."
 />
 <meta name="theme-color" content="#0B0B12" />
-<meta name="color-scheme" content="light dark" />
+<meta name="color-scheme" content="dark" />
 
 <!-- 2. SEO, Performance & Indexing -->
 <link rel="canonical" href="https://www.insightfulaffiliate.com/opt-in" />
@@ -34,23 +35,26 @@
 <link
   rel="preload"
   as="style"
-  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Poppins:wght@700;800&display=swap"
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;family=Poppins:wght@700;800&amp;display=swap"
 />
 <link
   rel="stylesheet"
-  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Poppins:wght@700;800&display=swap"
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;family=Poppins:wght@700;800&amp;display=swap"
   media="print"
   onload="this.media='all'"
 />
 <noscript>
   <link
     rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Poppins:wght@700;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;family=Poppins:wght@700;800&amp;display=swap"
   />
 </noscript>
 
 <!-- 4. Brand Styles -->
-<link rel="stylesheet" href="../assets/ngcai.css" />
+<link
+  rel="stylesheet"
+  href="https://d1yei2z3i6k35z.cloudfront.net/13254463/68f2fb38333dd_ngcai.css"
+/>
 
 <!-- 5. Icons & PWA Manifest -->
 <link
@@ -67,7 +71,10 @@
   rel="apple-touch-icon"
   href="https://www.insightfulaffiliate.com/apple-touch-icon.png"
 />
-<link rel="manifest" href="../site.webmanifest" />
+<link
+  rel="manifest"
+  href="https://d1yei2z3i6k35z.cloudfront.net/13254463/68f49b8b8e23f_site.webmanifest.json"
+/>
 
 <!-- 6. Open Graph / Facebook -->
 <meta
@@ -109,14 +116,14 @@
   {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "NextGenCopyAI",
-    "alternateName": "InsightfulAffiliate",
-    "url": "https://www.nextgencopy.ai/",
-    "logo": "https://www.nextgencopy.ai/logo-square-1080x1080.png",
+    "name": "InsightfulAffiliate",
+    "alternateName": "NextGenCopyAI",
+    "url": "https://www.insightfulaffiliate.com/",
+    "logo": "https://www.insightfulaffiliate.com/logo-square-1080x1080.png",
     "sameAs": [
-      "https://twitter.com/yourhandle",
-      "https://facebook.com/yourpage",
-      "https://linkedin.com/company/yourcompany"
+      "https://twitter.com/InsightfulAF",
+      "https://facebook.com/profile.php?id=61580983854074",
+      "https://linkedin.com/in/insightfulaffiliate"
     ]
   }
 </script>

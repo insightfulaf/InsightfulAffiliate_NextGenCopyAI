@@ -17,7 +17,7 @@ This tracker helps you organise the assets required by your unified site setup. 
 | Maskable icon | `maskable-512x512.png` | `{{https://d1yei2z3i6k35z.cloudfront.net/13254463/68bd5a88952a2_maskable-512x512.png}}` & `{{https://d1yei2z3i6k35z.cloudfront.net/13254463/68bd5a88952a2_maskable-512x512.png}}` | Use a 512×512 PNG with safe margins for Android adaptive icons. |
 | Icon (192×192) | `icon-192.png` | `{{https://d1yei2z3i6k35z.cloudfront.net/13254463/68f2b21891ae8_icon-192.png}}` | Optional, used by some browsers. |
 | Icon (512×512) | `icon-512.png` | `{{https://d1yei2z3i6k35z.cloudfront.net/13254463/68ce5fac1f64c_icon-512.png}}` | General purpose high‑resolution icon. |
-| Web Manifest | `site.webmanifest` | `{{—-}}` | Upload the provided manifest and copy the resulting URL. Replace the icon placeholders in the file with the URLs of your uploaded icons before uploading, or update the manifest after upload. |
+| Web Manifest | `site.webmanifest` | `{{https://d1yei2z3i6k35z.cloudfront.net/13254463/68f49b8b8e23f_site.webmanifest.json}}` | Upload the provided manifest and copy the resulting URL. Replace the icon placeholders in the file with the URLs of your uploaded icons before uploading, or update the manifest after upload. |
 | Default OG image | `og-default.png` | `{{https://d1yei2z3i6k35z.cloudfront.net/13254463/68ce610b1fb2d_og-default.png}}` | 1200×630 PNG used for social sharing previews. |
 | Default Twitter image | `twitter-default.png` | `{{https://d1yei2z3i6k35z.cloudfront.net/13254463/68ce61326564f_twitter-default.png}}` | 1200×628 PNG used specifically for Twitter cards. |
 

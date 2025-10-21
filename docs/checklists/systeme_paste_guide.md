@@ -5,12 +5,12 @@
 ## Global setup (once per workspace)
 1. Upload canonical assets to Systeme → Media
    - `website_code_block_ORGANIZED/assets/ngcai.css`
-   - `website_code_block_ORGANIZED/site.webmanifest`
+   - `website_code_block_ORGANIZED/site.webmanifest.json` (or `site.webmanifest` if `.json` isn’t required)
    - Copy their public URLs and paste into the head snippet.
 
 2. Head snippet (global or per-page)
    - File: `website_code_block_ORGANIZED/headers/head-snippet-v7-production.html`
-   - Replace `../assets/ngcai.css` and `../site.webmanifest` with your public URLs.
+   - Replace `../assets/ngcai.css` and `../site.webmanifest` (or update to `../site.webmanifest.json`) with your public URLs.
    - Paste in Systeme:
      - Per page: Page → Settings → SEO/Head → Header
      - Or workspace-level: Settings → Head/Tracking Code
@@ -39,4 +39,3 @@
 <meta name="twitter:title" content="[[Title]]" />
 <meta name="twitter:description" content="[[Description]]" />
 <meta name="twitter:image" content="[[https://…/share-1200x630.png]]" />
-

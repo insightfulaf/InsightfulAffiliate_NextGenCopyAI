@@ -1,5 +1,5 @@
 {
-  "_note": "Canonical manifest lives at ../site.webmanifest. Keep this helper copy in sync when exporting assets.",
+  "_note": "Canonical manifest lives at ../site.webmanifest (JSON twin at ../site.webmanifest.json). Keep this helper copy in sync when exporting assets.",
   "name": "NextGenCopyAI by InsightfulAffiliate",
   "short_name": "NextGenCopyAI",
   "description": "AI writing & affiliate marketing tools for beginners.",

@@ -1,8 +1,8 @@
-> **Canonical files:** Use `website_code_block_ORGANIZED/assets/ngcai.css` for styles and `website_code_block_ORGANIZED/site.webmanifest` for your manifest when uploading new assets to Systeme.io.
+> **Canonical files:** Use `website_code_block_ORGANIZED/assets/ngcai.css` for styles and `website_code_block_ORGANIZED/site.webmanifest` (or `site.webmanifest.json`) for your manifest when uploading new assets to Systeme.io.
 
 *CSS / WEBMANIFEST*  
 *ngcai.css:* `{{NGCAI_CSS_URL}}`  
-*site.webmanifest:* `{{MANIFEST_URL}}`
+*site.webmanifest / site.webmanifest.json:* `{{MANIFEST_URL}}`
 
 *WORKMARKS:*  
 *NextGenCopyAI\_horizontal\_transparent\_**dark**\-fg\_240w.png:*  

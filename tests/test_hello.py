@@ -1,4 +1,3 @@
-tests/test_hello.py:
 import pytest
 
 def add(a, b):
@@ -9,7 +8,3 @@ def test_add():
     assert add(-1, 1) == 0
     assert add(0, 0) == 0
     assert add(-1, -1) == -2
-
-pytest.ini:
-[pytest]
-testpaths = tests

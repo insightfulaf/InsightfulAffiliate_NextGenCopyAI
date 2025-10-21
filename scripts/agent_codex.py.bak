@@ -199,7 +199,7 @@ def echo_output(prompt: str, doc_name: str, content: str) -> str:
 
 # ----------------------------- Validation -----------------------------------
 
-def validate_output(ext: str, text: str) -> Tuplebool, List[str]]
+def validate_output(ext: str, text: str) -> Tuple[bool, List[str]]:
     """
     Very light validation:
       - Always: not empty, no NUL bytes

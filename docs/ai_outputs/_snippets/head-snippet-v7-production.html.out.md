@@ -1,5 +1,4 @@
 ### Head Snippet v7 (Production)
-
 **Where to paste in Systeme.io:** Funnel page → Settings → Edit Header
 
 ```html
@@ -51,30 +50,24 @@
 </noscript>
 
 <!-- 4. Brand Styles -->
-<link
-  rel="stylesheet"
-  href="https://d1yei2z3i6k35z.cloudfront.net/13254463/68f2fb38333dd_ngcai.css"
-/>
+<link rel="stylesheet" href="../assets/ngcai.css" />
 
 <!-- 5. Icons & PWA Manifest -->
 <link
   rel="icon"
-  href="https://d1yei2z3i6k35z.cloudfront.net/13254463/68b7b43c6aa85_favicon.ico"
+  href="https://d1yei2z3i6k35z.cloudfront.net/13254463/68ce5fac1f64c_icon-512.png"
   sizes="any"
 />
 <link
   rel="icon"
-  href="https://www.insightfulaffiliate.com/favicon.svg"
+  href="https://d1yei2z3i6k35z.cloudfront.net/13254463/68f472d5aaa38_neuro-pen-icon_dark.svg"
   type="image/svg+xml"
 />
 <link
   rel="apple-touch-icon"
-  href="https://www.insightfulaffiliate.com/apple-touch-icon.png"
+  href="https://d1yei2z3i6k35z.cloudfront.net/13254463/68b2b075f0945_apple-touch-icon.png"
 />
-<link
-  rel="manifest"
-  href="https://d1yei2z3i6k35z.cloudfront.net/13254463/68f49b8b8e23f_site.webmanifest.json"
-/>
+<link rel="manifest" href="../site.webmanifest" />
 
 <!-- 6. Open Graph / Facebook -->
 <meta
@@ -89,7 +82,7 @@
 <meta property="og:site_name" content="InsightfulAffiliate" />
 <meta
   property="og:image"
-  content="https://www.insightfulaffiliate.com/og-image-1200x630.png"
+  content="https://d1yei2z3i6k35z.cloudfront.net/13254463/68ce610b1fb2d_og-default.png"
 />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
@@ -108,7 +101,7 @@
 />
 <meta
   name="twitter:image"
-  content="https://www.insightfulaffiliate.com/twitter-image-1200x628.png"
+  content="https://d1yei2z3i6k35z.cloudfront.net/13254463/68ce61326564f_twitter-default.png"
 />
 
 <!-- 8. Structured Data (JSON-LD) for SEO -->
@@ -119,7 +112,7 @@
     "name": "InsightfulAffiliate",
     "alternateName": "NextGenCopyAI",
     "url": "https://www.insightfulaffiliate.com/",
-    "logo": "https://www.insightfulaffiliate.com/logo-square-1080x1080.png",
+    "logo": "https://d1yei2z3i6k35z.cloudfront.net/13254463/68ce5fac1f64c_icon-512.png",
     "sameAs": [
       "https://twitter.com/InsightfulAF",
       "https://facebook.com/profile.php?id=61580983854074",

@@ -1,0 +1,63 @@
+# Repository Workflow Guide
+
+This guide explains the daily workflow integrating Dropbox → VS Code → GitHub → Systeme.io for the `CURRENT` repository.
+
+## 1) Locations and branching
+- Canonical repo: `CURRENT` (GitHub: `git@github.com:insightfulaf/CURRENT.git`)
+- Working branch for merges: `workflow-consolidation`
+- Keep the sibling repo `InsightfulAffiliate_NextGenCopyAI` for reference; do not edit.
+
+## 2) Local workspace (Dropbox + VS Code)
+- Open the `CURRENT/` folder in VS Code.
+- Ensure VS Code GitHub account: `insightfulaf`.
+- Confirm remote: `git remote -v` should show SSH `git@github.com:insightfulaf/CURRENT.git`.
+
+## 3) Generating content with the agent
+Use the agent to transform content blocks for Systeme.io.
+
+Standard mode (Markdown-wrapped outputs):
+```
+python3 scripts/agent_codex.py \
+  --prompt prompts/rewrite_to_house_style.txt \
+  --input website_code_block_ORGANIZED/headers \
+  --output docs/ai_outputs/_snippets \
+  --include-ext ".html,.css,.json" \
+  --provider echo \
+  --dry-run --verbose
+```
+
+Systeme mode (paste-ready raw files):
+```
+python3 scripts/agent_codex.py \
+  --prompt prompts/rewrite_to_house_style.txt \
+  --input website_code_block_ORGANIZED/headers \
+  --output docs/ai_outputs/_snippets \
+  --include-ext ".html,.css,.js" \
+  --provider openai --model gpt-4o-mini \
+  --systeme-mode
+```
+- Outputs: `*.out.html` / `*.out.css` / `*.out.js` (paste directly into Systeme.io)
+- Use `--stage-all` to include additional changes; otherwise only the outputs are committed.
+
+## 4) Head snippet and manifest
+- Head snippet: `website_code_block_ORGANIZED/headers/head-snippet-v7-production.html`
+- Canonical manifest: `website_code_block_ORGANIZED/site.webmanifest` (JSON twin available as `.json`)
+- In Systeme.io, upload `ngcai.css`, icons, and the manifest via Media, then replace placeholders in the head snippet and manifest with the public URLs. If the manifest is on a different domain or protected, add `crossorigin="use-credentials"`.
+
+## 5) Commit and push
+```
+git checkout workflow-consolidation
+git add -A
+git commit -m "chore(content): update blocks for Systeme"
+git push
+```
+Create PRs from `workflow-consolidation` to `main` when ready.
+
+## 6) Review folder
+- Ambiguous or legacy files live in `REVIEW_PENDING/`. Review and either merge, update, or remove in a follow-up PR.
+
+## 7) Troubleshooting
+- Nested Git: avoid operating in the parent folder’s Git repo. Work inside `CURRENT/`.
+- Missing outputs: ensure `--include-ext` matches your files and `--systeme-mode` is set for paste-ready assets.
+- Validation errors: in standard mode, HTML must contain `<html>` and `<head>`. In systeme-mode, fragments are allowed.
+

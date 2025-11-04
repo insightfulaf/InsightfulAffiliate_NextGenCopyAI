@@ -60,6 +60,7 @@ class Config:
     verbose: bool
     commit_message: str
     repo_root: Path
+    systeme_mode: bool
 
 def parse_args() -> Config:
     p = argparse.ArgumentParser(
@@ -82,6 +83,8 @@ def parse_args() -> Config:
     p.add_argument("--verbose", action="store_true", help="Extra logging.")
     p.add_argument("--message", default="chore(agent): automated update from agent_codex.py",
                    help="Git commit message.")
+    p.add_argument("--systeme-mode", action="store_true",
+                   help="Output paste-ready raw code for HTML/CSS/JS (no Markdown wrappers). Also relaxes HTML validation to allow head/body fragments.")
     args = p.parse_args()
 
     repo_root = find_git_root(Path.cwd())
@@ -106,6 +109,7 @@ def parse_args() -> Config:
         verbose=args.verbose,
         commit_message=args.message,
         repo_root=repo_root,
+        systeme_mode=args.systeme_mode,
     )
 
 # ----------------------------- Helpers --------------------------------------
@@ -174,8 +178,11 @@ def list_text_inputs(root: Path, include_ext: List[str], exclude_dirs: List[str]
 
 # ----------------------------- Model Call -----------------------------------
 
-def call_model(provider: str, model: str, prompt: str, doc_name: str, content: str) -> str:
+def call_model(provider: str, model: str, prompt: str, doc_name: str, content: str, *, systeme_mode: bool) -> str:
     if provider == "echo":
+        # In systeme-mode, return content verbatim for HTML/CSS/JS so it's paste-ready
+        if systeme_mode and any(doc_name.lower().endswith(e) for e in (".html", ".css", ".js")):
+            return content
         return echo_output(prompt, doc_name, content)
 
     if provider == "openai":
@@ -219,7 +226,7 @@ def echo_output(prompt: str, doc_name: str, content: str) -> str:
 
 # ----------------------------- Validation -----------------------------------
 
-def validate_output(ext: str, text: str) -> Tuple[bool, List[str]]:
+def validate_output(ext: str, text: str, *, systeme_mode: bool) -> Tuple[bool, List[str]]:
     """
     Very light validation:
       - Always: not empty, no NUL bytes
@@ -238,8 +245,13 @@ def validate_output(ext: str, text: str) -> Tuple[bool, List[str]]:
             problems.append("No Markdown heading found.")
     elif e in (".html", ".htm"):
         low = text.lower()
-        if "<html" not in low or "<head" not in low:
-            problems.append("Missing <html> or <head> in HTML output.")
+        if systeme_mode:
+            # Allow fragments in systeme-mode; require at least some HTML structure
+            if not ("<html" in low or "<head" in low or "<meta" in low or "<link" in low or "<div" in low or "<section" in low):
+                problems.append("HTML fragment lacks recognizable tags.")
+        else:
+            if "<html" not in low or "<head" not in low:
+                problems.append("Missing <html> or <head> in HTML output.")
 
     return (len(problems) == 0, problems)
 
@@ -335,15 +347,18 @@ def main() -> None:
         rel = src.relative_to(cfg.input_dir)  
 
         content = read_text(src)
-        result = call_model(cfg.provider, cfg.model, prompt, str(rel), content)
+        result = call_model(cfg.provider, cfg.model, prompt, str(rel), content, systeme_mode=cfg.systeme_mode)
 
-        ok, problems = validate_output(src.suffix, result)
+        ok, problems = validate_output(src.suffix, result, systeme_mode=cfg.systeme_mode)
         if not ok:
             errfile = cfg.output_dir / rel.with_suffix(rel.suffix + ".errors.txt")
             write_text_atomic(errfile, "Validation failed:\n" + "\n".join(f"- {p}" for p in problems))
             log(f"❌ {rel}: validation failed (see {errfile})");  continue
-
-        out_path = cfg.output_dir / rel.with_suffix(rel.suffix + ".out.md")
+        # Choose output extension
+        if cfg.systeme_mode and src.suffix.lower() in (".html", ".css", ".js"):
+            out_path = cfg.output_dir / rel.with_suffix(rel.suffix + ".out" + src.suffix.lower())
+        else:
+            out_path = cfg.output_dir / rel.with_suffix(rel.suffix + ".out.md")
         if cfg.dry_run:
             log(f"DRY-RUN: would write {out_path}", cfg=cfg)
         else:

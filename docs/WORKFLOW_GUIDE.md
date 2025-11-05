@@ -2,6 +2,8 @@
 
 This guide explains the daily workflow integrating Dropbox → VS Code → GitHub → Systeme.io for the `CURRENT` repository.
 
+For a concise daily checklist and exact commands, see `docs/RUNBOOK.md`.
+
 ## 1) Locations and branching
 - Canonical repo: `CURRENT` (GitHub: `git@github.com:insightfulaf/CURRENT.git`)
 - Working branch for merges: `workflow-consolidation`
@@ -60,4 +62,3 @@ Create PRs from `workflow-consolidation` to `main` when ready.
 - Nested Git: avoid operating in the parent folder’s Git repo. Work inside `CURRENT/`.
 - Missing outputs: ensure `--include-ext` matches your files and `--systeme-mode` is set for paste-ready assets.
 - Validation errors: in standard mode, HTML must contain `<html>` and `<head>`. In systeme-mode, fragments are allowed.
-

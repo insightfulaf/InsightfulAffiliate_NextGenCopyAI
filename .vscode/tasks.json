@@ -1,0 +1,41 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/vscode/master/src/vs/workbench/contrib/tasks/schemas/tasks.schema.json",
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Agent: Paste-ready (systeme-mode)",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "PY=\\\"${workspaceFolder}/.venv/bin/python\\\"; if [ ! -x \"$PY\" ]; then PY=python3; fi; \n$PY scripts/agent_codex.py --prompt prompts/rewrite_to_house_style.txt --input website_code_block_ORGANIZED/headers --output docs/ai_outputs/_snippets --include-ext '.html,.css,.js' --provider openai --model gpt-4o-mini --systeme-mode --verbose"
+      ],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Agent: Dry-run (echo)",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "PY=\\\"${workspaceFolder}/.venv/bin/python\\\"; if [ ! -x \"$PY\" ]; then PY=python3; fi; \n$PY scripts/agent_codex.py --prompt prompts/rewrite_to_house_style.txt --input website_code_block_ORGANIZED/headers --output docs/ai_outputs/_snippets --include-ext '.html,.css,.js' --provider echo --systeme-mode --dry-run --verbose"
+      ],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "group": "build",
+      "problemMatcher": []
+    }
+  ]
+}

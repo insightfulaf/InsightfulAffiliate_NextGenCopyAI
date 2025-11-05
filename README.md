@@ -8,6 +8,10 @@ This repo powers **InsightfulAffiliate** and **NextGenCopyAI** content workflows
 - Backups: Dropbox cloud + GitHub remote history.  See “Where files live”.  
 - Key tools: VS Code, Git, GitHub, Git LFS, Codex IDE/CLI, GitHub Copilot.
 
+## Quick Start
+- Daily routine and one‑page checklist: see `docs/RUNBOOK.md`
+- Full workflow guide (Dropbox → VS Code → GitHub → Systeme.io): see `docs/WORKFLOW_GUIDE.md`
+
 ## Setup
 1) **Git remote (current repo name/user)**
    - Update once, then verify:

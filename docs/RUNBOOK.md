@@ -85,3 +85,68 @@ Commit + push (if you changed outputs/docs)
 - Manifest (canonical): `website_code_block_ORGANIZED/site.webmanifest` (+ `.json` twin)
 - Review staging: `REVIEW_PENDING/`
 
+## 8) Tasks You’ll Use (what they do)
+
+- Agent: Dry‑run (echo)
+  - Runs agent_codex with echo provider and `--systeme-mode`; prints planned writes. No files changed.
+- Agent: Paste‑ready (systeme‑mode)
+  - Generates paste‑ready `.out.html/.out.css/.out.js` files in `docs/ai_outputs/_snippets/`.
+- Agent: Generate + Commit (push)
+  - Runs paste‑ready generation, stages outputs, opens commit editor (if changes), pushes to `workflow-consolidation`.
+- Systeme: Upload Checklist
+  - Runs paste‑ready then opens the output file and prints upload/verify steps for Systeme.io.
+- Maintenance: Analyze & Checklist (openai)
+  - Scans `docs/`, `copywriting/product_pages/`, `website_code_block_ORGANIZED/`; writes checklists under `docs/ai_outputs/checklists/`.
+- Maintenance: Propose patches (openai)
+  - Writes unified `.patch` files to `docs/ai_outputs/patches/` (no edits applied).
+- Maintenance: Review patches (open targets)
+  - Opens latest `.patch` files and their target sources side‑by‑side for inspection.
+- Maintenance: Review patch notes (open notes)
+  - Opens `.patch.notes.md` files (from echo/NO‑CHANGE) and tries to open the matching source file.
+- Maintenance: Apply patches (commit)
+  - Applies `.patch` files, commits on `workflow-consolidation`, and pushes. If a patch fails, a `.rej` file is created.
+- Maintenance: Link & Manifest check
+  - Runs `scripts/check_links_and_manifest.py`; writes a broken‑link + manifest audit report in `docs/ai_outputs/checklists/`.
+- Maintenance: Patch summary
+  - Runs `scripts/patch_summary.py`; lists patches with +/- counts and targets.
+
+## 9) Extra Commands (propose & check)
+
+Propose patches (safe; no edits applied)
+- `python scripts/agent_codex.py --prompt prompts/maintenance_codex.md --input website_code_block_ORGANIZED --output docs/ai_outputs/checklists --patch-dir docs/ai_outputs/patches --propose-patches --include-ext ".md,.txt,.html,.htm,.css,.json" --exclude-dirs ".git,node_modules,dist,build,docs/ai_outputs" --provider openai --model gpt-4o-mini --verbose`
+
+Link & manifest check (report only)
+- `python scripts/check_links_and_manifest.py`
+
+## 10) Agent & Flag Glossary (what each does)
+
+- `--systeme-mode` (agent_codex)
+  - For HTML/CSS/JS inputs: output raw code; relax HTML checks; name outputs `*.out.html|.css|.js`.
+- `--provider` + `--model`
+  - Backend selection (use `echo` for tests; `openai` for real). `gpt-4o-mini` is a good default.
+- `--include-ext` / `--exclude-dirs`
+  - Controls file types scanned and folders skipped.
+- `--dry-run`
+  - Preview actions; no files written.
+- `--stage-all` (optional)
+  - Stage the whole repo before committing (avoid unless intended).
+- `--propose-patches` (agent_codex)
+  - Emit unified diffs instead of content. Files go to `docs/ai_outputs/patches/` (or `--patch-dir`). No edits applied.
+- `--patch-dir` (agent_codex)
+  - Destination for `.patch` (or `.patch.notes.md`) files in propose‑patch mode.
+- `scripts/check_links_and_manifest.py`
+  - Scans HTML for broken relative links; validates manifest keys & icon paths; writes a Markdown report.
+- `scripts/patch_summary.py`
+  - Creates a compact summary of proposed patches with +/- counts and targets.
+
+## 11) Maintenance Flow (safe & fast)
+
+1) Propose patches (openai)
+   - VS Code task: “Maintenance: Propose patches (openai)” (or scope‑specific)
+2) Review
+   - “Maintenance: Review patches (open targets)” for diffs + sources
+   - “Maintenance: Review patch notes (open notes)” for echo/NO‑CHANGE notes
+3) Apply
+   - “Maintenance: Apply patches (commit)” → applies, commits, pushes on `workflow-consolidation`
+4) Verify
+   - “Maintenance: Link & Manifest check” and “Maintenance: Patch summary”

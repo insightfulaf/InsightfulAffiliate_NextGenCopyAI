@@ -69,6 +69,39 @@
       },
       "group": "build",
       "problemMatcher": []
+    },
+    {
+      "label": "Maintenance: Analyze & Checklist (openai)",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "PY=\\\"${workspaceFolder}/.venv/bin/python\\\"; if [ ! -x \"$PY\" ]; then PY=python3; fi; \nfor DIR in docs copywriting/product_pages website_code_block_ORGANIZED; do \n  echo \"[maintenance] scanning $DIR ...\"; \n  $PY scripts/agent_codex.py --prompt prompts/maintenance_codex.md --input \"$DIR\" --output docs/ai_outputs/checklists --include-ext '.md,.txt,.html,.htm,.css,.json' --exclude-dirs '.git,node_modules,dist,build,docs/ai_outputs' --provider openai --model gpt-4o-mini --message 'chore(maint): automated plan from maintenance agent' --verbose; \ndone; \n echo 'Maintenance outputs written under docs/ai_outputs/checklists'"
+      ],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "group": "none",
+      "problemMatcher": []
+    },
+    {
+      "label": "Maintenance: Dry-run (echo)",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "PY=\\\"${workspaceFolder}/.venv/bin/python\\\"; if [ ! -x \"$PY\" ]; then PY=python3; fi; \nfor DIR in docs copywriting/product_pages website_code_block_ORGANIZED; do \n  echo \"[maintenance:dry-run] scanning $DIR ...\"; \n  $PY scripts/agent_codex.py --prompt prompts/maintenance_codex.md --input \"$DIR\" --output docs/ai_outputs/checklists --include-ext '.md,.txt,.html,.htm,.css,.json' --exclude-dirs '.git,node_modules,dist,build,docs/ai_outputs' --provider echo --dry-run --verbose; \ndone; \n echo 'Dry-run complete (no files written).'
+        "
+      ],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "group": "none",
+      "problemMatcher": []
     }
   ]
 }

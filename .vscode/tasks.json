@@ -230,6 +230,23 @@
       "presentation": {"reveal": "always", "panel": "dedicated", "clear": true},
       "group": "none",
       "problemMatcher": []
+    },
+    {
+      "label": "Maintenance: Propose → Review notes",
+      "type": "shell",
+      "dependsOn": [
+        "Maintenance: Propose patches (openai)",
+        "Maintenance: Review patch notes (open notes)"
+      ],
+      "dependsOrder": "sequence",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "echo 'Chained: proposed patches, then opened patch notes.'"
+      ],
+      "presentation": {"reveal": "always", "panel": "dedicated", "clear": true},
+      "group": "none",
+      "problemMatcher": []
     }
   ]
 }

@@ -10,15 +10,8 @@
         "-lc",
         "PY=\\\"${workspaceFolder}/.venv/bin/python\\\"; if [ ! -x \"$PY\" ]; then PY=python3; fi; \n$PY scripts/agent_codex.py --prompt prompts/rewrite_to_house_style.txt --input website_code_block_ORGANIZED/headers --output docs/ai_outputs/_snippets --include-ext '.html,.css,.js' --provider openai --model gpt-4o-mini --systeme-mode --verbose"
       ],
-      "presentation": {
-        "reveal": "always",
-        "panel": "dedicated",
-        "clear": true
-      },
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      },
+      "presentation": {"reveal": "always", "panel": "dedicated", "clear": true},
+      "group": {"kind": "build", "isDefault": true},
       "problemMatcher": []
     },
     {
@@ -29,11 +22,7 @@
         "-lc",
         "PY=\\\"${workspaceFolder}/.venv/bin/python\\\"; if [ ! -x \"$PY\" ]; then PY=python3; fi; \n$PY scripts/agent_codex.py --prompt prompts/rewrite_to_house_style.txt --input website_code_block_ORGANIZED/headers --output docs/ai_outputs/_snippets --include-ext '.html,.css,.js' --provider echo --systeme-mode --dry-run --verbose"
       ],
-      "presentation": {
-        "reveal": "always",
-        "panel": "dedicated",
-        "clear": true
-      },
+      "presentation": {"reveal": "always", "panel": "dedicated", "clear": true},
       "group": "build",
       "problemMatcher": []
     },
@@ -44,13 +33,9 @@
       "command": "bash",
       "args": [
         "-lc",
-        "OUT=docs/ai_outputs/_snippets/head-snippet-v7-production.html.out.html; \nif [ -f \"$OUT\" ]; then \n  if command -v code >/dev/null 2>&1; then code -r \"$OUT\"; else open -a 'Visual Studio Code' \"$OUT\"; fi; \nelse \n  echo 'Expected output not found:' \"$OUT\"; \nfi; \ncat <<'EOC'\n\nNext steps (Systeme.io upload checklist):\n1) Upload to Systeme → Media: ngcai.css, site.webmanifest(.json), icons. Copy their public URLs.\n2) In the opened out.html, replace CSS/manifest/icon URLs with the copied URLs.\n3) Paste the entire out.html into Page → Settings → SEO/Head (Header).\n4) Verify manifest in browser console: fetch('PASTE_MANIFEST_URL').then(r => console.log('Manifest reachable:', r.ok))\n5) If you keep changes, git add/commit/push updated outputs.\n\nEOC"
+        "OUT=docs/ai_outputs/_snippets/head-snippet-v7-production.html.out.html; if [ -f \"$OUT\" ]; then if command -v code >/dev/null 2>&1; then code -r \"$OUT\"; else open -a 'Visual Studio Code' \"$OUT\"; fi; else echo 'Expected output not found:' \"$OUT\"; fi; \ncat <<'EOC'\n\nNext steps (Systeme.io upload checklist):\n1) Upload to Systeme → Media: ngcai.css, site.webmanifest(.json), icons. Copy their public URLs.\n2) In the opened out.html, replace CSS/manifest/icon URLs with the copied URLs.\n3) Paste the entire out.html into Page → Settings → SEO/Head (Header).\n4) Verify manifest in browser console: fetch('PASTE_MANIFEST_URL').then(r => console.log('Manifest reachable:', r.ok))\n5) If you keep changes, git add/commit/push updated outputs.\n\nEOC"
       ],
-      "presentation": {
-        "reveal": "always",
-        "panel": "dedicated",
-        "clear": true
-      },
+      "presentation": {"reveal": "always", "panel": "dedicated", "clear": true},
       "group": "none",
       "problemMatcher": []
     },
@@ -60,13 +45,9 @@
       "command": "bash",
       "args": [
         "-lc",
-        "# Ensure branch\nBR=\"$(git rev-parse --abbrev-ref HEAD 2>/dev/null)\"; \nif [ \"$BR\" != \"workflow-consolidation\" ]; then \n  git checkout workflow-consolidation 2>/dev/null || git checkout -b workflow-consolidation || true; \nfi; \n# Prefer project venv python\nPY=\"${workspaceFolder}/.venv/bin/python\"; if [ ! -x \"$PY\" ]; then PY=python3; fi; \n# Run paste-ready generation\n$PY scripts/agent_codex.py --prompt prompts/rewrite_to_house_style.txt --input website_code_block_ORGANIZED/headers --output docs/ai_outputs/_snippets --include-ext '.html,.css,.js' --provider openai --model gpt-4o-mini --systeme-mode --verbose; \n# Stage outputs\n git add docs/ai_outputs/_snippets/*.out.* 2>/dev/null || true; \n git add docs/ai_outputs/checklists/* 2>/dev/null || true; \n# Commit via editor if there are staged changes\n if git diff --cached --quiet; then \n   echo 'No staged changes to commit.'; \n else \n   if command -v code >/dev/null 2>&1; then \n     GIT_EDITOR=\"code --wait\" git commit || true; \n   else \n     git commit -e || true; \n   fi; \n   # Push to origin\n   git push -u origin workflow-consolidation || git push || true; \n fi"
+        "BR=\"$(git rev-parse --abbrev-ref HEAD 2>/dev/null)\"; if [ \"$BR\" != \"workflow-consolidation\" ]; then git checkout workflow-consolidation 2>/dev/null || git checkout -b workflow-consolidation || true; fi; PY=\"${workspaceFolder}/.venv/bin/python\"; if [ ! -x \"$PY\" ]; then PY=python3; fi; $PY scripts/agent_codex.py --prompt prompts/rewrite_to_house_style.txt --input website_code_block_ORGANIZED/headers --output docs/ai_outputs/_snippets --include-ext '.html,.css,.js' --provider openai --model gpt-4o-mini --systeme-mode --verbose; git add docs/ai_outputs/_snippets/*.out.* 2>/dev/null || true; git add docs/ai_outputs/checklists/* 2>/dev/null || true; if git diff --cached --quiet; then echo 'No staged changes to commit.'; else if command -v code >/dev/null 2>&1; then GIT_EDITOR=\"code --wait\" git commit || true; else git commit -e || true; fi; git push -u origin workflow-consolidation || git push || true; fi"
       ],
-      "presentation": {
-        "reveal": "always",
-        "panel": "dedicated",
-        "clear": true
-      },
+      "presentation": {"reveal": "always", "panel": "dedicated", "clear": true},
       "group": "build",
       "problemMatcher": []
     },
@@ -76,13 +57,33 @@
       "command": "bash",
       "args": [
         "-lc",
-        "PY=\\\"${workspaceFolder}/.venv/bin/python\\\"; if [ ! -x \"$PY\" ]; then PY=python3; fi; \nfor DIR in docs copywriting/product_pages website_code_block_ORGANIZED; do \n  echo \"[maintenance] scanning $DIR ...\"; \n  $PY scripts/agent_codex.py --prompt prompts/maintenance_codex.md --input \"$DIR\" --output docs/ai_outputs/checklists --include-ext '.md,.txt,.html,.htm,.css,.json' --exclude-dirs '.git,node_modules,dist,build,docs/ai_outputs' --provider openai --model gpt-4o-mini --message 'chore(maint): automated plan from maintenance agent' --verbose; \ndone; \n echo 'Maintenance outputs written under docs/ai_outputs/checklists'"
+        "PY=\\\"${workspaceFolder}/.venv/bin/python\\\"; if [ ! -x \"$PY\" ]; then PY=python3; fi; for DIR in docs copywriting/product_pages website_code_block_ORGANIZED; do echo \"[maintenance] scanning $DIR ...\"; $PY scripts/agent_codex.py --prompt prompts/maintenance_codex.md --input \"$DIR\" --output docs/ai_outputs/checklists --include-ext '.md,.txt,.html,.htm,.css,.json' --exclude-dirs '.git,node_modules,dist,build,docs/ai_outputs' --provider openai --model gpt-4o-mini --message 'chore(maint): automated plan from maintenance agent' --verbose; done; echo 'Maintenance outputs written under docs/ai_outputs/checklists'"
       ],
-      "presentation": {
-        "reveal": "always",
-        "panel": "dedicated",
-        "clear": true
-      },
+      "presentation": {"reveal": "always", "panel": "dedicated", "clear": true},
+      "group": "none",
+      "problemMatcher": []
+    },
+    {
+      "label": "Maintenance: Dry-run (echo)",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "PY=\\\"${workspaceFolder}/.venv/bin/python\\\"; if [ ! -x \"$PY\" ]; then PY=python3; fi; for DIR in docs copywriting/product_pages website_code_block_ORGANIZED; do echo \"[maintenance:dry-run] scanning $DIR ...\"; $PY scripts/agent_codex.py --prompt prompts/maintenance_codex.md --input \"$DIR\" --output docs/ai_outputs/checklists --include-ext '.md,.txt,.html,.htm,.css,.json' --exclude-dirs '.git,node_modules,dist,build,docs/ai_outputs' --provider echo --dry-run --verbose; done; echo 'Dry-run complete (no files written).'"
+      ],
+      "presentation": {"reveal": "always", "panel": "dedicated", "clear": true},
+      "group": "none",
+      "problemMatcher": []
+    },
+    {
+      "label": "Maintenance: Open latest results",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "DIR=docs/ai_outputs/checklists; N=5; if [ ! -d \"$DIR\" ]; then echo 'No checklists dir found:' \"$DIR\"; exit 0; fi; FILES=$(ls -t $DIR/* 2>/dev/null | head -n $N); if [ -z \"$FILES\" ]; then echo 'No results found in' \"$DIR\"; exit 0; fi; echo 'Opening latest results:'; echo \"$FILES\"; if command -v code >/dev/null 2>&1; then for f in $FILES; do code -r \"$f\"; done; else for f in $FILES; do open -a 'Visual Studio Code' \"$f\"; done; fi"
+      ],
+      "presentation": {"reveal": "always", "panel": "dedicated", "clear": true},
       "group": "none",
       "problemMatcher": []
     },
@@ -92,13 +93,9 @@
       "command": "bash",
       "args": [
         "-lc",
-        "PY=\\\"${workspaceFolder}/.venv/bin/python\\\"; if [ ! -x \"$PY\" ]; then PY=python3; fi; \nfor DIR in docs copywriting/product_pages website_code_block_ORGANIZED; do \n  echo \"[maintenance:patches] proposing patches for $DIR ...\"; \n  $PY scripts/agent_codex.py --prompt prompts/maintenance_codex.md --input \"$DIR\" --output docs/ai_outputs/checklists --patch-dir docs/ai_outputs/patches --propose-patches --include-ext '.md,.txt,.html,.htm,.css,.json' --exclude-dirs '.git,node_modules,dist,build,docs/ai_outputs' --provider openai --model gpt-4o-mini --verbose; \ndone; \n echo 'Proposed patches written under docs/ai_outputs/patches'"
+        "PY=\\\"${workspaceFolder}/.venv/bin/python\\\"; if [ ! -x \"$PY\" ]; then PY=python3; fi; for DIR in docs copywriting/product_pages website_code_block_ORGANIZED; do echo \"[maintenance:patches] proposing patches for $DIR ...\"; $PY scripts/agent_codex.py --prompt prompts/maintenance_codex.md --input \"$DIR\" --output docs/ai_outputs/checklists --patch-dir docs/ai_outputs/patches --propose-patches --include-ext '.md,.txt,.html,.htm,.css,.json' --exclude-dirs '.git,node_modules,dist,build,docs/ai_outputs' --provider openai --model gpt-4o-mini --verbose; done; echo 'Proposed patches written under docs/ai_outputs/patches'"
       ],
-      "presentation": {
-        "reveal": "always",
-        "panel": "dedicated",
-        "clear": true
-      },
+      "presentation": {"reveal": "always", "panel": "dedicated", "clear": true},
       "group": "none",
       "problemMatcher": []
     },
@@ -108,14 +105,22 @@
       "command": "bash",
       "args": [
         "-lc",
-        "BR=\\\"$(git rev-parse --abbrev-ref HEAD 2>/dev/null)\\\"; if [ \"$BR\" != \"workflow-consolidation\" ]; then git checkout workflow-consolidation 2>/dev/null || git checkout -b workflow-consolidation || true; fi; \nset -e; LIST=$(find docs/ai_outputs/patches -type f -name '*.patch' 2>/dev/null | sort); if [ -z \"$LIST\" ]; then echo 'No patch files found.'; exit 0; fi; \necho 'Applying patches:'; echo \"$LIST\"; \nfor p in $LIST; do echo \"-- applying $p\"; git apply --reject --whitespace=fix \"$p\" || { echo \"Patch failed: $p (see .rej files)\"; }; done; \n git add -A; \n if git diff --cached --quiet; then echo 'No staged changes after apply.'; else if command -v code >/dev/null 2>&1; then GIT_EDITOR=\"code --wait\" git commit -m 'chore(maint): apply proposed patches' || true; else git commit -m 'chore(maint): apply proposed patches' || true; fi; git push -u origin workflow-consolidation || git push || true; fi"
+        "BR=\\\"$(git rev-parse --abbrev-ref HEAD 2>/dev/null)\\\"; if [ \"$BR\" != \"workflow-consolidation\" ]; then git checkout workflow-consolidation 2>/dev/null || git checkout -b workflow-consolidation || true; fi; set -e; LIST=$(find docs/ai_outputs/patches -type f -name '*.patch' 2>/dev/null | sort); if [ -z \"$LIST\" ]; then echo 'No patch files found.'; exit 0; fi; echo 'Applying patches:'; echo \"$LIST\"; for p in $LIST; do echo \"-- applying $p\"; git apply --reject --whitespace=fix \"$p\" || { echo \"Patch failed: $p (see .rej files)\"; }; done; git add -A; if git diff --cached --quiet; then echo 'No staged changes after apply.'; else if command -v code >/dev/null 2>&1; then GIT_EDITOR=\"code --wait\" git commit -m 'chore(maint): apply proposed patches' || true; else git commit -m 'chore(maint): apply proposed patches' || true; fi; git push -u origin workflow-consolidation || git push || true; fi"
       ],
-      "presentation": {
-        "reveal": "always",
-        "panel": "dedicated",
-        "clear": true
-      },
+      "presentation": {"reveal": "always", "panel": "dedicated", "clear": true},
       "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Maintenance: Review patches (open targets)",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "DIR=docs/ai_outputs/patches; N=5; if [ ! -d \"$DIR\" ]; then echo 'No patches dir found:' \"$DIR\"; exit 0; fi; FILES=$(ls -t $DIR/*.patch 2>/dev/null | head -n $N); if [ -z \"$FILES\" ]; then echo 'No .patch files found in' \"$DIR\"; exit 0; fi; for p in $FILES; do echo \"Opening patch $p\"; if command -v code >/dev/null 2>&1; then code -r \"$p\"; else open -a 'Visual Studio Code' \"$p\"; fi; tgt=$(rg -n '^\\+\\+\\+ b/' \"$p\" | head -n1 | sed -E 's/.*b\\///'); if [ -n \"$tgt\" ] && [ -f \"$tgt\" ]; then echo \"Opening target $tgt\"; if command -v code >/dev/null 2>&1; then code -r \"$tgt\"; else open -a 'Visual Studio Code' \"$tgt\"; fi; fi; done"
+      ],
+      "presentation": {"reveal": "always", "panel": "dedicated", "clear": true},
+      "group": "none",
       "problemMatcher": []
     },
     {
@@ -124,13 +129,57 @@
       "command": "bash",
       "args": [
         "-lc",
-        "PY=\\\"${workspaceFolder}/.venv/bin/python\\\"; if [ ! -x \"$PY\" ]; then PY=python3; fi; \n$PY scripts/check_links_and_manifest.py"
+        "PY=\\\"${workspaceFolder}/.venv/bin/python\\\"; if [ ! -x \"$PY\" ]; then PY=python3; fi; $PY scripts/check_links_and_manifest.py"
       ],
-      "presentation": {
-        "reveal": "always",
-        "panel": "dedicated",
-        "clear": true
-      },
+      "presentation": {"reveal": "always", "panel": "dedicated", "clear": true},
+      "group": "none",
+      "problemMatcher": []
+    },
+    {
+      "label": "Maintenance: Patch summary",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "PY=\\\"${workspaceFolder}/.venv/bin/python\\\"; if [ ! -x \"$PY\" ]; then PY=python3; fi; $PY scripts/patch_summary.py"
+      ],
+      "presentation": {"reveal": "always", "panel": "dedicated", "clear": true},
+      "group": "none",
+      "problemMatcher": []
+    },
+    {
+      "label": "Propose patches: headers (openai)",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "PY=\\\"${workspaceFolder}/.venv/bin/python\\\"; if [ ! -x \"$PY\" ]; then PY=python3; fi; DIR=website_code_block_ORGANIZED/headers; echo \"[patches] $DIR\"; $PY scripts/agent_codex.py --prompt prompts/maintenance_codex.md --input \"$DIR\" --output docs/ai_outputs/checklists --patch-dir docs/ai_outputs/patches --propose-patches --include-ext '.html,.css,.json,.md,.txt' --exclude-dirs '.git,node_modules,dist,build,docs/ai_outputs' --provider openai --model gpt-4o-mini --verbose"
+      ],
+      "presentation": {"reveal": "always", "panel": "dedicated", "clear": true},
+      "group": "none",
+      "problemMatcher": []
+    },
+    {
+      "label": "Propose patches: components (openai)",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "PY=\\\"${workspaceFolder}/.venv/bin/python\\\"; if [ ! -x \"$PY\" ]; then PY=python3; fi; DIR=website_code_block_ORGANIZED/components; echo \"[patches] $DIR\"; $PY scripts/agent_codex.py --prompt prompts/maintenance_codex.md --input \"$DIR\" --output docs/ai_outputs/checklists --patch-dir docs/ai_outputs/patches --propose-patches --include-ext '.html,.css,.json,.md,.txt' --exclude-dirs '.git,node_modules,dist,build,docs/ai_outputs' --provider openai --model gpt-4o-mini --verbose"
+      ],
+      "presentation": {"reveal": "always", "panel": "dedicated", "clear": true},
+      "group": "none",
+      "problemMatcher": []
+    },
+    {
+      "label": "Propose patches: thank-you (openai)",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "PY=\\\"${workspaceFolder}/.venv/bin/python\\\"; if [ ! -x \"$PY\" ]; then PY=python3; fi; DIR=website_code_block_ORGANIZED/thank-you; echo \"[patches] $DIR\"; $PY scripts/agent_codex.py --prompt prompts/maintenance_codex.md --input \"$DIR\" --output docs/ai_outputs/checklists --patch-dir docs/ai_outputs/patches --propose-patches --include-ext '.html,.css,.json,.md,.txt' --exclude-dirs '.git,node_modules,dist,build,docs/ai_outputs' --provider openai --model gpt-4o-mini --verbose"
+      ],
+      "presentation": {"reveal": "always", "panel": "dedicated", "clear": true},
       "group": "none",
       "problemMatcher": []
     },
@@ -140,7 +189,7 @@
       "command": "bash",
       "args": [
         "-lc",
-        "PY=\\\"${workspaceFolder}/.venv/bin/python\\\"; if [ ! -x \"$PY\" ]; then PY=python3; fi; \nDIR=website_code_block_ORGANIZED/headers; echo \"[maintenance] $DIR\"; \n$PY scripts/agent_codex.py --prompt prompts/maintenance_codex.md --input \"$DIR\" --output docs/ai_outputs/checklists --include-ext '.md,.txt,.html,.htm,.css,.json' --exclude-dirs '.git,node_modules,dist,build,docs/ai_outputs' --provider openai --model gpt-4o-mini --verbose"
+        "PY=\\\"${workspaceFolder}/.venv/bin/python\\\"; if [ ! -x \"$PY\" ]; then PY=python3; fi; DIR=website_code_block_ORGANIZED/headers; echo \"[maintenance] $DIR\"; $PY scripts/agent_codex.py --prompt prompts/maintenance_codex.md --input \"$DIR\" --output docs/ai_outputs/checklists --include-ext '.md,.txt,.html,.htm,.css,.json' --exclude-dirs '.git,node_modules,dist,build,docs/ai_outputs' --provider openai --model gpt-4o-mini --verbose"
       ],
       "presentation": {"reveal": "always", "panel": "dedicated", "clear": true},
       "group": "none",
@@ -152,7 +201,7 @@
       "command": "bash",
       "args": [
         "-lc",
-        "PY=\\\"${workspaceFolder}/.venv/bin/python\\\"; if [ ! -x \"$PY\" ]; then PY=python3; fi; \nDIR=website_code_block_ORGANIZED/components; echo \"[maintenance] $DIR\"; \n$PY scripts/agent_codex.py --prompt prompts/maintenance_codex.md --input \"$DIR\" --output docs/ai_outputs/checklists --include-ext '.md,.txt,.html,.htm,.css,.json' --exclude-dirs '.git,node_modules,dist,build,docs/ai_outputs' --provider openai --model gpt-4o-mini --verbose"
+        "PY=\\\"${workspaceFolder}/.venv/bin/python\\\"; if [ ! -x \"$PY\" ]; then PY=python3; fi; DIR=website_code_block_ORGANIZED/components; echo \"[maintenance] $DIR\"; $PY scripts/agent_codex.py --prompt prompts/maintenance_codex.md --input \"$DIR\" --output docs/ai_outputs/checklists --include-ext '.md,.txt,.html,.htm,.css,.json' --exclude-dirs '.git,node_modules,dist,build,docs/ai_outputs' --provider openai --model gpt-4o-mini --verbose"
       ],
       "presentation": {"reveal": "always", "panel": "dedicated", "clear": true},
       "group": "none",
@@ -164,42 +213,9 @@
       "command": "bash",
       "args": [
         "-lc",
-        "PY=\\\"${workspaceFolder}/.venv/bin/python\\\"; if [ ! -x \"$PY\" ]; then PY=python3; fi; \nDIR=website_code_block_ORGANIZED/thank-you; echo \"[maintenance] $DIR\"; \n$PY scripts/agent_codex.py --prompt prompts/maintenance_codex.md --input \"$DIR\" --output docs/ai_outputs/checklists --include-ext '.md,.txt,.html,.htm,.css,.json' --exclude-dirs '.git,node_modules,dist,build,docs/ai_outputs' --provider openai --model gpt-4o-mini --verbose"
+        "PY=\\\"${workspaceFolder}/.venv/bin/python\\\"; if [ ! -x \"$PY\" ]; then PY=python3; fi; DIR=website_code_block_ORGANIZED/thank-you; echo \"[maintenance] $DIR\"; $PY scripts/agent_codex.py --prompt prompts/maintenance_codex.md --input \"$DIR\" --output docs/ai_outputs/checklists --include-ext '.md,.txt,.html,.htm,.css,.json' --exclude-dirs '.git,node_modules,dist,build,docs/ai_outputs' --provider openai --model gpt-4o-mini --verbose"
       ],
       "presentation": {"reveal": "always", "panel": "dedicated", "clear": true},
-      "group": "none",
-      "problemMatcher": []
-    }
-    {
-      "label": "Maintenance: Dry-run (echo)",
-      "type": "shell",
-      "command": "bash",
-      "args": [
-        "-lc",
-        "PY=\\\"${workspaceFolder}/.venv/bin/python\\\"; if [ ! -x \"$PY\" ]; then PY=python3; fi; \nfor DIR in docs copywriting/product_pages website_code_block_ORGANIZED; do \n  echo \"[maintenance:dry-run] scanning $DIR ...\"; \n  $PY scripts/agent_codex.py --prompt prompts/maintenance_codex.md --input \"$DIR\" --output docs/ai_outputs/checklists --include-ext '.md,.txt,.html,.htm,.css,.json' --exclude-dirs '.git,node_modules,dist,build,docs/ai_outputs' --provider echo --dry-run --verbose; \ndone; \n echo 'Dry-run complete (no files written).'
-        "
-      ],
-      "presentation": {
-        "reveal": "always",
-        "panel": "dedicated",
-        "clear": true
-      },
-      "group": "none",
-      "problemMatcher": []
-    },
-    {
-      "label": "Maintenance: Open latest results",
-      "type": "shell",
-      "command": "bash",
-      "args": [
-        "-lc",
-        "DIR=docs/ai_outputs/checklists; N=5; \nif [ ! -d \"$DIR\" ]; then echo 'No checklists dir found:' \"$DIR\"; exit 0; fi; \nFILES=$(ls -t $DIR/* 2>/dev/null | head -n $N); \nif [ -z \"$FILES\" ]; then echo 'No results found in' \"$DIR\"; exit 0; fi; \necho 'Opening latest results:'; echo \"$FILES\"; \nif command -v code >/dev/null 2>&1; then \n  for f in $FILES; do code -r \"$f\"; done; \nelse \n  for f in $FILES; do open -a 'Visual Studio Code' \"$f\"; done; \nfi"
-      ],
-      "presentation": {
-        "reveal": "always",
-        "panel": "dedicated",
-        "clear": true
-      },
       "group": "none",
       "problemMatcher": []
     }

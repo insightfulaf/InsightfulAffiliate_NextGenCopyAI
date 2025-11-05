@@ -422,7 +422,10 @@ def main() -> None:
             log(f"✅ Wrote {out_path}", cfg=cfg, verbose_only=True)
 
     # 6) Commit & push (stage-all if requested)
-    git_stage_commit_push(cfg, written)
+    if not cfg.propose_patches:
+        git_stage_commit_push(cfg, written)
+    else:
+        log("Propose-patches mode: skipping git add/commit/push.")
 
     # 7) Optional site check
     if cfg.site_dir:

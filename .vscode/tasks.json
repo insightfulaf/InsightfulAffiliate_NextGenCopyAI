@@ -53,6 +53,22 @@
       },
       "group": "none",
       "problemMatcher": []
+    },
+    {
+      "label": "Agent: Generate + Commit (push)",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "# Ensure branch\nBR=\"$(git rev-parse --abbrev-ref HEAD 2>/dev/null)\"; \nif [ \"$BR\" != \"workflow-consolidation\" ]; then \n  git checkout workflow-consolidation 2>/dev/null || git checkout -b workflow-consolidation || true; \nfi; \n# Prefer project venv python\nPY=\"${workspaceFolder}/.venv/bin/python\"; if [ ! -x \"$PY\" ]; then PY=python3; fi; \n# Run paste-ready generation\n$PY scripts/agent_codex.py --prompt prompts/rewrite_to_house_style.txt --input website_code_block_ORGANIZED/headers --output docs/ai_outputs/_snippets --include-ext '.html,.css,.js' --provider openai --model gpt-4o-mini --systeme-mode --verbose; \n# Stage outputs\n git add docs/ai_outputs/_snippets/*.out.* 2>/dev/null || true; \n git add docs/ai_outputs/checklists/* 2>/dev/null || true; \n# Commit via editor if there are staged changes\n if git diff --cached --quiet; then \n   echo 'No staged changes to commit.'; \n else \n   if command -v code >/dev/null 2>&1; then \n     GIT_EDITOR=\"code --wait\" git commit || true; \n   else \n     git commit -e || true; \n   fi; \n   # Push to origin\n   git push -u origin workflow-consolidation || git push || true; \n fi"
+      ],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "group": "build",
+      "problemMatcher": []
     }
   ]
 }

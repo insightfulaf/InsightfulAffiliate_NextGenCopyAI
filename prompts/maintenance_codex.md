@@ -34,6 +34,12 @@ Skip everything else (images, videos, zips, node_modules, .git, build artifacts,
   - For MD/TXT content, write `*.out.md` (you may use fenced code blocks in Markdown outputs).
 - Any checklists/diff summaries go to `docs/ai_outputs/checklists/`.
 
+### When runner requests patch proposals
+- If the runner indicates "propose patches" mode, produce a unified diff patch suitable for `git apply`:
+  - Use headers exactly: `--- a/{REL_PATH}` and `+++ b/{REL_PATH}` where `{REL_PATH}` is the repo‑relative path to the file.
+  - Include only necessary hunks with minimal context.
+  - If no change is needed, output exactly `NO-CHANGE`.
+
 ## Git policy (safe by default)
 - Work on branch `workflow-consolidation`. If it doesn’t exist locally, create it from the current HEAD.
 - Stage only files you changed or wrote, then commit with:

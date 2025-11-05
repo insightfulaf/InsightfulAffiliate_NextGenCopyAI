@@ -87,6 +87,90 @@
       "problemMatcher": []
     },
     {
+      "label": "Maintenance: Propose patches (openai)",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "PY=\\\"${workspaceFolder}/.venv/bin/python\\\"; if [ ! -x \"$PY\" ]; then PY=python3; fi; \nfor DIR in docs copywriting/product_pages website_code_block_ORGANIZED; do \n  echo \"[maintenance:patches] proposing patches for $DIR ...\"; \n  $PY scripts/agent_codex.py --prompt prompts/maintenance_codex.md --input \"$DIR\" --output docs/ai_outputs/checklists --patch-dir docs/ai_outputs/patches --propose-patches --include-ext '.md,.txt,.html,.htm,.css,.json' --exclude-dirs '.git,node_modules,dist,build,docs/ai_outputs' --provider openai --model gpt-4o-mini --verbose; \ndone; \n echo 'Proposed patches written under docs/ai_outputs/patches'"
+      ],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "group": "none",
+      "problemMatcher": []
+    },
+    {
+      "label": "Maintenance: Apply patches (commit)",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "BR=\\\"$(git rev-parse --abbrev-ref HEAD 2>/dev/null)\\\"; if [ \"$BR\" != \"workflow-consolidation\" ]; then git checkout workflow-consolidation 2>/dev/null || git checkout -b workflow-consolidation || true; fi; \nset -e; LIST=$(find docs/ai_outputs/patches -type f -name '*.patch' 2>/dev/null | sort); if [ -z \"$LIST\" ]; then echo 'No patch files found.'; exit 0; fi; \necho 'Applying patches:'; echo \"$LIST\"; \nfor p in $LIST; do echo \"-- applying $p\"; git apply --reject --whitespace=fix \"$p\" || { echo \"Patch failed: $p (see .rej files)\"; }; done; \n git add -A; \n if git diff --cached --quiet; then echo 'No staged changes after apply.'; else if command -v code >/dev/null 2>&1; then GIT_EDITOR=\"code --wait\" git commit -m 'chore(maint): apply proposed patches' || true; else git commit -m 'chore(maint): apply proposed patches' || true; fi; git push -u origin workflow-consolidation || git push || true; fi"
+      ],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Maintenance: Link & Manifest check",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "PY=\\\"${workspaceFolder}/.venv/bin/python\\\"; if [ ! -x \"$PY\" ]; then PY=python3; fi; \n$PY scripts/check_links_and_manifest.py"
+      ],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "group": "none",
+      "problemMatcher": []
+    },
+    {
+      "label": "Maintenance: Analyze headers (openai)",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "PY=\\\"${workspaceFolder}/.venv/bin/python\\\"; if [ ! -x \"$PY\" ]; then PY=python3; fi; \nDIR=website_code_block_ORGANIZED/headers; echo \"[maintenance] $DIR\"; \n$PY scripts/agent_codex.py --prompt prompts/maintenance_codex.md --input \"$DIR\" --output docs/ai_outputs/checklists --include-ext '.md,.txt,.html,.htm,.css,.json' --exclude-dirs '.git,node_modules,dist,build,docs/ai_outputs' --provider openai --model gpt-4o-mini --verbose"
+      ],
+      "presentation": {"reveal": "always", "panel": "dedicated", "clear": true},
+      "group": "none",
+      "problemMatcher": []
+    },
+    {
+      "label": "Maintenance: Analyze components (openai)",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "PY=\\\"${workspaceFolder}/.venv/bin/python\\\"; if [ ! -x \"$PY\" ]; then PY=python3; fi; \nDIR=website_code_block_ORGANIZED/components; echo \"[maintenance] $DIR\"; \n$PY scripts/agent_codex.py --prompt prompts/maintenance_codex.md --input \"$DIR\" --output docs/ai_outputs/checklists --include-ext '.md,.txt,.html,.htm,.css,.json' --exclude-dirs '.git,node_modules,dist,build,docs/ai_outputs' --provider openai --model gpt-4o-mini --verbose"
+      ],
+      "presentation": {"reveal": "always", "panel": "dedicated", "clear": true},
+      "group": "none",
+      "problemMatcher": []
+    },
+    {
+      "label": "Maintenance: Analyze thank-you (openai)",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "PY=\\\"${workspaceFolder}/.venv/bin/python\\\"; if [ ! -x \"$PY\" ]; then PY=python3; fi; \nDIR=website_code_block_ORGANIZED/thank-you; echo \"[maintenance] $DIR\"; \n$PY scripts/agent_codex.py --prompt prompts/maintenance_codex.md --input \"$DIR\" --output docs/ai_outputs/checklists --include-ext '.md,.txt,.html,.htm,.css,.json' --exclude-dirs '.git,node_modules,dist,build,docs/ai_outputs' --provider openai --model gpt-4o-mini --verbose"
+      ],
+      "presentation": {"reveal": "always", "panel": "dedicated", "clear": true},
+      "group": "none",
+      "problemMatcher": []
+    }
+    {
       "label": "Maintenance: Dry-run (echo)",
       "type": "shell",
       "command": "bash",

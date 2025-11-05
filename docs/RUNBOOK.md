@@ -109,6 +109,10 @@ Commit + push (if you changed outputs/docs)
   - Runs `scripts/check_links_and_manifest.py`; writes a broken‑link + manifest audit report in `docs/ai_outputs/checklists/`.
 - Maintenance: Patch summary
   - Runs `scripts/patch_summary.py`; lists patches with +/- counts and targets.
+ - Maintenance: Propose → Review notes
+   - Chains proposal then opens `.patch.notes.md` outputs (best when using echo or when NO‑CHANGE notes are expected).
+ - Maintenance: Propose → Review diffs
+   - Chains proposal then opens the actual `.patch` diffs and their target files for review.
 
 ## 9) Extra Commands (propose & check)
 

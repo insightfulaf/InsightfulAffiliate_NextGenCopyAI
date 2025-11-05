@@ -62,3 +62,26 @@ Create PRs from `workflow-consolidation` to `main` when ready.
 - Nested Git: avoid operating in the parent folder’s Git repo. Work inside `CURRENT/`.
 - Missing outputs: ensure `--include-ext` matches your files and `--systeme-mode` is set for paste-ready assets.
 - Validation errors: in standard mode, HTML must contain `<html>` and `<head>`. In systeme-mode, fragments are allowed.
+
+## 8) Maintenance & Patches
+
+Use VS Code tasks (Cmd+Shift+P → “Tasks: Run Task”) to keep things tidy:
+
+- Maintenance: Analyze & Checklist (openai) — scans scoped dirs and writes checklists to `docs/ai_outputs/checklists/`.
+- Maintenance: Dry-run (echo) — safe preview, no files written.
+- Maintenance: Propose patches (openai) — writes unified `.patch` files to `docs/ai_outputs/patches/` (no edits applied).
+- Maintenance: Review patches (open targets) — opens latest patch files and their target sources.
+- Maintenance: Apply patches (commit) — applies `.patch` files on `workflow-consolidation`, commits, and pushes.
+- Maintenance: Link & Manifest check — writes a broken-link + manifest audit report to `docs/ai_outputs/checklists/`.
+- Maintenance: Patch summary — writes a quick summary of all `.patch` files.
+- Chains available:
+  - Maintenance: Propose → Review notes (notes + matching sources)
+  - Maintenance: Propose → Review diffs (patch diffs + targets)
+
+Scope‑specific helpers are also available:
+- Analyze headers/components/thank‑you (openai)
+- Propose patches: headers/components/thank‑you (openai)
+
+Notes:
+- Patches are safe by design: propose→review→apply→push.
+- If a patch fails to apply, check `.rej` files and ask for help to merge.

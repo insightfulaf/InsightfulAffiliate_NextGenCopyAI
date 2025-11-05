@@ -247,6 +247,23 @@
       "presentation": {"reveal": "always", "panel": "dedicated", "clear": true},
       "group": "none",
       "problemMatcher": []
+    },
+    {
+      "label": "Maintenance: Propose → Review diffs",
+      "type": "shell",
+      "dependsOn": [
+        "Maintenance: Propose patches (openai)",
+        "Maintenance: Review patches (open targets)"
+      ],
+      "dependsOrder": "sequence",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "echo 'Chained: proposed patches, then opened patch diffs + targets.'"
+      ],
+      "presentation": {"reveal": "always", "panel": "dedicated", "clear": true},
+      "group": "none",
+      "problemMatcher": []
     }
   ]
 }

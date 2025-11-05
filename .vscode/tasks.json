@@ -102,6 +102,22 @@
       },
       "group": "none",
       "problemMatcher": []
+    },
+    {
+      "label": "Maintenance: Open latest results",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "DIR=docs/ai_outputs/checklists; N=5; \nif [ ! -d \"$DIR\" ]; then echo 'No checklists dir found:' \"$DIR\"; exit 0; fi; \nFILES=$(ls -t $DIR/* 2>/dev/null | head -n $N); \nif [ -z \"$FILES\" ]; then echo 'No results found in' \"$DIR\"; exit 0; fi; \necho 'Opening latest results:'; echo \"$FILES\"; \nif command -v code >/dev/null 2>&1; then \n  for f in $FILES; do code -r \"$f\"; done; \nelse \n  for f in $FILES; do open -a 'Visual Studio Code' \"$f\"; done; \nfi"
+      ],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "group": "none",
+      "problemMatcher": []
     }
   ]
 }

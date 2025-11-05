@@ -36,6 +36,23 @@
       },
       "group": "build",
       "problemMatcher": []
+    },
+    {
+      "label": "Systeme: Upload Checklist",
+      "type": "shell",
+      "dependsOn": "Agent: Paste-ready (systeme-mode)",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "OUT=docs/ai_outputs/_snippets/head-snippet-v7-production.html.out.html; \nif [ -f \"$OUT\" ]; then \n  if command -v code >/dev/null 2>&1; then code -r \"$OUT\"; else open -a 'Visual Studio Code' \"$OUT\"; fi; \nelse \n  echo 'Expected output not found:' \"$OUT\"; \nfi; \ncat <<'EOC'\n\nNext steps (Systeme.io upload checklist):\n1) Upload to Systeme → Media: ngcai.css, site.webmanifest(.json), icons. Copy their public URLs.\n2) In the opened out.html, replace CSS/manifest/icon URLs with the copied URLs.\n3) Paste the entire out.html into Page → Settings → SEO/Head (Header).\n4) Verify manifest in browser console: fetch('PASTE_MANIFEST_URL').then(r => console.log('Manifest reachable:', r.ok))\n5) If you keep changes, git add/commit/push updated outputs.\n\nEOC"
+      ],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "group": "none",
+      "problemMatcher": []
     }
   ]
 }

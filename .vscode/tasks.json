@@ -218,6 +218,18 @@
       "presentation": {"reveal": "always", "panel": "dedicated", "clear": true},
       "group": "none",
       "problemMatcher": []
+    },
+    {
+      "label": "Maintenance: Review patch notes (open notes)",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "DIR=docs/ai_outputs/patches; N=5; if [ ! -d \"$DIR\" ]; then echo 'No patches dir found:' \"$DIR\"; exit 0; fi; FILES=$(ls -t $DIR/*.patch.notes.md 2>/dev/null | head -n $N); if [ -z \"$FILES\" ]; then echo 'No .patch.notes.md files found in' \"$DIR\"; exit 0; fi; for p in $FILES; do echo \"Opening notes $p\"; if command -v code >/dev/null 2>&1; then code -r \"$p\"; else open -a 'Visual Studio Code' \"$p\"; fi; tgt=$(basename \"$p\" .patch.notes.md); cand=$(rg --files 2>/dev/null | rg -F \"/$tgt$\" | head -n1); if [ -z \"$cand\" ]; then cand=$(find . -type f -name \"$tgt\" -print -quit 2>/dev/null); fi; if [ -n \"$cand\" ]; then echo \"Opening candidate $cand\"; if command -v code >/dev/null 2>&1; then code -r \"$cand\"; else open -a 'Visual Studio Code' \"$cand\"; fi; fi; done"
+      ],
+      "presentation": {"reveal": "always", "panel": "dedicated", "clear": true},
+      "group": "none",
+      "problemMatcher": []
     }
   ]
 }

@@ -23,14 +23,15 @@ ROOT = Path(__file__).resolve().parents[1]
 WEB = ROOT / "website_code_block_ORGANIZED"
 OUT_DIR = ROOT / "docs/ai_outputs/checklists"
 
-def find_manifest() -> Path | None:
-    c1 = WEB / "site.webmanifest"
-    c2 = WEB / "site.webmanifest.json"
-    if c1.exists():
-        return c1
-    if c2.exists():
-        return c2
-    return None
+def find_manifests() -> list[Path]:
+    out: list[Path] = []
+    for cand in [WEB / "site.webmanifest", WEB / "site.webmanifest.json"]:
+        if cand.exists():
+            out.append(cand)
+    man_dir = WEB / "manifests"
+    if man_dir.exists():
+        out.extend(sorted(p for p in man_dir.iterdir() if p.suffix in (".json", "")))
+    return out
 
 def normalize(p: Path) -> str:
     return str(p).replace("\\", "/")
@@ -55,32 +56,31 @@ def check_html_links() -> list[str]:
     return issues
 
 def check_manifest() -> list[str]:
-    issues: list[str] = []
-    mf = find_manifest()
-    if not mf:
-        return ["Manifest not found at website_code_block_ORGANIZED/site.webmanifest(.json)"]
-    try:
-        data = json.loads(mf.read_text(encoding="utf-8"))
-    except Exception as e:
-        return [f"Manifest unreadable JSON: {normalize(mf)} ({e})"]
-
+    all_issues: list[str] = []
+    mfs = find_manifests()
+    if not mfs:
+        return ["No manifests found at website_code_block_ORGANIZED/(site.webmanifest|site.webmanifest.json|manifests/*.json)"]
     required = ["name", "short_name", "icons", "start_url", "display", "theme_color", "background_color"]
-    for k in required:
-        if k not in data:
-            issues.append(f"Manifest missing key: {k}")
-    # verify icons
-    icons = data.get("icons", []) or []
-    for i, ic in enumerate(icons):
-        src = (ic or {}).get("src")
-        if not src:
-            issues.append(f"Manifest icon #{i} missing src")
-            continue
-        if RE_REL.match(src):
-            # relative path from the manifest file location
-            t = (mf.parent / src.split("?",1)[0].split("#",1)[0]).resolve()
-            if not t.exists():
-                issues.append(f"Manifest icon not found → {src}")
-    return issues
+    for mf in mfs:
+        issues: list[str] = []
+        try:
+            data = json.loads(mf.read_text(encoding="utf-8"))
+        except Exception as e:
+            all_issues.append(f"Manifest unreadable JSON: {normalize(mf)} ({e})");  continue
+        for k in required:
+            if k not in data:
+                issues.append(f"{normalize(mf)}: missing key {k}")
+        icons = data.get("icons", []) or []
+        for i, ic in enumerate(icons):
+            src = (ic or {}).get("src")
+            if not src:
+                issues.append(f"{normalize(mf)}: icon #{i} missing src");  continue
+            if RE_REL.match(src):
+                t = (mf.parent / src.split("?",1)[0].split("#",1)[0]).resolve()
+                if not t.exists():
+                    issues.append(f"{normalize(mf)}: icon not found → {src}")
+        all_issues.extend(issues)
+    return all_issues
 
 def main() -> None:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -119,4 +119,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

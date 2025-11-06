@@ -55,8 +55,14 @@ def main() -> None:
     for k, v in data.items():
         if v is None:
             continue
-        mapping[k] = str(v)
-        mapping[k.upper()] = str(v)
+        s = str(v).strip()
+        # Sanitize accidental wrappers like <https://...> or {{https://...}}
+        if s.startswith("<") and s.endswith(">"):
+            s = s[1:-1]
+        if s.startswith("{{") and s.endswith("}}"):
+            s = s[2:-2]
+        mapping[k] = s
+        mapping[k.upper()] = s
 
     rendered = render(tpl, mapping)
     args.output.parent.mkdir(parents=True, exist_ok=True)
@@ -65,4 +71,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

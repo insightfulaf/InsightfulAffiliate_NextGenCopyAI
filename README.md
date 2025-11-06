@@ -11,6 +11,7 @@ This repo powers **InsightfulAffiliate** and **NextGenCopyAI** content workflows
 ## Quick Start
 - Daily routine and one‑page checklist: see `docs/RUNBOOK.md`
 - Full workflow guide (Dropbox → VS Code → GitHub → Systeme.io): see `docs/WORKFLOW_GUIDE.md`
+- Git reference (commands & explanations): see `docs/git_reference.md`
 
 ## Setup
 1) **Git remote (current repo name/user)**

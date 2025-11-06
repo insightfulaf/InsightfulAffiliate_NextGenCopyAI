@@ -109,10 +109,14 @@ Commit + push (if you changed outputs/docs)
   - Runs `scripts/check_links_and_manifest.py`; writes a broken‑link + manifest audit report in `docs/ai_outputs/checklists/`.
 - Maintenance: Patch summary
   - Runs `scripts/patch_summary.py`; lists patches with +/- counts and targets.
- - Maintenance: Propose → Review notes
-   - Chains proposal then opens `.patch.notes.md` outputs (best when using echo or when NO‑CHANGE notes are expected).
- - Maintenance: Propose → Review diffs
-   - Chains proposal then opens the actual `.patch` diffs and their target files for review.
+- Maintenance: Propose → Review notes
+  - Chains proposal then opens `.patch.notes.md` outputs (best when using echo or when NO‑CHANGE notes are expected).
+- Maintenance: Propose → Review diffs
+  - Chains proposal then opens the actual `.patch` diffs and their target files for review.
+ - Head: Generate (IA) / (NGCAI)
+   - Renders brand head snippets from `landing_pages/headers/head-snippet-ngcai.html` using YAML configs under `configs/brands/`. If override_css_url is set, injects it after the canonical CSS.
+ - Systeme: Update IA/NGCAI header (Playwright)
+   - Automates pasting the header into Systeme. Requires env vars: `SYSTEME_EMAIL`, `SYSTEME_PASSWORD`, `PAGE_URL`. Installs: `python -m pip install playwright && python -m playwright install chromium` (one time).
 
 ## 9) Extra Commands (propose & check)
 
@@ -121,6 +125,14 @@ Propose patches (safe; no edits applied)
 
 Link & manifest check (report only)
 - `python scripts/check_links_and_manifest.py`
+
+Generate brand head from template (example – IA)
+- `python scripts/generate_head_snippets.py --template landing_pages/headers/head-snippet-ngcai.html --config configs/brands/ia.yml --output docs/ai_outputs/_snippets/head-snippet-IA.html.out.html`
+
+Playwright header updater (example – IA)
+- `SYSTEME_EMAIL=you@example.com SYSTEME_PASSWORD='secret' PAGE_URL='https://app.systeme.io/.../pages/...'
+   HEAD_FILE='docs/ai_outputs/_snippets/head-snippet-IA.html.out.html' \
+   python scripts/systeme_update_header.py`
 
 ## 10) Agent & Flag Glossary (what each does)
 

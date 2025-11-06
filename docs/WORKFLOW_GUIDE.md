@@ -78,6 +78,11 @@ Use VS Code tasks (Cmd+Shift+P → “Tasks: Run Task”) to keep things tidy:
   - Maintenance: Propose → Review notes (notes + matching sources)
   - Maintenance: Propose → Review diffs (patch diffs + targets)
 
+## 9) Brand Heads & Systeme Automation
+
+- Head: Generate (IA)/(NGCAI) — renders brand-specific head snippets from the template `landing_pages/headers/head-snippet-ngcai.html` using YAML configs under `configs/brands/`.
+- Systeme: Update IA/NGCAI header (Playwright) — optional automation to paste the generated head into Systeme; requires env vars `SYSTEME_EMAIL`, `SYSTEME_PASSWORD`, and `PAGE_URL`.
+
 Scope‑specific helpers are also available:
 - Analyze headers/components/thank‑you (openai)
 - Propose patches: headers/components/thank‑you (openai)

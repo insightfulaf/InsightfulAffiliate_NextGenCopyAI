@@ -264,6 +264,64 @@
       "presentation": {"reveal": "always", "panel": "dedicated", "clear": true},
       "group": "none",
       "problemMatcher": []
+    },
+    {
+      "label": "Head: Generate (IA)",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "PY=\\\"${workspaceFolder}/.venv/bin/python\\\"; if [ ! -x \"$PY\" ]; then PY=python3; fi; $PY scripts/generate_head_snippets.py --template landing_pages/headers/head-snippet-ngcai.html --config configs/brands/ia.yml --output docs/ai_outputs/_snippets/head-snippet-IA.html.out.html"
+      ],
+      "presentation": {"reveal": "always", "panel": "dedicated", "clear": true},
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Head: Generate (NGCAI)",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "PY=\\\"${workspaceFolder}/.venv/bin/python\\\"; if [ ! -x \"$PY\" ]; then PY=python3; fi; $PY scripts/generate_head_snippets.py --template landing_pages/headers/head-snippet-ngcai.html --config configs/brands/ngcai.yml --output docs/ai_outputs/_snippets/head-snippet-NGCAI.html.out.html"
+      ],
+      "presentation": {"reveal": "always", "panel": "dedicated", "clear": true},
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Systeme: Update IA header (Playwright)",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "PY=\\\"${workspaceFolder}/.venv/bin/python\\\"; if [ ! -x \"$PY\" ]; then PY=python3; fi; $PY scripts/systeme_update_header.py"
+      ],
+      "options": {
+        "env": {
+          "HEAD_FILE": "docs/ai_outputs/_snippets/head-snippet-IA.html.out.html"
+        }
+      },
+      "presentation": {"reveal": "always", "panel": "dedicated", "clear": true},
+      "group": "none",
+      "problemMatcher": []
+    },
+    {
+      "label": "Systeme: Update NGCAI header (Playwright)",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "PY=\\\"${workspaceFolder}/.venv/bin/python\\\"; if [ ! -x \"$PY\" ]; then PY=python3; fi; $PY scripts/systeme_update_header.py"
+      ],
+      "options": {
+        "env": {
+          "HEAD_FILE": "docs/ai_outputs/_snippets/head-snippet-NGCAI.html.out.html"
+        }
+      },
+      "presentation": {"reveal": "always", "panel": "dedicated", "clear": true},
+      "group": "none",
+      "problemMatcher": []
     }
   ]
 }

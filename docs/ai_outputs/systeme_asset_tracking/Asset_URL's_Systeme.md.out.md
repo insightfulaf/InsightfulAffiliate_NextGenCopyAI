@@ -19,8 +19,12 @@ This tracker is split by brand to prevent mixing images or manifests between Ins
   - favicon.ico (light): https://d1yei2z3i6k35z.cloudfront.net/13254463/68c13281652cd_favicon_light.ico
   - favicon.ico (dark): https://d1yei2z3i6k35z.cloudfront.net/13254463/68b7b43c6aa85_favicon.ico
   - apple-touch-icon: https://d1yei2z3i6k35z.cloudfront.net/13254463/68b2b075f0945_apple-touch-icon.png
+  - icon-192x192 (light): https://d1yei2z3i6k35z.cloudfront.net/13254463/690c461bb7254_favicon-192x192.png
+  - icon-192x192 (dark): https://d1yei2z3i6k35z.cloudfront.net/13254463/68f2b21891ae8_icon-192.png
   - maskable-512x512 (light): https://d1yei2z3i6k35z.cloudfront.net/13254463/68b2b075f1efc_maskable-512x512.png
   - maskable-512x512 (dark): https://d1yei2z3i6k35z.cloudfront.net/13254463/68bd5a88952a2_maskable-512x512.png
+  - icon-512x512 (light): https://d1yei2z3i6k35z.cloudfront.net/13254463/68c115930a4c4_favicon-512x512.png
+  - icon-512x512 (dark): https://d1yei2z3i6k35z.cloudfront.net/13254463/68ce5fac1f64c_icon-512.png
 - Wordmarks/Logos:
   - IA dark 640w: https://d1yei2z3i6k35z.cloudfront.net/13254463/68bc0bd21be8b_InsightfulAffiliate_horizontal_transparent_dark-fg_640w.png
   - IA light 640w: https://d1yei2z3i6k35z.cloudfront.net/13254463/68bc0bd220aed_InsightfulAffiliate_horizontal_transparent_light-fg_640w.png
@@ -33,6 +37,12 @@ This tracker is split by brand to prevent mixing images or manifests between Ins
   - OG (light): https://d1yei2z3i6k35z.cloudfront.net/13254463/690bd5581ab1b_NextGenCopyAI_by_InsightfulAffiliate_og_light_1200x630.png
   - Twitter (light): https://d1yei2z3i6k35z.cloudfront.net/13254463/68b7cbd026195_NextGenCopyAI_by_InsightfulAffiliate_twitter_light_1200x628.png
 - Favicons/icons: reuse the uploads above or brand-specific equivalents.
+- icon-192x192 (light): https://d1yei2z3i6k35z.cloudfront.net/13254463/690c461bb7254_favicon-192x192.png
+- icon-192x192 (dark): https://d1yei2z3i6k35z.cloudfront.net/13254463/68f2b21891ae8_icon-192.png
+- maskable-512x512 (light): https://d1yei2z3i6k35z.cloudfront.net/13254463/68b2b075f1efc_maskable-512x512.png
+- maskable-512x512 (dark): https://d1yei2z3i6k35z.cloudfront.net/13254463/68bd5a88952a2_maskable-512x512.png
+- icon-512x512 (light): https://d1yei2z3i6k35z.cloudfront.net/13254463/68c115930a4c4_favicon-512x512.png
+- icon-512x512 (dark): https://d1yei2z3i6k35z.cloudfront.net/13254463/68ce5fac1f64c_icon-512.png
 - Wordmarks/Logos:
   - NGC dark 640w: https://d1yei2z3i6k35z.cloudfront.net/13254463/68bc0bd222e38_NextGenCopyAI_horizontal_transparent_dark-fg_640w.png
   - NGC light 640w: https://d1yei2z3i6k35z.cloudfront.net/13254463/68bc0bd223245_NextGenCopyAI_horizontal_transparent_light-fg_640w.png

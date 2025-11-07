@@ -80,7 +80,7 @@ Use VS Code tasks (Cmd+Shift+P → “Tasks: Run Task”) to keep things tidy:
 
 ## 9) Brand Heads & Systeme Automation
 
-- Head: Generate (IA)/(NGCAI) — renders brand-specific head snippets from the template `landing_pages/headers/head-snippet-ngcai.html` using YAML configs under `configs/brands/`.
+- Head: Generate (IA)/(NGCAI) — renders brand-specific head snippets from the template `landing_pages/headers/head-snippet-ngcai.html` using YAML configs under `configs/brands/`. Local manifest templates live under `website_code_block_ORGANIZED/manifests/` for reference; upload to Systeme and paste public URLs into the YAML configs.
 - Systeme: Update IA/NGCAI header (Playwright) — optional automation to paste the generated head into Systeme; requires env vars `SYSTEME_EMAIL`, `SYSTEME_PASSWORD`, and `PAGE_URL`.
 
 Scope‑specific helpers are also available:

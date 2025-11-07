@@ -128,6 +128,7 @@ Link & manifest check (report only)
 
 Generate brand head from template (example – IA)
 - `python scripts/generate_head_snippets.py --template landing_pages/headers/head-snippet-ngcai.html --config configs/brands/ia.yml --output docs/ai_outputs/_snippets/head-snippet-IA.html.out.html`
+  - Local manifest templates are versioned under `website_code_block_ORGANIZED/manifests/` (for reference). Upload each site’s manifest to Systeme and paste the resulting URL into the brand config’s `manifest_url`.
 
 Playwright header updater (example – IA)
 - `SYSTEME_EMAIL=you@example.com SYSTEME_PASSWORD='secret' PAGE_URL='https://app.systeme.io/.../pages/...'

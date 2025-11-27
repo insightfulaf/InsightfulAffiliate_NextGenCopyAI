@@ -3,5 +3,7 @@
   "python.terminal.activateEnvironment": true,
   "terminal.integrated.shellIntegration.enabled": true,
   "terminal.integrated.inheritEnv": true,
-  "python.analysis.typeCheckingMode": "basic"
+  "python.analysis.typeCheckingMode": "basic",
+  "git.enableSmartCommit": true,
+  "git.defaultBranchName": "main"
 }

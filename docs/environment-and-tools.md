@@ -1,3 +1,43 @@
+# Environment & Toolchain – InsightfulAffiliate / NextGenCopyAI
+
+_Last verified on: {{update this date when you change anything}}_
+
+This document describes the core development environment for the
+**InsightfulAffiliate / NextGenCopyAI** monorepo (Option A architecture).
+
+It is meant for:
+- Me (Ash) as the primary maintainer
+- Any future human collaborators
+- Any AI agents (e.g., GPT-5.1-Codex-Max) operating on this repo
+
+---
+
+## 1. Operating System & Constraints
+
+- **OS**: macOS 13 (Ventura)
+- **Homebrew status**:
+  - Homebrew reports this as a **Tier 3 / unsupported** configuration.
+  - Consequence: some formulas may fail to build (notably Haskell / Pandoc stack).
+  - Policy: if a brew install fails and is _non-critical_ to the core workflow, we ignore it or
+    install alternatives (e.g., use `pipx` instead of `brew` for some tools).
+
+- **Command Line Tools**:
+  - Several logs warn: “A newer Command Line Tools release is available.”
+  - This is _non-blocking_ for current workflows but should be upgraded when practical.
+
+---
+
+## 2. Core Languages & Runtimes
+
+### 2.1 Node.js
+
+- **Node version** (managed via `nvm`):
+
+  ```bash
+  node -v
+  # v22.20.0
+    ```
+
 # Environment and Tools
 
 ## Purpose

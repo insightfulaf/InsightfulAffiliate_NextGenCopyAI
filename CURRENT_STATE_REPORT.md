@@ -71,7 +71,7 @@ CURRENT/
     product_pages/
   landing_pages/
     link-hub/
-    assest_2/
+    archive/landing_pages_assest_2/
     FAQs/
     headers/
   tests/
@@ -285,7 +285,7 @@ copywriting/product_pages/AI_Af_Launchpad-Prompts_to_Profit_Playbook/V2-Blog_FAQ
 copywriting/product_pages/AI_Af_Launchpad-Prompts_to_Profit_Playbook/featured_image_banner_text_V1-8.32.03PM.md
 copywriting/product_pages/AI_Af_Launchpad-Prompts_to_Profit_Playbook/post_best_budget_ai_writers_2025.md
 copywriting/product_pages/AI_Af_Launchpad-Prompts_to_Profit_Playbook/post_rytr_vs_koala_2025.md
-copywriting/product_pages/≡ƒô¥ 20-Post Content Plan (AI Copywriting & Content) - Sheet1.csv
+copywriting/product_pages/20-post-content-plan-ai-copywriting-content.csv
 docs/affiliate_links/aff_link_mapping/affiliate_links_mapping_FINAL.json
 docs/ai_outputs/_snippets/head-snippet-v7-production.html.out.md
 docs/ai_outputs/_snippets/hero-sections-ai-affiliate-launchpad.html.out.md

@@ -37,7 +37,7 @@
    - `rg --files -g '*.css' assets website_code_block_ORGANIZED landing_pages`
    - `rg --files -g '*manifest*' assets website_code_block_ORGANIZED landing_pages`
 2) Human/Agent: Pick canonical CSS + manifest for both brands (likely under `website_code_block_ORGANIZED/assets/` and `website_code_block_ORGANIZED/site.webmanifest`).
-3) Human action: Move or copy non-canonical variants into archive if duplicated (e.g., `landing_pages/assest_2/insightfulaffiliate.css`, `landing_pages/assest_2/site.webmanifest.json`) once confirmed obsolete.
+3) Human action: Move or copy non-canonical variants into archive if duplicated (e.g., `archive/landing_pages_assest_2/insightfulaffiliate.css`, `archive/landing_pages_assest_2/site.webmanifest.json`) once confirmed obsolete.
 4) Agent-friendly: Update docs to point to canonical files (e.g., `docs/css-and-manifest-strategy.md`, head-snippet docs) and ensure prompts/scripts reference canonical paths.
 5) Human/Agent: Normalize head snippets to match canonical CSS/manifest references (e.g., `website_code_block_ORGANIZED/headers/head-snippet-v7-production.html`).
 

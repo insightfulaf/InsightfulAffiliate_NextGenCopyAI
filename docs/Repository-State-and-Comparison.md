@@ -1,0 +1,48 @@
+## 1\. Repository State and Comparison
+
+* 1.1 Locations scanned: /Users/ashley/Dropbox/InsightfulAffiliate\_NextGenCopyAI (Dropbox parent, no .git), /Users/ashley/Dropbox/InsightfulAffiliate\_NextGenCopyAI/CURRENT (Git root), archive buckets under Archive\_ready\_to\_sync/\* (not inspected).  
+* 1.2 Manifest overview (ROOT, CURRENT/, archived): Parent ROOT mirrors most folders (assets, docs, prompts, landing\_pages, website\_code\_block\_ORGANIZED, tests, scripts) plus extras codex\_out/, logs/, javascripts/, numerous \*.rootbak backups and PDFs; CURRENT/ holds the active repo with docs/ (architecture, CSS/manifest strategy, audit report), scripts/, prompts/, website\_code\_block\_ORGANIZED/ (canonical CSS/manifest/head snippet), landing\_pages/assest\_2/ (legacy CSS/manifest), tests/test\_hello.py, .github/copilot-instructions.md, .vscode/sessions.json, CURRENT\_STATE\_REPORT\*.{md,json}; archives exist in Archive\_ready\_to\_sync/\* as dated snapshots.  
+* 1.3 Duplicate and divergence analysis: Entire tree is duplicated between ROOT and CURRENT/; prior audit (CURRENT\_STATE\_REPORT.md) logged 277 identical files (including tests/ and pytest.ini), so tooling should run only from CURRENT/. Canonical web assets appear in website\_code\_block\_ORGANIZED/assets/ngcai.css and site.webmanifest\*, but older variants persist in landing\_pages/assest\_2/ and website\_code\_block\_ORGANIZED/assets/site.webmanifest. Prompt files are duplicated (prompts/rewrite\_to\_house\_style.txt exists twice). Parent ROOT holds orphan eval "$(ssh-agent \-s)"\* files and .rootbak backups not present in Git.  
+* 1.4 Username / remote consistency: Git remote set to git@github.com:insightfulaf/CURRENT.git; old username golemmea@gmail.com embedded in landing\_pages/headers/head-snippet-v7-production.gdoc and landing\_pages/headers/Updated\_head\_snippet-IA.gdoc; docs reference migrating to insightfulaf.  
+* 1.5 Recommended actions: Work only inside CURRENT/; quarantine or ignore parent ROOT duplicates/\*.rootbak/eval "$(ssh-agent \-s)"\* files; pick website\_code\_block\_ORGANIZED/{assets/ngcai.css,site.webmanifest} as canonical and archive landing\_pages/assest\_2/\* and extra manifest copies; update gdoc metadata/email to insightfulaf or regenerate; document archive locations and keep tests/config single-sourced in CURRENT/.
+
+## 2\. Agent and Script Analysis
+
+* 2.1 Summary: Automation is Python-heavy with one active agent runner (scripts/agent\_codex.py), a legacy copy (agent\_codex.py.bak), a small funnel indexer, and a Git bootstrap shell script; no declared dependencies file or tests beyond tests/test\_hello.py.  
+* 2.2 Script catalog:  
+  * scripts/agent\_codex.py: CLI prompt runner; inputs \--prompt file, \--input/--output dirs, optional \--site, filters (--include-ext/--exclude-dirs), provider (echo/openai, model, OPENAI\_API\_KEY), git options (--stage-all, commit message), \--dry-run; outputs \*.out.md (validation requires Markdown heading or HTML \<html\>\<head\>), optional \*.errors.txt, stages/commits/pushes; deps stdlib \+ optional openai, git CLI; risks: \--stage-all can commit unrelated changes, push is automatic unless \--dry-run. Status: untested in this run.  
+  * scripts/agent\_codex.py.bak: Older variant (uses read\_text, imports unused isstring), same interface; treat as archived reference.  
+  * scripts/build\_funnel\_map.py: Reads docs/ai\_outputs/\_snippets/\*.out.md, buckets by funnel keywords, writes docs/checklists/funnel\_map.md; stdlib only; overwrites output file; status untested.  
+  * init\_git\_url.sh: Bootstraps repo (.gitignore, git init/checkout main, optional LFS, first commit, set remote, push); inputs remote URL (--lfs); outputs .gitignore and pushes immediately; risk of unintended push/overwriting remote; status untested.  
+* 2.3 Gaps and recommendations: Add requirements/lockfile for Python (at least openai when used); add dry-run defaults to docs to avoid accidental pushes; mark agent\_codex.py.bak as archive; add lightweight tests around agent\_codex.py validation/site-check helpers; document safe usage of init\_git\_url.sh or move to archive to prevent accidental execution.
+
+## 3\. Workflow and Integration Map
+
+* 3.1 Overview: Canonical flow is Dropbox → VS Code edits in CURRENT/ → optional agent generation → git commit/push to insightfulaf/CURRENT → manual Systeme.io deploy using canonical CSS/manifest/assets.  
+* 3.2 Authoring (Dropbox \+ VS Code): Edit only under CURRENT/; parent ROOT is a mirror with archives—avoid mixing. Use .vscode/sessions.json if desired; watch for non-ASCII filenames (e.g., copywriting/product\_pages/≡ƒô¥…csv).  
+* 3.3 Version control (Git \+ GitHub): Single .git at CURRENT/; branch main tracking origin/main; ensure commands run from CURRENT/ to avoid duplicate tests//pytest.ini confusion noted in CURRENT\_STATE\_REPORT.md; init\_git\_url.sh should be treated as bootstrap-only.  
+* 3.4 Agents (scripts \+ Codex): scripts/agent\_codex.py processes text assets and can auto-commit/push; prompts live in prompts/ and Prompt\_to\_Profit\_Playbook\_Pack\_2025/prompts/; validation demands headings/HTML skeleton; outputs go to docs/ai\_outputs/\_snippets/ or configured \--output.  
+* 3.5 Deployment (Systeme.io and web assets): Canonical head snippet website\_code\_block\_ORGANIZED/headers/head-snippet-v7-production.html; CSS website\_code\_block\_ORGANIZED/assets/ngcai.css; manifest website\_code\_block\_ORGANIZED/site.webmanifest(.json) with icon placeholders; asset URLs tracked in docs/systeme\_asset\_tracking/asset\_url\_tracker.md; publish by uploading assets to Systeme Media, updating URLs in head snippet/manifest, then pasting snippets.  
+* 3.6 Failure points and risks: Duplicate trees (ROOT vs CURRENT/) and extra manifests/CSS (landing\_pages/assest\_2) can cause wrong-path references; gdoc metadata still tied to golemmea; agent\_codex.py \--stage-all may commit unintended files; Dropbox .rootbak/archives may pollute searches; non-text PDFs under docs/systeme\_asset\_tracking/ are noisy for grep.
+
+## 4\. Environment and Configuration Summary
+
+* 4.1 Software requirements: macOS 13; Node via nvm (v22.20.0 noted in docs); Python 3.9 \+ Homebrew 3.14 available; pipx; git \+ optional git-lfs; CLI utils jq, yq, rg, fd, entr; VS Code; Dropbox sync; browser access to Systeme.io.  
+* 4.2 Environment variables: OPENAI\_API\_KEY needed for provider=openai; optional AI\_PROVIDER, AI\_DEFAULT\_MODEL, AI\_ENABLE\_PREVIEW, AI\_FALLBACK\_MODEL per .github/copilot-instructions.md; none others documented.  
+* 4.3 Configuration files: .gitignore excludes env/node\_modules/venv/build logs; pytest.ini sets tests with markers; .vscode/sessions.json (terminal-keeper layout); .github/copilot-instructions.md (AI guardrails \+ env guidance); codex\_scope.txt (asset inventory); CURRENT\_STATE\_REPORT\*.{md,json} and docs/\*-architecture\*.md describe structure; head/manifest canon under website\_code\_block\_ORGANIZED/.  
+* 4.4 Setup checklist (step-by-step):  
+  1. Ensure working dir is \~/Dropbox/InsightfulAffiliate\_NextGenCopyAI/CURRENT; verify git status \-sb.  
+  2. Install runtimes (Python 3.9+/pipx, Node/nvm, git/git-lfs, jq/yq/rg/fd/entr).  
+  3. Create/activate a Python venv at repo root; pip install openai if using provider=openai.  
+  4. Set env vars (OPENAI\_API\_KEY, optional AI\_\*); keep Dropbox sync healthy.  
+  5. Use rg/fd for search; run scripts with \--dry-run first; avoid \--stage-all unless intentional.  
+  6. When deploying, upload assets, update website\_code\_block\_ORGANIZED/headers/head-snippet-v7-production.html and manifest placeholders, then follow docs/checklists/pre\_publish.md.
+
+## 5\. Prompt Library and Agent Instructions
+
+* 5.1 Overview: Prompt assets live in prompts/, duplicated prompts/prompts/, Prompt\_to\_Profit\_Playbook\_Pack\_2025/prompts/, and structured workflow definitions in CURRENT\_STATE\_REPORT-GPT.json; Copilot guidance sits in .github/copilot-instructions.md.  
+* 5.2 Prompt templates (by category): Maintenance/cleanup prompt (prompts/maintenance\_codex.md) with scope/canonicalization rules; rewriting prompt (prompts/rewrite\_to\_house\_style.txt and duplicate) for concise brand voice Markdown/HTML with \#\# Notes; Prompt-to-Profit packs (Prompt\_to\_Profit\_Playbook\_Pack\_2025/prompts/\*) covering bloggers/course/ecom/hooks/shortform; copywriting prompt folders under copywriting/product\_pages/AI\_Af\_Launchpad-Prompts\_to\_Profit\_Playbook/\*.  
+* 5.3 Agent roles and responsibilities: Maintenance agent focuses on repo hygiene \+ Systeme-ready snippets and canonical CSS/manifest paths; rewriting agent adjusts tone with minimal fluff; agent\_codex.py embodies the executor role (validation, output placement, optional git actions); Copilot instructions enforce coding/content standards and AI config patterns.  
+* 5.4 Structured output formats and schemas: agent\_codex.py enforces Markdown heading for .md/.txt, \<html\>\<head\> for .html; outputs named {source}.out.md in configured output dir; errors logged as {source}.errors.txt; CURRENT\_STATE\_REPORT-GPT.json lists workflow step schemas with name/description/steps/attachments; asset tracker docs/systeme\_asset\_tracking/asset\_url\_tracker.md expects table of placeholder replacements.  
+* 5.5 Recommendations (canonical instructions): Consolidate prompts under a single prompts/ index with READMEs and remove duplicate copy; add a short “how to run agent\_codex” note alongside prompts; reference docs/css-and-manifest-strategy.md and asset\_url\_tracker.md in any future prompts that emit HTML; treat Prompt-to- Profit prompts as supplemental library and link them from a central prompt catalog to reduce discovery time.
+

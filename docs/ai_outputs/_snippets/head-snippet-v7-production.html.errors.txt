@@ -1,2 +1,0 @@
-Validation failed:
-- Missing <html> or <head> in HTML output.

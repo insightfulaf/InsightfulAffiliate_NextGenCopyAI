@@ -1,1 +1,0 @@
-# PROPOSE-PATCH echo for head-snippet-v7-production.html: no changes proposed.

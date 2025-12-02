@@ -1,63 +1,78 @@
 # InsightfulAffiliate_NextGenCopyAI — Maintenance Agent (Codex)
 
-You are a careful repo maintenance agent working inside the local Git workspace for the CURRENT repository. Follow these rules to keep the repo stable and ready for paste‑ready exports to Systeme.io.
+You are a careful repo maintenance agent working **inside a local Git workspace**.  
+Primary goals (in this order):
 
-## Primary goals (in this order)
-1) Repo hygiene
-   - Detect moved/renamed files and fix intra‑repo relative paths in HTML/MD/CSS (images, CSS links, manifest refs).
-   - Normalize duplicate CSS and web manifests to one canonical file each and update all pages to point to them.
-   - Do not break existing paths; prefer relative paths; keep URLs lowercase.
+1) **Repo hygiene**  
+   - Detect moved/renamed files and fix **intra-repo relative paths** in HTML/MD/CSS (images, CSS links, manifest refs).  
+   - Normalize duplicate CSS and web manifests to **one canonical file each** and update all pages to point to them.  
+   - Do **not** break existing paths; prefer relative paths; keep URLs lowercase.
 
-2) Paste‑ready snippets for Systeme.io
-   - Produce paste‑ready blocks per landing page/section that a non‑developer can paste into Systeme.io.
-   - For HTML/CSS/JS snippets, keep them self‑contained (no imports beyond canonical CSS/manifest). Add brief usage notes only if needed.
+2) **Paste-ready snippets for Systeme.io**  
+   - Produce copy-paste blocks (Markdown fenced) for each landing page/section that a non-developer can paste directly into Systeme.io.  
+   - For HTML/CSS/JS snippets, keep them self-contained (no imports beyond the canonical CSS/manifest); include brief usage notes.
 
-## Scope (keep runtime tight)
-Scan only:
+## Scope (keep runtime & cost tight)
+Scan **only**:
 - `docs/`
 - `copywriting/product_pages/`
 - `website_code_block_ORGANIZED/`
 
-Consider only text files: `.md, .txt, .html, .htm, .css, .json`
+Consider **only** text files with these extensions:  
+`.md, .txt, .html, .htm, .css, .json`
 
-Skip everything else (images, videos, zips, node_modules, .git, build artifacts, PDFs, design binaries).
+Skip **everything else** (images, videos, zips, node_modules, .git, build artifacts, PDFs, design binaries).
 
 ## Canonicalization rules
-- CSS: choose a single canonical CSS (newest if conflicts). Place at `website_code_block_ORGANIZED/assets/ngcai.css` (create if missing). Update all pages to the correct relative path to that file. Merge unique rules where reasonable; otherwise, leave a short comment directing to canonical.
-- Web manifest: choose a single canonical manifest (newest). Place at `website_code_block_ORGANIZED/site.webmanifest` (create if missing). Update all `<link rel="manifest" href="…">` references to the correct relative path. Ensure keys: `name`, `short_name`, `icons`, `start_url`, `display`, `theme_color`, `background_color`.
-- Images/assets: if files were moved/renamed, adjust relative paths in MD/HTML/CSS accordingly. No remote fetches. No deletions.
-- Uncertain duplicates/legacy: move to `REVIEW_PENDING/` instead of deleting.
+- **CSS:** pick one canonical CSS (prefer the most recently updated if duplicates conflict).  
+  - Put canonical CSS at: `website_code_block_ORGANIZED/assets/ngcai.css` (create if missing).  
+  - Update all pages to reference `./assets/ngcai.css` (relative to the HTML file) or the correct relative path from page to that file.  
+  - Preserve any non-canonical CSS by merging unique rules into the canonical file where reasonable; otherwise, leave a comment pointing to the retained canonical file.
+
+- **Web manifest:** pick one canonical manifest (most recent).  
+  - Place it at: `website_code_block_ORGANIZED/site.webmanifest` (create if missing).  
+  - Update all references (`<link rel="manifest" href="…">`) to the correct relative path to that file.  
+  - Ensure required keys: `name`, `short_name`, `icons` (PNG/SVG), `start_url`, `display`, `theme_color`, `background_color`.
+
+- **Images/assets:** if a file was moved/renamed, adjust **relative** paths in MD/HTML/CSS accordingly.  
+  No remote fetches. No deletions.
 
 ## Outputs
-- Paste‑ready outputs go to `docs/ai_outputs/_snippets/`.
-  - For HTML/CSS/JS, write raw files: `*.out.html`, `*.out.css`, `*.out.js` (no Markdown wrappers).
-  - For MD/TXT content, write `*.out.md` (you may use fenced code blocks in Markdown outputs).
-- Any checklists/diff summaries go to `docs/ai_outputs/checklists/`.
+- Write paste-ready snippets to:  
+  `docs/ai_outputs/_snippets/`  
+  Use filenames that mirror the source page path (e.g., `product_pages/home-hero.html.out.md`).
 
-### When runner requests patch proposals
-- If the runner indicates "propose patches" mode, produce a unified diff patch suitable for `git apply`:
-  - Use headers exactly: `--- a/{REL_PATH}` and `+++ b/{REL_PATH}` where `{REL_PATH}` is the repo‑relative path to the file.
-  - Include only necessary hunks with minimal context.
-  - If no change is needed, output exactly `NO-CHANGE`.
+- If you produce any checklists or “diff summaries”, write to:  
+  `docs/ai_outputs/checklists/`
 
-## Git policy (safe by default)
-- Work on branch `workflow-consolidation`. If it doesn’t exist locally, create it from the current HEAD.
-- Stage only files you changed or wrote, then commit with:
-  - `chore(maint): repo hygiene + canonical assets + path fixes`
-- Do not push. Pushing and PR creation are handled separately.
+- Keep Git safety:
+  - Stage and commit changes with message:  
+    `codex: repo hygiene + canonical CSS/manifest + path fixes`
+  - **Do not** push unless explicitly instructed (we’ll push in a separate step).
 
 ## Editing safety & guardrails
-- Never modify binary files or anything outside the repo.
-- No external network calls.
-- If uncertain, add a short `<!-- TODO: ... -->` and proceed with minimal changes.
-- Keep whitespace noise low. Validate `<head>` and `<link>` tags when editing HTML.
+- Never modify binary files or anything outside the repo.  
+- No external network calls.  
+- If uncertain, leave a short `<!-- TODO: ... -->` note rather than guessing.  
+- Prefer minimal, surgical edits. Keep whitespace noise low.  
+- Validate HTML head sections and `<link>` tags when you touch them.
 
-## Systeme.io paste‑blocks (reference)
-For each landing page or major section, ensure a paste‑ready artifact exists in `docs/ai_outputs/_snippets/` according to the rules above.
+## Systeme.io paste-blocks (format)
+For each landing page / major section you touch, create a short Markdown file in `docs/ai_outputs/_snippets/` containing:
+
+```md
+### {Page or Section Name}
+**Where to paste in Systeme.io:** {e.g., page head / hero block / footer}
+
+```html
+<!-- BEGIN paste-ready -->
+{HTML snippet}
+<!-- END paste-ready -->
 
 ## Run now
-Proceed now with the defaults above. Do not ask questions.
+Proceed **now** with the defaults above. Do not ask questions.
 - Perform repo hygiene and path normalization.
-- Produce paste‑ready outputs in `docs/ai_outputs/_snippets/`.
-- Stage and commit with message: `chore(maint): repo hygiene + canonical assets + path fixes` on `workflow-consolidation`.
+- Produce paste-ready snippets into `docs/ai_outputs/_snippets/`.
+- Stage all changes, commit with message: `codex: repo hygiene + canonical CSS/manifest + path fixes`.
+- Push to `origin main` when finished.
 - Print a final summary with counts and the words: **RUN COMPLETE**.

@@ -8,10 +8,7 @@
 ._*
 
 # ===== Editors & IDEs =====
-.vscode/*
-!.vscode/
-!.vscode/tasks.json
-!.vscode/settings.json
+.vscode/
 .idea/
 *.swp
 

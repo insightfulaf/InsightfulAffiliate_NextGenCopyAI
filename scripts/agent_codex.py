@@ -60,9 +60,6 @@ class Config:
     verbose: bool
     commit_message: str
     repo_root: Path
-    systeme_mode: bool
-    propose_patches: bool
-    patch_dir: Path
 
 def parse_args() -> Config:
     p = argparse.ArgumentParser(
@@ -85,12 +82,6 @@ def parse_args() -> Config:
     p.add_argument("--verbose", action="store_true", help="Extra logging.")
     p.add_argument("--message", default="chore(agent): automated update from agent_codex.py",
                    help="Git commit message.")
-    p.add_argument("--systeme-mode", action="store_true",
-                   help="Output paste-ready raw code for HTML/CSS/JS (no Markdown wrappers). Also relaxes HTML validation to allow head/body fragments.")
-    p.add_argument("--propose-patches", action="store_true",
-                   help="Ask the model to propose unified diff patches instead of content. Writes .patch files under --patch-dir; no edits are applied.")
-    p.add_argument("--patch-dir", type=Path, default=Path("docs/ai_outputs/patches"),
-                   help="Folder to write proposed .patch files when --propose-patches is set.")
     args = p.parse_args()
 
     repo_root = find_git_root(Path.cwd())
@@ -115,9 +106,6 @@ def parse_args() -> Config:
         verbose=args.verbose,
         commit_message=args.message,
         repo_root=repo_root,
-        systeme_mode=args.systeme_mode,
-        propose_patches=args.propose_patches,
-        patch_dir=(args.patch_dir.resolve() if args.patch_dir else (repo_root / "docs/ai_outputs/patches").resolve()),
     )
 
 # ----------------------------- Helpers --------------------------------------
@@ -186,13 +174,8 @@ def list_text_inputs(root: Path, include_ext: List[str], exclude_dirs: List[str]
 
 # ----------------------------- Model Call -----------------------------------
 
-def call_model(provider: str, model: str, prompt: str, doc_name: str, content: str, *, systeme_mode: bool, propose_patches: bool) -> str:
+def call_model(provider: str, model: str, prompt: str, doc_name: str, content: str) -> str:
     if provider == "echo":
-        # In systeme-mode, return content verbatim for HTML/CSS/JS so it's paste-ready
-        if propose_patches:
-            return f"# PROPOSE-PATCH echo for {doc_name}: no changes proposed."
-        if systeme_mode and any(doc_name.lower().endswith(e) for e in (".html", ".css", ".js")):
-            return content
         return echo_output(prompt, doc_name, content)
 
     if provider == "openai":
@@ -206,20 +189,11 @@ def call_model(provider: str, model: str, prompt: str, doc_name: str, content: s
             die("OPENAI_API_KEY is not set in the environment.")
 
         client = OpenAI(api_key=api_key)
-        sys_content = (
-            "You are a precise assistant. "
-            "If the user requests patches, output a unified diff suitable for 'git apply' only, with correct headers '--- a/{path}' and '+++ b/{path}'. "
-            "Otherwise, output VALID Markdown unless input is raw HTML/CSS/JS; for raw code, keep structure and add a short top Notes section."
-        )
-        user_content = f"INSTRUCTIONS:\n{prompt}\n\n---\nDOC NAME: {doc_name}\nDOC CONTENT:\n{content}"
-        if propose_patches:
-            user_content += ("\n\nWHEN PRODUCING PATCHES:\n"
-                             f"- Use file path 'a/{doc_name}' and 'b/{doc_name}'.\n"
-                             "- Provide only changes needed; include minimal context hunks.\n"
-                             "- If no change is required, reply exactly with 'NO-CHANGE'.")
         messages = [
-            {"role": "system", "content": sys_content},
-            {"role": "user", "content": user_content}
+            {"role": "system",
+             "content": "You are a precise assistant. Output VALID Markdown only unless input is raw HTML/CSS/JS; keep structure and add a short top Notes section."},
+            {"role": "user",
+             "content": f"INSTRUCTIONS:\n{prompt}\n\n---\nDOC NAME: {doc_name}\nDOC CONTENT:\n{content}"}
         ]
         try:
             resp = client.chat.completions.create(
@@ -245,7 +219,7 @@ def echo_output(prompt: str, doc_name: str, content: str) -> str:
 
 # ----------------------------- Validation -----------------------------------
 
-def validate_output(ext: str, text: str, *, systeme_mode: bool, propose_patches: bool = False) -> Tuple[bool, List[str]]:
+def validate_output(ext: str, text: str) -> Tuple[bool, List[str]]:
     """
     Very light validation:
       - Always: not empty, no NUL bytes
@@ -253,11 +227,6 @@ def validate_output(ext: str, text: str, *, systeme_mode: bool, propose_patches:
       - If HTML: must contain <html and <head
     """
     problems: List[str] = []
-    if propose_patches:
-        # In propose-patches mode, the output is a diff or 'NO-CHANGE'; skip content validation.
-        if not text.strip():
-            problems.append("Empty output.")
-        return (len(problems) == 0, problems)
     if not text.strip():
         problems.append("Empty output.")
     if "\x00" in text:
@@ -269,13 +238,8 @@ def validate_output(ext: str, text: str, *, systeme_mode: bool, propose_patches:
             problems.append("No Markdown heading found.")
     elif e in (".html", ".htm"):
         low = text.lower()
-        if systeme_mode:
-            # Allow fragments in systeme-mode; require at least some HTML structure
-            if not ("<html" in low or "<head" in low or "<meta" in low or "<link" in low or "<div" in low or "<section" in low):
-                problems.append("HTML fragment lacks recognizable tags.")
-        else:
-            if "<html" not in low or "<head" not in low:
-                problems.append("Missing <html> or <head> in HTML output.")
+        if "<html" not in low or "<head" not in low:
+            problems.append("Missing <html> or <head> in HTML output.")
 
     return (len(problems) == 0, problems)
 
@@ -371,49 +335,15 @@ def main() -> None:
         rel = src.relative_to(cfg.input_dir)  
 
         content = read_text(src)
-        result = call_model(cfg.provider, cfg.model, prompt, str(rel), content, systeme_mode=cfg.systeme_mode, propose_patches=cfg.propose_patches)
+        result = call_model(cfg.provider, cfg.model, prompt, str(rel), content)
 
-        # Propose-patch flow: write .patch or .notes and continue
-        if cfg.propose_patches:
-            cfg.patch_dir.mkdir(parents=True, exist_ok=True)
-            rel_patch_dir = cfg.patch_dir / rel.parent
-            rel_patch_dir.mkdir(parents=True, exist_ok=True)
-            if result.strip().startswith("NO-CHANGE") or ("---" not in result and "+++" not in result):
-                out_path = (rel_patch_dir / rel.name).with_suffix(rel.suffix + ".patch.notes.md")
-                if not cfg.dry_run:
-                    write_text_atomic(out_path, result)
-                else:
-                    log(f"DRY-RUN: would write {out_path}", cfg=cfg)
-            else:
-                # ensure headers reference repo-relative path
-                rel_path = str((cfg.input_dir / rel).relative_to(cfg.repo_root)).replace("\\", "/")
-                normalized = []
-                for line in result.splitlines():
-                    if line.startswith("--- ") and not line.startswith("--- a/"):
-                        normalized.append(f"--- a/{rel_path}")
-                    elif line.startswith("+++ ") and not line.startswith("+++ b/"):
-                        normalized.append(f"+++ b/{rel_path}")
-                    else:
-                        normalized.append(line)
-                patch_text = "\n".join(normalized).rstrip() + "\n"
-                out_path = (rel_patch_dir / rel.name).with_suffix(rel.suffix + ".patch")
-                if not cfg.dry_run:
-                    write_text_atomic(out_path, patch_text)
-                else:
-                    log(f"DRY-RUN: would write {out_path}", cfg=cfg)
-            # Skip normal content handling in propose-patch mode
-            continue
-
-        ok, problems = validate_output(src.suffix, result, systeme_mode=cfg.systeme_mode, propose_patches=False)
+        ok, problems = validate_output(src.suffix, result)
         if not ok:
             errfile = cfg.output_dir / rel.with_suffix(rel.suffix + ".errors.txt")
             write_text_atomic(errfile, "Validation failed:\n" + "\n".join(f"- {p}" for p in problems))
             log(f"❌ {rel}: validation failed (see {errfile})");  continue
-        # Choose output extension
-        if cfg.systeme_mode and src.suffix.lower() in (".html", ".css", ".js"):
-            out_path = cfg.output_dir / rel.with_suffix(rel.suffix + ".out" + src.suffix.lower())
-        else:
-            out_path = cfg.output_dir / rel.with_suffix(rel.suffix + ".out.md")
+
+        out_path = cfg.output_dir / rel.with_suffix(rel.suffix + ".out.md")
         if cfg.dry_run:
             log(f"DRY-RUN: would write {out_path}", cfg=cfg)
         else:
@@ -422,10 +352,7 @@ def main() -> None:
             log(f"✅ Wrote {out_path}", cfg=cfg, verbose_only=True)
 
     # 6) Commit & push (stage-all if requested)
-    if not cfg.propose_patches:
-        git_stage_commit_push(cfg, written)
-    else:
-        log("Propose-patches mode: skipping git add/commit/push.")
+    git_stage_commit_push(cfg, written)
 
     # 7) Optional site check
     if cfg.site_dir:

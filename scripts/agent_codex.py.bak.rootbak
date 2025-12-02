@@ -1,0 +1,356 @@
+#!/usr/bin/env python3
+"""
+Minimal Codex-style Agent (Python) — Whole-Repo Commit Option
+
+What it does
+------------
+1) Loads a prompt template from --prompt
+2) Reads text inputs from --input folder (supports multiple extensions)
+3) Calls a model provider ("openai" or "echo" stub) per file
+4) Validates the model result (basic, extensible)
+5) Writes outputs to --output, preserving subpaths
+6) Commits & pushes:
+   - By default: only the outputs written in this run
+   - With --stage-all: stages the entire repository (git add -A)
+7) (Optional) Performs a local website sanity check (HTML skeleton + relative links)
+
+Usage example
+-------------
+./scripts/agent_codex.py \
+  --prompt ./prompts/rewrite_to_house_style.txt \
+  --input ./copywriting \
+  --output ./docs/ai_outputs \
+  --site ./landing_pages \
+  --provider echo \
+  --include-ext ".md,.txt,.html,.css,.json" \
+  --exclude-dirs ".git,node_modules,dist,build,docs/ai_outputs" \
+  --verbose --dry-run
+
+Switch to OpenAI later (pip install openai; set OPENAI_API_KEY env var):
+  --provider openai --model gpt-4o-mini
+"""
+
+from __future__ import annotations
+
+import argparse
+import html
+import os
+import re
+from sre_compile import isstring
+import subprocess
+import sys
+import tempfile
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Iterable, List, Tuple
+
+# ----------------------------- CLI / Config ---------------------------------
+
+@dataclass
+class Config:
+    prompt_file: Path
+    input_dir: Path
+    output_dir: Path
+    site_dir: Path | None
+    provider: str        # "openai" or "echo"
+    model: str
+    include_ext: List[str]
+    exclude_dirs: List[str]
+    stage_all: bool
+    dry_run: bool
+    verbose: bool
+    commit_message: str
+    repo_root: Path
+
+def parse_args() -> Config:
+    p = argparse.ArgumentParser(
+        description="Codex agent: prompt + folder in, AI out, validate, write, git push.",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
+    p.add_argument("--prompt", required=True, type=Path, help="Prompt template file (text).")
+    p.add_argument("--input", required=True, type=Path, help="Folder to scan for inputs.")
+    p.add_argument("--output", required=True, type=Path, help="Output folder to write results.")
+    p.add_argument("--site", type=Path, default=None, help="(Optional) Website root for HTML checks.")
+    p.add_argument("--provider", choices=["openai", "echo"], default="echo", help="Model provider.")
+    p.add_argument("--model", default="gpt-4o-mini", help="Model name (for provider=openai).")
+    p.add_argument("--include-ext", default=".md,.txt,.html,.css,.json",
+                   help="Comma-separated list of file extensions to process (text files).")
+    p.add_argument("--exclude-dirs", default=".git,node_modules,dist,build,docs/ai_outputs",
+                   help="Comma-separated folders to skip (relative names).")
+    p.add_argument("--stage-all", action="store_true",
+                   help="Stage the entire repo (git add -A) instead of just outputs.")
+    p.add_argument("--dry-run", action="store_true", help="No writes/commits; print actions only.")
+    p.add_argument("--verbose", action="store_true", help="Extra logging.")
+    p.add_argument("--message", default="chore(agent): automated update from agent_codex.py",
+                   help="Git commit message.")
+    args = p.parse_args()
+
+    repo_root = find_git_root(Path.cwd())
+    if not repo_root:
+        die("Must run inside a Git repository (no .git/ found).")
+
+    include_ext = [e.strip().lower() for e in args.include_ext.split(",") if e.strip()]
+    include_ext = [e if e.startswith(".") else "." + e for e in include_ext]
+    exclude_dirs = [d.strip() for d in args.exclude_dirs.split(",") if d.strip()]
+
+    return Config(
+        prompt_file=args.prompt.resolve(),
+        input_dir=args.input.resolve(),
+        output_dir=args.output.resolve(),
+        site_dir=args.site.resolve() if args.site else None,
+        provider=args.provider,
+        model=args.model,
+        include_ext=include_ext,
+        exclude_dirs=exclude_dirs,
+        stage_all=args.stage_all,
+        dry_run=args.dry_run,
+        verbose=args.verbose,
+        commit_message=args.message,
+        repo_root=repo_root,
+    )
+
+# ----------------------------- Helpers --------------------------------------
+
+def log(msg: str, cfg: Config | None = None, *, verbose_only: bool = False) -> None:
+    if verbose_only and cfg and not cfg.verbose:
+        return
+    print(msg, flush=True)
+
+def die(msg: str, code: int = 1) -> None:
+    print(f"ERROR: {msg}", file=sys.stderr)
+    sys.exit(code)
+
+def find_git_root(start: Path) -> Path | None:
+    cur = start
+    while True:
+        if (cur / ".git").exists():
+            return cur
+        if cur.parent == cur:
+            return None
+        cur = cur.parent
+
+def read_text(path: Path) -> str:
+    return path.read_text(encoding="utf-8")
+
+def write_text_atomic(path: Path, content: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.NamedTemporaryFile("w", delete=False, encoding="utf-8", dir=str(path.parent)) as tmp:
+        tmp.write(content)
+        tmp.flush()
+        os.fsync(tmp.fileno())
+        tmp_path = Path(tmp.name)
+    tmp_path.replace(path)
+
+def list_text_inputs(root: Path, include_ext: List[str], exclude_dirs: List[str]) -> List[Path]:
+    out: List[Path] = []
+    for p in root.rglob("*"):
+        if not p.is_file():
+            continue
+        if any(part in exclude_dirs for part in p.parts):
+            continue
+        if p.suffix.lower() in include_ext:
+            out.append(p)
+    return sorted(out)
+
+# ----------------------------- Model Call -----------------------------------
+
+def call_model(provider: str, model: str, prompt: str, doc_name: str, content: str) -> str:
+    if provider == "echo":
+        return echo_output(prompt, doc_name, content)
+
+    if provider == "openai":
+        try:
+            from openai import OpenAI  # type: ignore
+        except Exception:
+            die("Provider 'openai' selected but package not installed. Run: python3 -m pip install openai")
+
+        api_key = os.environ.get("OPENAI_API_KEY", "").strip()
+        if not api_key:
+            die("OPENAI_API_KEY is not set in the environment.")
+
+        client = OpenAI(api_key=api_key)
+        messages = [
+            {"role": "system",
+             "content": "You are a precise assistant. Output VALID Markdown only unless input is raw HTML/CSS/JS; keep structure and add a short top Notes section."},
+            {"role": "user",
+             "content": f"INSTRUCTIONS:\n{prompt}\n\n---\nDOC NAME: {doc_name}\nDOC CONTENT:\n{content}"}
+        ]
+        try:
+            resp = client.chat.completions.create(
+                model=model,
+                messages=messages,    # type: ignore[arg-type]
+                temperature=0.2,
+                max_tokens=2000,
+            )
+            out = resp.choices[0].message.content or ""
+            return out.strip()
+        except Exception as e:
+            die(f"OpenAI call failed: {e}")
+
+    die(f"Unknown provider: {provider}")
+    return ""
+
+def echo_output(prompt: str, doc_name: str, content: str) -> str:
+    head = "\n".join(content.splitlines()[:12])
+    return (f"## ECHO for {doc_name}\n\n"
+            f"**Prompt (first 200 chars)**: {prompt[:200]}...\n\n"
+            f"**Preview**:\n```\n{head}\n```\n\n"
+            f"_Switch provider to `openai` for real generations._")
+
+# ----------------------------- Validation -----------------------------------
+
+def validate_output(ext: str, text: str) -> Tuple[bool, List[str]]:
+    """
+    Very light validation:
+      - Always: not empty, no NUL bytes
+      - If Markdown/MD-like: must contain a heading
+      - If HTML: must contain <html and <head
+    """
+    problems: List[str] = []
+    if not text.strip():
+        problems.append("Empty output.")
+    if "\x00" in text:
+        problems.append("Contains NUL byte(s).")
+
+    e = ext.lower()
+    if e in (".md", ".markdown", ".txt"):
+        if not re.search(r"^#{1,6}\s+\S", text, flags=re.M):
+            problems.append("No Markdown heading found.")
+    elif e in (".html", ".htm"):
+        low = text.lower()
+        if "<html" not in low or "<head" not in low:
+            problems.append("Missing <html> or <head> in HTML output.")
+
+    return (len(problems) == 0, problems)
+
+# ----------------------------- Site Check -----------------------------------
+
+HREF_RE = re.compile(r"""href\s*=\s*["']([^"']+)["']""", re.I)
+SRC_RE  = re.compile(r"""src\s*=\s*["']([^"']+)["']""", re.I)
+
+def check_site(site_root: Path) -> Tuple[bool, List[str]]:
+    if not site_root.exists():
+        return False, [f"Site folder not found: {site_root}"]
+
+    errors: List[str] = []
+    for page in sorted(site_root.rglob("*.html")):
+        try:
+            txt = page.read_text(encoding="utf-8")
+        except Exception as e:
+            errors.append(f"{page}: cannot read UTF-8 ({e})");  continue
+
+        low = txt.lower()
+        if "<html" not in low or "<head" not in low:
+            errors.append(f"{page}: missing <html> or <head>")
+
+        links = HREF_RE.findall(txt) + SRC_RE.findall(txt)
+        for link in links:
+            link = html.unescape(link).strip()
+            if not link or re.match(r"^(https?:|mailto:|tel:|#)", link):
+                continue
+            target = (page.parent / link).resolve()
+            target = Path(str(target).split("?",1)[0].split("#",1)[0])
+            if not target.exists():
+                errors.append(f"{page.name}: broken relative link → {link}")
+    return (len(errors) == 0, errors)
+
+# ----------------------------- Git ------------------------------------------
+
+def run(cmd: List[str], cwd: Path, verbose: bool) -> Tuple[int, str]:
+    p = subprocess.run(cmd, cwd=str(cwd), capture_output=True, text=True)
+    out = (p.stdout or "") + (p.stderr or "")
+    if verbose:
+        print(f"$ {' '.join(cmd)}\n{out}")
+    return p.returncode, out
+
+def git_stage_commit_push(cfg: Config, paths_written: Iterable[Path]) -> None:
+    if cfg.dry_run:
+        log("DRY-RUN: skipping git add/commit/push.", cfg=cfg);  return
+
+    if cfg.stage_all:
+        rc, out = run(["git", "add", "-A"], cfg.repo_root, cfg.verbose)
+        if rc != 0: die(f"git add -A failed:\n{out}")
+    else:
+        rels = [str(p.relative_to(cfg.repo_root)) for p in paths_written]
+        rc, out = run(["git", "add"] + rels, cfg.repo_root, cfg.verbose)
+        if rc != 0: die(f"git add (outputs) failed:\n{out}")
+
+    rc, out = run(["git", "status", "--porcelain"], cfg.repo_root, cfg.verbose)
+    if rc != 0: die(f"git status failed:\n{out}")
+    if not out.strip():
+        log("Nothing to commit (working tree clean).", cfg=cfg);  return
+
+    rc, out = run(["git", "commit", "-m", cfg.commit_message], cfg.repo_root, cfg.verbose)
+    if rc != 0: die(f"git commit failed:\n{out}")
+
+    rc, out = run(["git", "push"], cfg.repo_root, cfg.verbose)
+    if rc != 0: die(f"git push failed:\n{out}")
+    log("✅ Changes committed and pushed.")
+
+# ----------------------------- Main -----------------------------------------
+
+def main() -> None:
+    cfg = parse_args()
+
+    # 1) Load prompt
+    if not cfg.prompt_file.exists():
+        die(f"Prompt not found: {cfg.prompt_file}")
+    prompt = read_text(cfg.prompt_file)
+    log(f"Loaded prompt: {cfg.prompt_file}", cfg=cfg)
+
+    # 2) Gather inputs across multiple extensions
+    if not cfg.input_dir.exists():
+        die(f"Input folder not found: {cfg.input_dir}")
+    inputs = list_text_inputs(cfg.input_dir, cfg.include_ext, cfg.exclude_dirs)
+    if not inputs:
+        log("No matching files found in input folder.");  return
+    log(f"Found {len(inputs)} files to process.", cfg=cfg)
+
+    # Ensure output dir
+    cfg.output_dir.mkdir(parents=True, exist_ok=True)
+
+    # 3–5) Process
+    written: List[Path] = []
+    for src in inputs:
+        rel = src.relative_to(cfg.input_dir)
+        content = read_text(src)
+        result = call_model(cfg.provider, cfg.model, prompt, str(rel), content)
+
+        ok, problems = validate_output(src.suffix, result)
+        if not ok:
+            errfile = cfg.output_dir / rel.with_suffix(rel.suffix + ".errors.txt")
+            write_text_atomic(errfile, "Validation failed:\n" + "\n".join(f"- {p}" for p in problems))
+            log(f"❌ {rel}: validation failed (see {errfile})");  continue
+
+        out_path = cfg.output_dir / rel.with_suffix(rel.suffix + ".out.md")
+        if cfg.dry_run:
+            log(f"DRY-RUN: would write {out_path}", cfg=cfg)
+        else:
+            write_text_atomic(out_path, result)
+            written.append(out_path)
+            log(f"✅ Wrote {out_path}", cfg=cfg, verbose_only=True)
+
+    # 6) Commit & push (stage-all if requested)
+    git_stage_commit_push(cfg, written)
+
+    # 7) Optional site check
+    if cfg.site_dir:
+        ok, errs = check_site(cfg.site_dir)
+        if ok:
+            log(f"🌐 Site check OK: {cfg.site_dir}")
+        else:
+            log("🌐 Site check found issues:")
+            for e in errs[:80]:
+                log(f" - {e}")
+            if len(errs) > 80:
+                log(f" ... and {len(errs)-80} more.")
+            # Don’t fail the run unless you want CI to stop:
+            # die("Site validation failed.")
+
+# ----------------------------- Entrypoint -----------------------------------
+
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\nInterrupted.", file=sys.stderr);  sys.exit(130)

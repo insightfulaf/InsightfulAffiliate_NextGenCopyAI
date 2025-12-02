@@ -1,0 +1,313 @@
+{
+  "workflows": [
+    {
+      "name": "Website Content Publishing and Maintenance Workflow",
+      "description": "A comprehensive real‑time workflow for creating, staging, and publishing website content using the CURRENT repository, the Codex agent, GitHub and Dropbox backup, and deploying to Systeme.io. It specifies tasks for authors to write/update local content, run AI agents in dry‑run and live modes, commit and push changes, back‑up via Dropbox, publish to the live site with canonical head snippets and asset uploads, perform pre‑publish QA, and archive milestones.",
+      "source": "real-time factual",
+      "steps": [
+        {"step": "Write or update local content in the repository (e.g., new pages, copy blocks, brand styles)", "dependencies": []},
+        {"step": "Run the Codex agent in dry‑run mode using a CLI command such as `python agent.py --dry-run \"<prompt>\"` to preview generated changes and verify correctness", "dependencies": ["Write or update local content in the repository (e.g., new pages, copy blocks, brand styles)"]},
+        {"step": "Execute the agent for real, generating HTML/CSS files and other outputs; examine the changes in VS Code", "dependencies": ["Run the Codex agent in dry‑run mode using a CLI command such as `python agent.py --dry-run \"<prompt>\"` to preview generated changes and verify correctness"]},
+        {"step": "Stage and commit changes with `git add -A && git commit -m \"<message>\"` and push to GitHub; wait for CI to run", "dependencies": ["Execute the agent for real, generating HTML/CSS files and other outputs; examine the changes in VS Code"]},
+        {"step": "Synchronize local changes to Dropbox for backup and ensure Dropbox and GitHub versions are in sync", "dependencies": ["Stage and commit changes with `git add -A && git commit -m \"<message>\"` and push to GitHub; wait for CI to run"]},
+        {"step": "Publish on Systeme.io: upload canonical CSS/manifest assets, paste the generated HTML into Systeme’s page builder, ensure head snippets and placeholders are correct, and test responsiveness", "dependencies": ["Synchronize local changes to Dropbox for backup and ensure Dropbox and GitHub versions are in sync"]},
+        {"step": "Perform a pre‑publish checklist: verify canonical styles load correctly, check all links and images, run incognito tests, and replicate the funnel across the site", "dependencies": ["Publish on Systeme.io: upload canonical CSS/manifest assets, paste the generated HTML into Systeme’s page builder, ensure head snippets and placeholders are correct, and test responsiveness"]},
+        {"step": "Archive or tag a milestone after publication and update documentation (e.g., updating README and summary documents)", "dependencies": ["Perform a pre‑publish checklist: verify canonical styles load correctly, check all links and images, run incognito tests, and replicate the funnel across the site"]}
+      ],
+      "attachments": ["file-EUxtu3Sw363LSMdmZug5ty", "file-VhfYSjVaoC5TpNafaj7WtM", "file-GfXw212y5EA1smgtZ8f2W4", "file-Ya4iadDetWXikHGeg5G2ft"],
+      "last_modified": "2025-11-14T00:00:00Z",
+      "missing": false,
+      "notes": "Based on the Workflow_Management_Tasks-Action_Overview document and final update checklists, this workflow is fully implemented and serves as the production path for content publishing and maintenance. Attachments include error logs showing test failures, Python environment listings, terminal environment contributions, and workspace repository layout which help diagnose environment issues."
+    },
+    {
+      "name": "Brief‑to‑Publish Copywriting Workflow (Prompt to Profit Playbook)",
+      "description": "An idea‑based high‑level process for generating marketing copy and content. It covers conceptual steps from writing a brief through outlining, drafting, editing, publishing, and repurposing content, and emphasizes call‑to‑action placement and cadence.",
+      "source": "idea-based",
+      "steps": [
+        {"step": "Create a brief describing the desired piece of content, audience, and goals", "dependencies": []},
+        {"step": "Develop an outline that structures the content and defines key sections", "dependencies": ["Create a brief describing the desired piece of content, audience, and goals"]},
+        {"step": "Draft the copy based on the outline; focus on clarity and narrative flow", "dependencies": ["Develop an outline that structures the content and defines key sections"]},
+        {"step": "Optimize the draft by refining language, incorporating calls‑to‑action, and ensuring alignment with brand guidelines", "dependencies": ["Draft the copy based on the outline; focus on clarity and narrative flow"]},
+        {"step": "Publish the content on the appropriate platform (website, funnel page, email, etc.)", "dependencies": ["Optimize the draft by refining language, incorporating calls‑to‑action, and ensuring alignment with brand guidelines"]},
+        {"step": "Repurpose the published content into derivatives such as social posts, newsletters, or video scripts", "dependencies": ["Publish the content on the appropriate platform (website, funnel page, email, etc.)"]}
+      ],
+      "attachments": [],
+      "last_modified": "2025-11-01T00:00:00Z",
+      "missing": false,
+      "notes": "Derived from the `workflows.md` file in the prompts/ecom folder; this workflow is conceptual and not yet implemented. It should be adapted into operational tasks with tools and agents."
+    },
+    {
+      "name": "Repository Consolidation and Flatten Strategy",
+      "description": "An idea‑based plan to resolve duplicate repository structures (a nested CURRENT folder and archived InsightfulAffiliate_NextGenCopyAI) and to sanitize the Python environment. It proposes flattening the nested directory structure, removing duplicated test files, creating a new virtual environment, generating a requirements file, updating pytest configurations, and verifying with tests before committing the changes.",
+      "source": "idea-based",
+      "steps": [
+        {"step": "Move or rename all source files from the nested CURRENT directory into the repository root, removing duplicate folder layers", "dependencies": []},
+        {"step": "Delete stale __pycache__ directories and ensure test files have unique basenames to prevent pytest ImportPathMismatch errors", "dependencies": ["Move or rename all source files from the nested CURRENT directory into the repository root, removing duplicate folder layers"]},
+        {"step": "Create a clean Python virtual environment (e.g., via `python -m venv .venv`) and reinstall project dependencies", "dependencies": ["Delete stale __pycache__ directories and ensure test files have unique basenames to prevent pytest ImportPathMismatch errors"]},
+        {"step": "Generate a requirements.txt from the new environment and update pytest.ini or equivalent to collect tests from the correct location", "dependencies": ["Create a clean Python virtual environment (e.g., via `python -m venv .venv`) and reinstall project dependencies"]},
+        {"step": "Run tests (`pytest`) to verify that the flattened structure and new environment work correctly", "dependencies": ["Generate a requirements.txt from the new environment and update pytest.ini or equivalent to collect tests from the correct location"]},
+        {"step": "Commit and push the flattened structure and new environment settings to the repository; update documentation explaining the consolidation", "dependencies": ["Run tests (`pytest`) to verify that the flattened structure and new environment work correctly"]}
+      ],
+      "attachments": ["file-EUxtu3Sw363LSMdmZug5ty"],
+      "last_modified": "2025-11-01T00:00:00Z",
+      "missing": false,
+      "notes": "This plan originates from idea‑based documents (e.g., the GPT5‑IDE_setup‑chat conversation) and addresses issues such as the ImportPathMismatchError shown in the pytest error screenshot. It has not yet been executed, so follow‑up tasks are required."
+    },
+    {
+      "name": "Final Git Update and Pre‑Publish Checklist",
+      "description": "A real‑time procedural workflow for finalizing website updates: applying canonical CSS and manifest files, running maintenance tasks via the codex agent, performing Git operations to commit and push the final changes, uploading assets to the web platform, pasting HTML code into the builder, and conducting QA checks prior to publication.",
+      "source": "real-time factual",
+      "steps": [
+        {"step": "Use the codex agent or maintenance task to generate the canonical CSS and manifest files, then stage them in the repository", "dependencies": []},
+        {"step": "Run `git add -A`, commit with a descriptive message, and push to GitHub to update the current branch", "dependencies": ["Use the codex agent or maintenance task to generate the canonical CSS and manifest files, then stage them in the repository"]},
+        {"step": "Upload the generated assets (CSS, manifest, images) to Systeme.io or the chosen web platform", "dependencies": ["Run `git add -A`, commit with a descriptive message, and push to GitHub to update the current branch"]},
+        {"step": "Copy and paste the generated HTML file into Systeme.io’s page editor, verifying that placeholders and head snippets are correctly inserted", "dependencies": ["Upload the generated assets (CSS, manifest, images) to Systeme.io or the chosen web platform"]},
+        {"step": "Perform pre‑publish checks: open the site in incognito mode, ensure all assets load via the CDN, verify links and forms, and confirm SEO metadata", "dependencies": ["Copy and paste the generated HTML file into Systeme.io’s page editor, verifying that placeholders and head snippets are correctly inserted"]},
+        {"step": "After approval, publish the site and tag the release in GitHub and Dropbox for future reference", "dependencies": ["Perform pre‑publish checks: open the site in incognito mode, ensure all assets load via the CDN, verify links and forms, and confirm SEO metadata"]}
+      ],
+      "attachments": ["file-YHGFU4onv3CKTF45nhqHzV"],
+      "last_modified": "2025-11-14T00:00:00Z",
+      "missing": false,
+      "notes": "This workflow is based on the RUN COMPLETE_final git and update details document which provides step‑by‑step instructions for canonical asset generation, Git operations, systeme.io asset upload, copy/paste guidelines, and QA. The screenshot of CURRENT Git branches shows the final commit status used as a reference."
+    }
+  ],
+  "integrations": [
+    {
+      "name": "GitHub Repository Integration",
+      "type": "version control",
+      "config": {
+        "repositories": ["insightfulaf/CURRENT", "insightfulaf/InsightfulAffiliate_NextGenCopyAI"],
+        "default_branch": "main",
+        "feature_branches": ["workflow-consolidation"],
+        "archived": ["InsightfulAffiliate_NextGenCopyAI"]
+      },
+      "documentation_link": "https://github.com/insightfulaf/CURRENT",
+      "source": "real-time factual",
+      "attachments": ["file-YHGFU4onv3CKTF45nhqHzV", "file-VreTHZtRXmxzMNQYUk7XQ6"],
+      "last_modified": "2025-11-14T00:00:00Z",
+      "missing": false,
+      "notes": "The integration connects the local workspace to GitHub for version control. The main branch is the default; a feature branch `workflow-consolidation` is active and ahead by 28 commits behind by 1. An archived repository (`InsightfulAffiliate_NextGenCopyAI`) remains for historical reference."
+    },
+    {
+      "name": "Dropbox Backup Integration",
+      "type": "cloud storage",
+      "config": {
+        "folder": "~/Dropbox/InsightfulAffiliate_NextGenCopyAI",
+        "sync_strategy": "bi‑directional backup with GitHub (manual git commands plus Dropbox automatic sync)",
+        "archived_subfolders": ["InsightfulAffiliate_NextGenCopyAI (archived)"]
+      },
+      "documentation_link": null,
+      "source": "real-time factual",
+      "attachments": ["file-Ya4iadDetWXikHGeg5G2ft"],
+      "last_modified": "2025-11-14T00:00:00Z",
+      "missing": false,
+      "notes": "Dropbox is used to maintain a local backup of the repository. The workspace includes both the CURRENT folder and a duplicated archived folder causing confusion. The integration requires careful coordination during consolidation."
+    },
+    {
+      "name": "Google Drive Documentation Integration",
+      "type": "document storage",
+      "config": {
+        "folders": ["Workflow_Management_Tasks-Action_Overview", "Repo_file_index-reference", "RUN COMPLETE_final git and update details", "GPT5-IDE_setup-chat"],
+        "access_method": "internal API via api_tool"
+      },
+      "documentation_link": null,
+      "source": "real-time factual",
+      "attachments": [],
+      "last_modified": "2025-11-14T00:00:00Z",
+      "missing": false,
+      "notes": "Multiple Google Drive documents provide real‑time instructions, workflows, and checklists for managing the repository and agents. These documents serve as canonical references for future contributors."
+    },
+    {
+      "name": "Codex Agent and Cloud SDK Integration",
+      "type": "AI agent infrastructure",
+      "config": {
+        "agent": "codex-style LLM agent executed via `python agent.py` in the repository root",
+        "tasks": ["generate website sections", "maintenance tasks", "apply patches"],
+        "extensions": ["playwright for automation", "openai-agents-sdk for new agents"],
+        "internet_access": false
+      },
+      "documentation_link": "https://platform.openai.com/docs/guides/agents-sdk",
+      "source": "real-time factual",
+      "attachments": ["file-QWrLNBpKjHV1avfycMpGFe"],
+      "last_modified": "2025-11-14T00:00:00Z",
+      "missing": false,
+      "notes": "The Codex agent integration uses the universal container image with preinstalled packages and disables internet access. The environment page shows the container settings and interactive terminal. Future enhancements propose integrating the agents SDK, ChatGPT Actions, and a multi‑agent system, which are idea‑based and not yet implemented."
+    },
+    {
+      "name": "Systeme.io Publishing Integration",
+      "type": "content management platform",
+      "config": {
+        "operations": ["upload CSS/manifest assets", "paste generated HTML", "set canonical head snippet"],
+        "deployment_environment": "live funnel pages managed in Systeme.io",
+        "prepublish_checks": ["incognito test", "asset load verification", "SEO/metadata"]
+      },
+      "documentation_link": null,
+      "source": "real-time factual",
+      "attachments": [],
+      "last_modified": "2025-11-14T00:00:00Z",
+      "missing": false,
+      "notes": "Systeme.io is the external platform where final HTML and assets are published. The integration instructions come from the final update documentation and emphasise proper head snippet insertion and QA."
+    }
+  ],
+  "agents": [
+    {
+      "name": "Workflow Manager Agent (Codex)",
+      "settings": {
+        "mode": "CLI agent executed with `python agent.py`",
+        "dry_run_flag": "--dry-run",
+        "prompt_inputs": "prompts instructing the agent to generate website sections or maintenance patches",
+        "output_directory": "CURRENT or specified folder",
+        "internet_access": false
+      },
+      "workflow_association": "Website Content Publishing and Maintenance Workflow",
+      "source": "real-time factual",
+      "last_modified": "2025-11-14T00:00:00Z",
+      "missing": false,
+      "notes": "The Workflow Manager Agent is the central codex agent used to generate site components, apply updates, and perform maintenance. It is run locally with optional dry‑run to inspect outputs before committing."
+    },
+    {
+      "name": "Proposed Multi‑Agent System (Idea)",
+      "settings": {
+        "agents": ["Workflow Manager", "Playwright Automation Agent", "Knowledge Hub Agent", "SEO/Marketing Agent"],
+        "communication": "central orchestrator managing specialized agents",
+        "goals": "automate website maintenance, integration with Codex Cloud, perform QA, generate copy and design snippets"
+      },
+      "workflow_association": "Brief‑to‑Publish Copywriting Workflow and future maintenance tasks",
+      "source": "idea-based",
+      "last_modified": "2025-11-01T00:00:00Z",
+      "missing": false,
+      "notes": "Outlined in speculative documentation (INTEGRATION‑ideas‑Codex_Cloud_SDK_GPT‑Actions) and GPT5‑IDE_setup‑chat conversation. This system is not yet implemented but proposes using the Agents SDK, ChatGPT Actions, and Playwright to create a multi‑agent workflow."
+    }
+  ],
+  "environments": [
+    {
+      "name": "Local VS Code and Python Environment",
+      "details": {
+        "editor": "VS Code with Python and Git extensions installed",
+        "python_versions": ["Python 3.13.7"],
+        "virtual_environments": [".venv (CURRENT)", ".venv (InsightfulAffiliate_NextGenCopyAI)", "ia_ngcai (3.9.6)"],
+        "installed_packages": ["annotated-types 0.7.0", "anyio 4.11.0", "openai 1.30.5", "pydantic 2.12.3", "pytest 8.4.2", "tqdm 4.67.1", "httpx 0.28.1", "pyyaml 6.0.3", "idna 3.11"],
+        "shell": "zsh with Rich shell integration",
+        "known_issues": ["ImportPathMismatchError due to duplicate test modules", "Environment duplication between current and archived directories"]
+      },
+      "source": "real-time factual",
+      "last_modified": "2025-11-14T00:00:00Z",
+      "missing": false,
+      "notes": "The Python projects and environment list come from the Python-projects and docker-fleet screenshots. The environment shows multiple virtual environments and packages that need consolidation."
+    },
+    {
+      "name": "Codex Universal Container Environment",
+      "details": {
+        "container_image": "openai/codex-universal (Ubuntu 20.04 with preinstalled packages)",
+        "internet_access": false,
+        "setup_script": "automatic",
+        "container_caching": true,
+        "workspace_directory": "/workspace/CURRENT"
+      },
+      "source": "real-time factual",
+      "last_modified": "2025-11-14T00:00:00Z",
+      "missing": false,
+      "notes": "The environment settings are shown in the Codex_Environment-edit screenshot. It forms the basis for the agent runtime and ensures reproducible builds."
+    }
+  ],
+  "repositories": [
+    {
+      "name": "CURRENT",
+      "state": "current",
+      "branch_info": [
+        {"branch_name": "main", "last_commit": "2025-11-14T00:00:00Z"},
+        {"branch_name": "workflow-consolidation", "last_commit": "2025-11-14T00:00:00Z"}
+      ],
+      "folder_path": "~/Dropbox/InsightfulAffiliate_NextGenCopyAI/CURRENT",
+      "source": "real-time factual",
+      "issue_flag": true,
+      "notes": "This is the active repository used for development and publication. The workflow-consolidation branch is ahead of main, indicating unmerged changes. Duplicated folder structures exist both in GitHub and local Dropbox leading to environment confusion and test failures."
+    },
+    {
+      "name": "InsightfulAffiliate_NextGenCopyAI",
+      "state": "archived",
+      "branch_info": [
+        {"branch_name": "main", "last_commit": "2025-09-21T00:00:00Z"}
+      ],
+      "folder_path": "~/Dropbox/InsightfulAffiliate_NextGenCopyAI (archived)",
+      "source": "real-time factual",
+      "issue_flag": true,
+      "notes": "This repository is archived on GitHub but still exists in the local Dropbox folder, causing duplication. Only the main branch remains; it has not been updated since roughly two months before the current date."
+    }
+  ],
+  "attachments": [
+    {
+      "filename": "failed-pytest_output.png",
+      "type": "error log",
+      "description": "VS Code testing panel showing ImportPathMismatchError: test file name mismatch and suggestion to remove __pycache__ and rename tests. Demonstrates environment path issues due to nested CURRENT folder.",
+      "linked_to": ["Website Content Publishing and Maintenance Workflow", "Repository Consolidation and Flatten Strategy"],
+      "missing": false,
+      "notes": "Essential for understanding the test failure and motivating the flatten strategy."
+    },
+    {
+      "filename": "Python-projects.png",
+      "type": "screenshot",
+      "description": "Python interpreter and environment listing showing multiple virtual environments (.venv, ia_ngcai), installed packages, and project-level Python version 3.13.7.",
+      "linked_to": ["Local VS Code and Python Environment"],
+      "missing": false,
+      "notes": "Highlights duplication of virtual environments and packages that need consolidation."
+    },
+    {
+      "filename": "docker-fleet.png",
+      "type": "screenshot",
+      "description": "Terminal environment contributions for VS Code shell, listing Python Debugger, Copilot Chat, Git features, and indicating zsh shell with rich integration.",
+      "linked_to": ["Local VS Code and Python Environment"],
+      "missing": false,
+      "notes": "Provides context on the shell environment and loaded extensions."
+    },
+    {
+      "filename": "remote-branches_vscode.png",
+      "type": "screenshot",
+      "description": "VS Code selection of remote branch references: main, origin/workflow-consolidation, origin/HEAD, origin/main.",
+      "linked_to": ["GitHub Repository Integration", "CURRENT"],
+      "missing": false,
+      "notes": "Shows remote branches and helps track commit positions."
+    },
+    {
+      "filename": "Repos_all-access_workspace.png",
+      "type": "screenshot",
+      "description": "VS Code workspace panel showing two repositories: CURRENT with branch workflow-consolidation, InsightfulAffiliate_NextGenCopyAI with main, and a local copy from Dropbox.",
+      "linked_to": ["GitHub Repository Integration", "Dropbox Backup Integration", "CURRENT", "InsightfulAffiliate_NextGenCopyAI"],
+      "missing": false,
+      "notes": "Reveals duplication between remote and local repositories and the presence of an archived copy in Dropbox."
+    },
+    {
+      "filename": "github-home.png",
+      "type": "screenshot",
+      "description": "GitHub profile page for user insightfulaf showing two repositories: CURRENT and InsightfulAffiliate_NextGenCopyAI (archived).",
+      "linked_to": ["GitHub Repository Integration"],
+      "missing": false,
+      "notes": "Confirms repository status and counts."
+    },
+    {
+      "filename": "CURRENT-GH-branches.png",
+      "type": "screenshot",
+      "description": "GitHub branches page for CURRENT repository showing main and workflow-consolidation branches, update timestamps, behind/ahead metrics, and default branch indicator.",
+      "linked_to": ["GitHub Repository Integration", "Final Git Update and Pre‑Publish Checklist", "CURRENT"],
+      "missing": false,
+      "notes": "Provides evidence of branch status and commit recency."
+    },
+    {
+      "filename": "InsightfulAffiliate_NextGenCopyAI-GH-branchs.png",
+      "type": "screenshot",
+      "description": "GitHub branches page for the archived repository showing only the main branch updated roughly two months ago.",
+      "linked_to": ["InsightfulAffiliate_NextGenCopyAI"],
+      "missing": false,
+      "notes": "Confirms that the archived repo has no active development."
+    },
+    {
+      "filename": "Codex_Environment-edit.png",
+      "type": "screenshot",
+      "description": "Codex environment configuration page showing repository association, container image (universal), preinstalled packages, container caching, setup script, and agent internet access settings.",
+      "linked_to": ["Codex Agent and Cloud SDK Integration", "Codex Universal Container Environment"],
+      "missing": false,
+      "notes": "Displays settings used for executing the agent within Codex."
+    }
+  ]
+}
+

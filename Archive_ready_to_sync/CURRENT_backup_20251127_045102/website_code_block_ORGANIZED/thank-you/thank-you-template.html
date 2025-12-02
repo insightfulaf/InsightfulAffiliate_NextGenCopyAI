@@ -1,0 +1,165 @@
+<!-- Thank You Section Template -->
+<!-- Usage: Replace {{PLACEHOLDERS}} then paste into systeme.io → Insert Raw HTML Block -->
+
+<section class="thank-you-section">
+  <style>
+    .thank-you-section {
+      --bg: #0B0B12;
+      --white: #fff;
+      --purple: #8A5CF6;
+      --cyan: #2DE2E6;
+      --grad: linear-gradient(90deg, #8A5CF6, #2DE2E6);
+      
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: var(--white);
+      background: radial-gradient(1200px 600px at 50% -10%, rgba(138,92,246,.18), transparent 60%), var(--bg);
+      border-radius: 16px;
+      padding: 24px 18px;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+    .ty-h1 {
+      font-weight: 800;
+      font-size: clamp(28px, 4vw, 40px);
+      line-height: 1.2;
+      margin: 0 0 12px;
+    }
+    .ty-lead {
+      font-size: clamp(16px, 2vw, 20px);
+      opacity: 0.92;
+      margin: 0 0 20px;
+      line-height: 1.4;
+    }
+    .ty-steps {
+      background: rgba(255,255,255,.06);
+      padding: 20px;
+      border-radius: 12px;
+      margin: 20px 0;
+    }
+    .ty-steps ol {
+      margin: 0;
+      padding-left: 20px;
+    }
+    .ty-steps li {
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+    .ty-cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 20px 0;
+    }
+    .ty-btn {
+      appearance: none;
+      border: 0;
+      cursor: pointer;
+      border-radius: 999px;
+      padding: 1rem 1.25rem;
+      font-weight: 700;
+      font-size: 16px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      transition: 0.16s;
+      white-space: nowrap;
+    }
+    .ty-btn-primary {
+      background: var(--grad);
+      color: #fff;
+      box-shadow: 0 8px 30px rgba(0,0,0,.25);
+    }
+    .ty-btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 40px rgba(0,0,0,.3);
+    }
+    .ty-btn-secondary {
+      background: transparent;
+      color: #fff;
+      border: 2px solid transparent;
+      background-image: linear-gradient(#0000, #0000), var(--grad);
+      background-origin: border-box;
+      background-clip: padding-box, border-box;
+    }
+    .ty-btn-secondary:hover {
+      transform: translateY(-1px);
+    }
+    .ty-chip {
+      font-size: 12px;
+      opacity: 0.9;
+      padding: 0.3em 0.6em;
+      border-radius: 999px;
+      background: rgba(255,255,255,.14);
+      margin-left: 8px;
+    }
+    .ty-workflow {
+      background: rgba(255,255,255,.06);
+      padding: 20px;
+      border-radius: 12px;
+      margin: 20px 0;
+      line-height: 1.5;
+    }
+    .ty-workflow a {
+      color: #CBB6FF;
+      text-decoration: underline;
+    }
+    .ty-disclosure {
+      font-size: 12px;
+      opacity: 0.78;
+      margin-top: 16px;
+      line-height: 1.4;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 640px) {
+      .thank-you-section { padding: 20px 16px; }
+      .ty-cta-row { flex-direction: column; }
+      .ty-btn { justify-content: center; }
+    }
+  </style>
+
+  <div>
+    <h1 class="ty-h1">{{THANK_YOU_TITLE}}</h1>
+    <p class="ty-lead">{{THANK_YOU_DESCRIPTION}}</p>
+
+    <div class="ty-steps">
+      <ol>
+        <li>{{STEP_1}}</li>
+        <li>{{STEP_2}}</li>
+        <li>{{STEP_3}}</li>
+      </ol>
+    </div>
+
+    <div class="ty-cta-row">
+      <a class="ty-btn ty-btn-primary" href="{{PRIMARY_CTA_LINK}}" rel="nofollow sponsored">
+        {{PRIMARY_CTA_TEXT}}
+      </a>
+      <a class="ty-btn ty-btn-secondary" href="{{SECONDARY_CTA_LINK}}" rel="nofollow sponsored">
+        {{SECONDARY_CTA_TEXT}}<span class="ty-chip">{{SECONDARY_CTA_OFFER}}</span>
+      </a>
+    </div>
+
+    <div class="ty-workflow">
+      {{WORKFLOW_DESCRIPTION}}
+    </div>
+
+    <p class="ty-disclosure">{{DISCLOSURE_TEXT}}</p>
+  </div>
+</section>
+
+<!-- 
+PLACEHOLDER REFERENCE:
+{{THANK_YOU_TITLE}} - Main thank you headline (e.g., "You're in! Your Starter Stack is on the way 🚀")
+{{THANK_YOU_DESCRIPTION}} - Description/next steps summary
+{{STEP_1}} - First action step (HTML allowed for <strong> tags)
+{{STEP_2}} - Second action step
+{{STEP_3}} - Third action step
+{{PRIMARY_CTA_LINK}} - Main call-to-action link
+{{PRIMARY_CTA_TEXT}} - Main button text
+{{SECONDARY_CTA_LINK}} - Secondary CTA link (affiliate/tool recommendation)
+{{SECONDARY_CTA_TEXT}} - Secondary button text
+{{SECONDARY_CTA_OFFER}} - Offer details (e.g., "15% off", "Free trial")
+{{WORKFLOW_DESCRIPTION}} - Workflow description with embedded links (use HTML <a> tags)
+{{DISCLOSURE_TEXT}} - Affiliate/legal disclosure
+-->

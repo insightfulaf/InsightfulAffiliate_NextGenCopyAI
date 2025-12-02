@@ -1,0 +1,12 @@
+Field,Placeholder / Suggested Content,Notes
+<title>,AI Affiliate Launchpad – Build Your Funnel in 60 Minutes,Keep ≤60 characters; highlight the benefit of a quick funnel setup.
+"<meta name=""description"">","Download the AI Affiliate Launchpad: plug‑and‑play Systeme.io funnel templates, 7 email scripts and a 60‑minute quickstart. Perfect for beginners who want to build a compliant affiliate funnel today.",Summarize the page clearly; avoid generic lists and ensure it reads like a short pitch.
+"<link rel=""canonical"">",https://yourdomain.com/optin,Replace with the actual canonical URL of the opt‑in page.
+Open Graph og:title,AI Affiliate Launchpad – Build Your Funnel in 60 Minutes,Use the same wording as the page title for consistency.
+Open Graph og:description,"Get instant access to plug‑and‑play Systeme.io funnel templates, 7 proven email scripts and a quickstart checklist. Launch your AI‑powered affiliate funnel in under an hour.",Provide a slightly fuller summary than the meta description.
+Open Graph og:url,https://yourdomain.com/optin,Same as the canonical URL.
+Open Graph og:image,https://yourdomain.com/path/to/NextGenCopyAI_by_InsightfulAffiliate_og_dark_1200x630.png,Point to your uploaded OG image (dark version) or a custom product graphic.
+Twitter twitter:card,summary_large_image,Standard card type with large image.
+Twitter twitter:title,Same as og:title,
+Twitter twitter:description,Same as og:description,
+Twitter twitter:image,Same as og:image,

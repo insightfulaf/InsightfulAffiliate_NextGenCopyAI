@@ -1,0 +1,140 @@
+<!-- Hero Section Template -->
+<!-- Usage: Replace {{PLACEHOLDERS}} then paste into systeme.io → Insert Raw HTML Block -->
+
+<section class="hero-slab" id="optin-hero">
+  <style>
+    .hero-slab {
+      background: radial-gradient(1200px 600px at 50% -10%, rgba(138,92,246,.18), transparent 60%), #0B0B12;
+      color: #fff;
+      border-radius: 16px;
+      padding: 24px 18px;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      margin: 0 auto;
+      max-width: 980px;
+    }
+    .hero-wrap {
+      max-width: 980px;
+      margin: 0 auto;
+    }
+    .hero-h1 {
+      font-weight: 800;
+      font-size: clamp(30px, 4.2vw, 44px);
+      line-height: 1.15;
+      margin: 0 0 12px;
+    }
+    .hero-lead {
+      font-size: clamp(16px, 2.1vw, 20px);
+      opacity: 0.94;
+      margin: 0 0 20px;
+      line-height: 1.4;
+    }
+    .hero-cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 20px 0;
+    }
+    .hero-btn {
+      appearance: none;
+      border: 0;
+      border-radius: 999px;
+      padding: 1rem 1.25rem;
+      font-weight: 700;
+      font-size: 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      cursor: pointer;
+      transition: 0.16s;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .hero-btn-primary {
+      background: linear-gradient(90deg, #8A5CF6, #2DE2E6);
+      color: #fff;
+      box-shadow: 0 8px 30px rgba(0,0,0,.25);
+    }
+    .hero-btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 40px rgba(0,0,0,.3);
+    }
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 16px 0;
+      opacity: 0.88;
+      font-size: 12px;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(255,255,255,.12);
+      padding: 0.4rem 0.8rem;
+      border-radius: 999px;
+      font-weight: 500;
+    }
+    .hero-disclosure {
+      font-size: 12px;
+      opacity: 0.78;
+      margin-top: 16px;
+      line-height: 1.4;
+    }
+    .text-gradient {
+      background: linear-gradient(90deg, #8A5CF6, #2DE2E6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 640px) {
+      .hero-slab { padding: 20px 16px; }
+      .hero-cta-row { flex-direction: column; }
+      .hero-btn { justify-content: center; }
+      .hero-meta { justify-content: center; }
+    }
+  </style>
+  
+  <div class="hero-wrap">
+    <h1 class="hero-h1">
+      <span class="text-gradient">{{HERO_TITLE_HIGHLIGHT}}</span> {{HERO_TITLE_REST}}
+    </h1>
+    <p class="hero-lead">
+      {{HERO_DESCRIPTION}}
+    </p>
+    
+    <div class="hero-cta-row">
+      <a class="hero-btn hero-btn-primary" href="{{PRIMARY_CTA_LINK}}">
+        {{PRIMARY_CTA_TEXT}}
+      </a>
+      <a class="hero-btn hero-btn-primary" href="{{SECONDARY_CTA_LINK}}" rel="nofollow sponsored">
+        {{SECONDARY_CTA_TEXT}}
+      </a>
+    </div>
+    
+    <div class="hero-meta">
+      <span class="hero-badge">{{BADGE_1}}</span>
+      <span class="hero-badge">{{BADGE_2}}</span>
+      <span class="hero-badge">{{BADGE_3}}</span>
+    </div>
+    
+    <p class="hero-disclosure">
+      {{DISCLOSURE_TEXT}}
+    </p>
+  </div>
+</section>
+
+<!-- 
+PLACEHOLDER REFERENCE:
+{{HERO_TITLE_HIGHLIGHT}} - Main title part with gradient (e.g., "AI Affiliate Launchpad")
+{{HERO_TITLE_REST}} - Rest of the title (e.g., "— Systeme.io Starter Stack (2025)")
+{{HERO_DESCRIPTION}} - Compelling description/subtitle
+{{PRIMARY_CTA_LINK}} - Main call-to-action link (usually #optin or similar)
+{{PRIMARY_CTA_TEXT}} - Main button text (e.g., "Get the Free Starter Stack")
+{{SECONDARY_CTA_LINK}} - Secondary CTA link (affiliate link, etc.)
+{{SECONDARY_CTA_TEXT}} - Secondary button text
+{{BADGE_1}} - First feature badge
+{{BADGE_2}} - Second feature badge
+{{BADGE_3}} - Third feature badge
+{{DISCLOSURE_TEXT}} - Affiliate/legal disclosure text
+-->

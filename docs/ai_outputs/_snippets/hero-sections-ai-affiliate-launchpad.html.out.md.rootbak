@@ -1,0 +1,46 @@
+### AI Affiliate Launchpad Hero
+**Where to paste in Systeme.io:** Opt-in page → Raw HTML block (hero section)
+
+```html
+<!-- BEGIN paste-ready -->
+<!-- AI Affiliate Launchpad Hero Section (v2)
+     This section uses classes defined in ngcai.css. Paste into a
+     Systeme.io Raw HTML block on your opt‑in page. The dark theme
+     should be enabled by adding class="theme-dark" to the <body> in
+     your head snippet. -->
+
+<section class="hero-slab" id="optin-hero">
+  <div class="hero-wrap">
+    <h1 class="hero-h1">
+      <span class="text-gradient">AI Affiliate Launchpad</span> — Systeme.io Starter Stack (2025)
+    </h1>
+    <p class="hero-lead">
+      Copy‑paste funnel pages + a 7‑email campaign, built for beginners. Import today, launch in an hour.
+    </p>
+
+    <div class="hero-cta-row">
+      <!-- Primary CTA opens the pop‑up opt‑in form on this page -->
+      <a class="btn btn-primary" href="#optin" rel="nofollow sponsored">
+        Get the Free Starter Stack
+      </a>
+      <!-- Secondary CTA directs visitors to open a free Systeme.io account -->
+      <a class="btn btn-primary" href="https://systeme.io/?sa=sa0238900402f072313107c74cdb59f0c791091516" rel="nofollow sponsored">
+        Open a Free Systeme.io Account
+      </a>
+    </div>
+
+    <div class="hero-meta">
+      <span class="hero-badge">No‑code install</span>
+      <span class="hero-badge">Beginner friendly</span>
+      <span class="hero-badge">FTC disclosure ready</span>
+    </div>
+
+    <p class="hero-disclosure">
+      I only recommend tools I use. If you buy via my link, I may earn a commission—at no extra cost to you.
+    </p>
+  </div>
+</section>
+<!-- END paste-ready -->
+```
+
+**Notes:** Ensure the page head includes `../assets/ngcai.css` from the canonical head snippet for styling.

@@ -53,3 +53,5 @@ Desktop.ini
 *.rar
 *.7z
 *~
+*.rootbak
+.DS_Store

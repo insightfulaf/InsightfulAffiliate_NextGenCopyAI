@@ -32,6 +32,35 @@ if [ -n "$ORIGIN_URL" ]; then
   echo "Origin URL: $ORIGIN_URL"
 fi
 
+# Offer interactive option to switch origin URL (only when run interactively)
+if [ -n "$ORIGIN_URL" ] && [ -t 0 ]; then
+  echo
+  echo "Would you like to change the repository's 'origin' remote?"
+  echo "  1) Keep current origin ($ORIGIN_URL)"
+  echo "  2) Switch to HTTPS: https://github.com/insightfulaf/InsightfulAffiliate_NextGenCopyAI.git"
+  echo "  3) Switch to SSH: git@github.com:insightfulaf/InsightfulAffiliate_NextGenCopyAI.git"
+  printf "Choose 1/2/3 (default 1): "
+  read -r choice || choice=1
+  case "$choice" in
+    2)
+      new_url="https://github.com/insightfulaf/InsightfulAffiliate_NextGenCopyAI.git"
+      echo "Switching origin to HTTPS: $new_url"
+      git -C "$REPO_ROOT" remote set-url origin "$new_url"
+      ORIGIN_URL="$new_url"
+      ;;
+    3)
+      new_url="git@github.com:insightfulaf/InsightfulAffiliate_NextGenCopyAI.git"
+      echo "Switching origin to SSH: $new_url"
+      git -C "$REPO_ROOT" remote set-url origin "$new_url"
+      ORIGIN_URL="$new_url"
+      ;;
+    *)
+      echo "Keeping current origin."
+      ;;
+  esac
+  echo "New origin: $(git -C "$REPO_ROOT" remote get-url origin)"
+fi
+
 # Test git ls-remote (HTTP/SSH) - may fail if no access
 echo
 echo "Testing access to origin with 'git ls-remote origin' (this may fail if access restricted)..."

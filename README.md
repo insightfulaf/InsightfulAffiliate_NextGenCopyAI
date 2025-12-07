@@ -12,6 +12,9 @@ This repo powers **InsightfulAffiliate** and **NextGenCopyAI** content workflows
 1) **Git remote (current repo name/user)**
    - Update once, then verify:
 
+> Recommended first step: see `CONTRIBUTING.md` and run `./scripts/setup.sh` after cloning.
+
+
 ## Clone URL & Credentials
 
 Correct HTTPS clone URL (recommended):

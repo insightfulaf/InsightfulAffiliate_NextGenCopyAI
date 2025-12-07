@@ -41,6 +41,33 @@ else
   echo "Warning: could not read from origin. If this is unexpected, check the remote URL and your credentials."
 fi
 
+# If origin is HTTPS, attempt a dry-run push to detect missing/invalid PATs (401/403)
+if echo "$ORIGIN_URL" | grep -qi "^https://"; then
+  echo
+  echo "Origin appears to be HTTPS. Performing a dry-run push to check write permissions (will not change remote)..."
+  push_output=""
+  if push_output=$(git -C "$REPO_ROOT" push --dry-run origin HEAD 2>&1); then
+    echo "Dry-run push succeeded (no authentication error detected)."
+  else
+    echo "Dry-run push failed. Inspecting output for authentication errors..."
+    echo "---- push output ----"
+    echo "$push_output"
+    echo "---- end push output ----"
+    # Look for common authentication failure patterns
+    if echo "$push_output" | grep -Ei "authentication failed|fatal: Authentication failed|HTTP Basic: Access denied|The requested URL returned error: 401|The requested URL returned error: 403|permission to .* denied" >/dev/null; then
+      echo
+      echo "Authentication error detected when attempting to push over HTTPS. This usually means your Personal Access Token (PAT) is missing or lacks the required scopes."
+      echo "Recommended steps:"
+      echo "  1) Ensure you've created a PAT with the 'repo' scope (or appropriate fine-grained token)."
+      echo "  2) Enable macOS keychain helper: git config --global credential.helper osxkeychain"
+      echo "  3) Perform a push and enter your GitHub username and PAT when prompted; the keychain will store it."
+      echo "  4) Alternatively switch to SSH if you prefer key-based auth. See CONTRIBUTING.md for details."
+    else
+      echo "No explicit authentication failure pattern detected in the dry-run output; investigate the above output for details."
+    fi
+  fi
+fi
+
 # Test SSH auth (non-fatal)
 echo
 echo "Testing SSH auth to git@github.com (non-fatal) - output below:" 

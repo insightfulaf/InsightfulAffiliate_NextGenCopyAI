@@ -2,6 +2,16 @@
 
 Thanks for contributing! This file explains how to set up your local environment and the recommended workflows for cloning, authentication, and pushing changes.
 
+## Run setup script (recommended first step)
+
+We provide a small helper script to automates macOS credential helper setup and run quick connectivity checks. Run it after cloning and before making your first push:
+
+```bash
+./scripts/setup.sh
+```
+
+The script will try to configure the macOS keychain helper and run basic `git ls-remote` and SSH checks. If it reports credential problems for HTTPS, follow the PAT guidance below.
+
 **Clone the repository**
 
 - HTTPS (recommended for many users):

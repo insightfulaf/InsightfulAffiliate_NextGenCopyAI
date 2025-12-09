@@ -117,6 +117,18 @@ git push -u origin feature/short-description
   - You have SSH keys set up and prefer key-based auth.
   - You want to avoid managing PATs.
 
+Recommendation for frequent contributors:
+
+- SSH is recommended for frequent contributors and maintainers because it provides seamless, key-based authentication without needing to manage PATs. Once your SSH key is added to GitHub, pushes and pulls happen without interactive token entry, and automation (CI/deploy) workflows often rely on SSH keys.
+
+To switch a local clone to use SSH (example):
+
+```bash
+git remote set-url origin git@github.com:insightfulaf/InsightfulAffiliate_NextGenCopyAI.git
+```
+
+If you prefer HTTPS for occasional contributions, continue using HTTPS with the macOS keychain helper as described above.
+
 
 ## Troubleshooting
 

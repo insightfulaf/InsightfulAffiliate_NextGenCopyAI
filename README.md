@@ -14,6 +14,13 @@ This repo powers **InsightfulAffiliate** and **NextGenCopyAI** content workflows
 
 > Recommended first step: see `CONTRIBUTING.md` and run `./scripts/setup.sh` after cloning.
 
+Note: this repository's `origin` is currently configured to use SSH (`git@github.com:insightfulaf/InsightfulAffiliate_NextGenCopyAI.git`).
+If you prefer HTTPS, you can switch a local clone with:
+
+```bash
+git remote set-url origin https://github.com/insightfulaf/InsightfulAffiliate_NextGenCopyAI.git
+```
+
 
 ## Clone URL & Credentials
 

@@ -48,4 +48,4 @@ jobs:
         reporter: github-pr-review
         shellcheck_flags: -x
         pattern: "**/*.sh"
-      continue-on-error: true 
+      continue-on-error: true

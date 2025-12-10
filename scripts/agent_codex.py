@@ -62,6 +62,12 @@ class Config:
     repo_root: Path
 
 def parse_args() -> Config:
+    """
+    Parse command-line arguments and return a Config object containing all settings.
+
+    Returns:
+        Config: The configuration object populated from CLI arguments.
+    """
     p = argparse.ArgumentParser(
         description="Codex agent: prompt + folder in, AI out, validate, write, git push.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -86,12 +92,6 @@ def parse_args() -> Config:
 
     repo_root = find_git_root(Path.cwd())
     if not repo_root:
-        die("Must run inside a Git repository (no .git/ found).")
-
-    include_ext = [e.strip().lower() for e in args.include_ext.split(",") if e.strip()]
-    include_ext = [e if e.startswith(".") else "." + e for e in include_ext]
-    exclude_dirs = [d.strip() for d in args.exclude_dirs.split(",") if d.strip()]
-
     return Config(
         prompt_file=args.prompt.resolve(),
         input_dir=args.input.resolve(),
@@ -105,7 +105,12 @@ def parse_args() -> Config:
         dry_run=args.dry_run,
         verbose=args.verbose,
         commit_message=args.message,
-        repo_root=repo_root,
+        repo_root=repo_root,  # type: ignore[arg-type]
+    )
+# ----------------------------- Helpers --------------------------------------
+        verbose=args.verbose,
+        commit_message=args.message,
+        repo_root=repo_root,  # type: ignore[arg-type]
     )
 
 # ----------------------------- Helpers --------------------------------------
@@ -174,30 +179,49 @@ def list_text_inputs(root: Path, include_ext: List[str], exclude_dirs: List[str]
 
 # ----------------------------- Model Call -----------------------------------
 
-def call_model(provider: str, model: str, prompt: str, doc_name: str, content: str) -> str:
-    if provider == "echo":
-        return echo_output(prompt, doc_name, content)
+from dataclasses import dataclass
+from typing import Any, Dict, List
 
-    if provider == "openai":
+@dataclass
+class AIConfig:
+    provider: str = "openai"
+    model: str = "gpt-4o-mini"
+    enable_preview: bool = False
+    fallback_model: str = "gpt-4o-mini"
+
+def build_ai_config_from_cfg(cfg: Config) -> AIConfig:
+    return AIConfig(
+        provider=cfg.provider,
+        model=cfg.model,
+        enable_preview=False,
+        fallback_model="gpt-4o-mini"
+    )
+
+def call_model(config: AIConfig, prompt: str, doc_name: str, content: str) -> str:
+    messages = [
+        {"role": "system",
+         "content": "You are a precise assistant. Output VALID Markdown only unless input is raw HTML/CSS/JS; keep structure and add a short top Notes section."},
+        {"role": "user",
+         "content": f"INSTRUCTIONS:\n{prompt}\n\n---\nDOC NAME: {doc_name}\nDOC CONTENT:\n{content}"}
+    ]
+    if config.provider == "echo":
+        head = "\n".join(content.splitlines()[:12])
+        return (f"## ECHO for {doc_name}\n\n"
+                f"**Prompt (first 200 chars)**: {prompt[:200]}...\n\n"
+                f"**Preview**:\n```\n{head}\n```\n\n"
+                f"_Switch provider to `openai` for real generations._")
+    elif config.provider == "openai":
         try:
-            from openai import OpenAI  # type: ignore
+            from openai import OpenAI
         except Exception:
             die("Provider 'openai' selected but package not installed. Run: python3 -m pip install openai")
-
         api_key = os.environ.get("OPENAI_API_KEY", "").strip()
         if not api_key:
             die("OPENAI_API_KEY is not set in the environment.")
-
         client = OpenAI(api_key=api_key)
-        messages = [
-            {"role": "system",
-             "content": "You are a precise assistant. Output VALID Markdown only unless input is raw HTML/CSS/JS; keep structure and add a short top Notes section."},
-            {"role": "user",
-             "content": f"INSTRUCTIONS:\n{prompt}\n\n---\nDOC NAME: {doc_name}\nDOC CONTENT:\n{content}"}
-        ]
         try:
             resp = client.chat.completions.create(
-                model=model,
+                model=config.model,
                 messages=messages,    # type: ignore[arg-type]
                 temperature=0.2,
                 max_tokens=2000,
@@ -206,8 +230,8 @@ def call_model(provider: str, model: str, prompt: str, doc_name: str, content: s
             return out.strip()
         except Exception as e:
             die(f"OpenAI call failed: {e}")
-
-    die(f"Unknown provider: {provider}")
+    else:
+        die(f"Unknown provider: {config.provider}")
     return ""
 
 def echo_output(prompt: str, doc_name: str, content: str) -> str:
@@ -331,11 +355,12 @@ def main() -> None:
 
     # 3–5) Process
     written: List[Path] = []
+    ai_config = build_ai_config_from_cfg(cfg)
     for src in inputs:
         rel = src.relative_to(cfg.input_dir)  
 
         content = read_text(src)
-        result = call_model(cfg.provider, cfg.model, prompt, str(rel), content)
+        result = call_model(ai_config, prompt, str(rel), content)
 
         ok, problems = validate_output(src.suffix, result)
         if not ok:

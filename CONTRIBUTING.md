@@ -12,13 +12,9 @@ We provide a small helper script to automates macOS credential helper setup and 
 
 The script will try to configure the macOS keychain helper and run basic `git ls-remote` and SSH checks. If it reports credential problems for HTTPS, follow the PAT guidance below.
 
-**Clone the repository**
+## Clone the repository
 
 - HTTPS (recommended for many users):
-
-```
-https://github.com/insightfulaf/InsightfulAffiliate_NextGenCopyAI.git
-```
 
 Clone via HTTPS:
 
@@ -32,7 +28,6 @@ git clone https://github.com/insightfulaf/InsightfulAffiliate_NextGenCopyAI.git
 git clone git@github.com:insightfulaf/InsightfulAffiliate_NextGenCopyAI.git
 ```
 
-
 ## Authentication options
 
 A. HTTPS with macOS keychain (recommended for macOS users)
@@ -43,9 +38,9 @@ A. HTTPS with macOS keychain (recommended for macOS users)
 git config --global credential.helper osxkeychain
 ```
 
-2. When you first `git push` or `git fetch` that requires credentials, Git will prompt for your GitHub username and a Personal Access Token (PAT) in place of a password. Enter them and they will be saved to your keychain.
+1. When you first `git push` or `git fetch` that requires credentials, Git will prompt for your GitHub username and a Personal Access Token (PAT) in place of a password. Enter them and they will be saved to your keychain.
 
-3. How to create a PAT (minimal scopes):
+1. How to create a PAT (minimal scopes):
    - Go to GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic) or fine-grained tokens.
    - For basic repo access, the `repo` scope is sufficient for private repos (or select repo permissions in fine-grained tokens).
    - Copy the token and paste it when Git prompts for a password.
@@ -60,7 +55,7 @@ ssh-keygen -t ed25519 -C "your_email@example.com"
 # ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
 ```
 
-2. Start the ssh-agent and add your key:
+1. Start the ssh-agent and add your key:
 
 ```bash
 eval "$(ssh-agent -s)"
@@ -68,21 +63,20 @@ ssh-add --apple-use-keychain ~/.ssh/id_ed25519  # macOS-specific
 # or: ssh-add ~/.ssh/id_rsa
 ```
 
-3. Copy your public key and add it to GitHub (Settings → SSH and GPG keys):
+1. Copy your public key and add it to GitHub (Settings → SSH and GPG keys):
 
 ```bash
 cat ~/.ssh/id_ed25519.pub | pbcopy
 # then paste into GitHub
 ```
 
-4. Test the connection:
+1. Test the connection:
 
 ```bash
 ssh -T git@github.com
 ```
 
 You should see a success message like `Hi <username>! You've successfully authenticated...`.
-
 
 ## Recommended workflow
 
@@ -117,19 +111,6 @@ git push -u origin feature/short-description
   - You have SSH keys set up and prefer key-based auth.
   - You want to avoid managing PATs.
 
-Recommendation for frequent contributors:
-
-- SSH is recommended for frequent contributors and maintainers because it provides seamless, key-based authentication without needing to manage PATs. Once your SSH key is added to GitHub, pushes and pulls happen without interactive token entry, and automation (CI/deploy) workflows often rely on SSH keys.
-
-To switch a local clone to use SSH (example):
-
-```bash
-git remote set-url origin git@github.com:insightfulaf/InsightfulAffiliate_NextGenCopyAI.git
-```
-
-If you prefer HTTPS for occasional contributions, continue using HTTPS with the macOS keychain helper as described above.
-
-
 ## Troubleshooting
 
 - "Repository not found" when doing `git ls-remote` or `git fetch`:
@@ -139,22 +120,20 @@ If you prefer HTTPS for occasional contributions, continue using HTTPS with the 
 git remote -v
 ```
 
-  - If the URL is wrong, set it (HTTPS example):
+- If the URL is wrong, set it using the following command (HTTPS example):
 
-```bash
-git remote set-url origin https://github.com/insightfulaf/InsightfulAffiliate_NextGenCopyAI.git
-```
+  ```bash
+  git remote set-url origin https://github.com/insightfulaf/InsightfulAffiliate_NextGenCopyAI.git
+  ```
 
-  - If using HTTPS and you get 401/403, ensure your PAT has the correct scopes and is saved in the keychain.
-  - If using SSH and you get permission errors, ensure your public key is added to GitHub and `ssh -T git@github.com` returns a successful auth message.
-
+- If using HTTPS and you get 401/403, ensure your PAT has the correct scopes and is saved in the keychain.
+- If using SSH and you get permission errors, ensure your public key is added to GitHub and `ssh -T git@github.com` returns a successful auth message.
 
 ## Code style & PR checklist (brief)
 
 - Write clear commit messages.
 - Add tests for new functionality where feasible.
 - Keep PRs focused and provide a description of changes.
-
 
 ## Contact
 

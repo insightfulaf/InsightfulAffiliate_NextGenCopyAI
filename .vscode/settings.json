@@ -31,7 +31,7 @@
   "terminal.integrated.cwd": "${workspaceFolder}",
   "window.restoreWindows": "one",
   "remoteHub.gitProtocol": "http",
-  "prettier.insertPragma": true,
+  "prettier.insertPragma": false,
   "liveServer.settings.ChromeDebuggingAttachment": false,
   "search.seedOnFocus": true,
   "workbench.editor.autoLockGroups": {

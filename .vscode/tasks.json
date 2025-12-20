@@ -5,7 +5,7 @@
     {
       "label": "Build funnel map",
       "type": "shell",
-      "command": "${workspaceFolder}/.venv/bin/python",
+      "command": "${config:python.defaultInterpreterPath}",
       "args": ["scripts/build_funnel_map.py"],
       "options": {
         "cwd": "${workspaceFolder}"
@@ -15,7 +15,7 @@
     {
       "label": "Build + commit funnel map",
       "type": "shell",
-      "command": "python3 scripts/build_funnel_map.py && git add docs/checklists/funnel_map.md && git commit -m \"docs: update funnel map\"",
+      "command": "python3 scripts/build_funnel_map.py && git diff --quiet docs/checklists/funnel_map.md || (git add docs/checklists/funnel_map.md && git commit -m \"docs: update funnel map\")",
       "options": {
         "cwd": "${workspaceFolder}"
       },

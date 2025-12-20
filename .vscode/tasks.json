@@ -5,7 +5,7 @@
     {
       "label": "Build funnel map",
       "type": "shell",
-      "command": "/.venv/bin/python",
+      "command": "${workspaceFolder}/.venv/bin/python",
       "args": ["scripts/build_funnel_map.py"],
       "options": {
         "cwd": "${workspaceFolder}"

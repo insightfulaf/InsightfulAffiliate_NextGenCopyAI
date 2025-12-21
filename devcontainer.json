@@ -1,0 +1,21 @@
+{
+  "name": "ia-ngcai-devcontainer",
+  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "features": {},
+  "postCreateCommand": "python -m venv .venv && . .venv/bin/activate && pip install -r requirements.txt || true",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "python.defaultInterpreterPath": ".venv/bin/python",
+        "files.exclude": {
+          "archive": true,
+          "Archive_ready_to_sync": true
+        }
+      },
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance"
+      ]
+    }
+  }
+}

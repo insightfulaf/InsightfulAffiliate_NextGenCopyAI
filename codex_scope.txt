@@ -105,8 +105,8 @@ docs/systeme_asset_tracking/Asset_URL_tracker-Systeme-icons/resources/sheet.css
 docs:/systeme_asset_tracking/Sheet1.html
 landing_pages/FAQs/FAQ_AI-LPad.md
 landing_pages/FAQs/FAQ_block_PPP.html
-landing_pages/assest_2/insightfulaffiliate.css
-landing_pages/assest_2/site.webmanifest.json
+archive/landing_pages_assest_2/insightfulaffiliate.css
+archive/landing_pages_assest_2/site.webmanifest.json
 landing_pages/component-library.html
 landing_pages/headers/Updated_head_snippet-IA.gdoc
 landing_pages/headers/head-snippet-ngcai.html

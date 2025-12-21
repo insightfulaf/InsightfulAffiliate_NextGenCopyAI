@@ -1,0 +1,17 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "archive": true,
+      "Archive_ready_to_sync": true,
+      "**/.venv": true,
+      "**/__pycache__": true
+    },
+    "python.defaultInterpreterPath": ".venv/bin/python",
+    "editor.formatOnSave": false
+  }
+}

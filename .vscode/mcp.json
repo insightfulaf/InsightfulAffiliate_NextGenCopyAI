@@ -1,0 +1,8 @@
+{
+  "servers": [],
+  "clientCapabilities": {
+    "textDocument": {
+      "synchronization": true
+    }
+  }
+}

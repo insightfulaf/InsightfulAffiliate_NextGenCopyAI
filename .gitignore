@@ -8,7 +8,8 @@
 ._*
 
 # ===== Editors & IDEs =====
-.vscode/
+.vscode/*
+!.vscode/mcp.json
 .idea/
 *.swp
 

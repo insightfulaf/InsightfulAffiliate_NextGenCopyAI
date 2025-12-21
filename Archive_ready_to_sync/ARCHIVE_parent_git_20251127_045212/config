@@ -16,6 +16,6 @@
 	merge = refs/heads/main
 [user]
 	name = insightfulaf
-	email = insightfulaff@gmail.com
+	email = noreply@example.com
 [lfs]
 	repositoryformatversion = 0

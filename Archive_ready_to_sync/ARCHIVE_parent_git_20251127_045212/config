@@ -8,7 +8,7 @@
 	autocrlf = input
 	eol = lf
 [remote "origin"]
-	url = git@github.com:insightfulaf/CURRENT.git
+	url = git@github.com:USER/REPOSITORY.git
 	fetch = +refs/heads/*:refs/remotes/origin/*
 [branch "main"]
 	remote = origin
@@ -16,6 +16,6 @@
 	merge = refs/heads/main
 [user]
 	name = insightfulaf
-	email = insightfulaff@gmail.com
+	email = noreply@example.com
 [lfs]
 	repositoryformatversion = 0

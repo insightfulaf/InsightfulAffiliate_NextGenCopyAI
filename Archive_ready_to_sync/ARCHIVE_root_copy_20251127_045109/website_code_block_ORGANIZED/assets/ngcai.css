@@ -1,0 +1,369 @@
+/*
+ * Unified stylesheet for InsightfulAffiliate / NextGenCopyAI
+ *
+ * This file merges the header styles from the original brand‑ui.css with
+ * the section styles from insightfulaffiliate.css. It defines a common
+ * palette, typography, button system and utility classes that can be
+ * reused across your opt‑in, thank‑you and link‑hub pages. All class
+ * names begin with descriptive prefixes (hero‑, ty‑, brand‑ etc.) to
+ * avoid collisions with Systeme.io styles.
+ */
+
+/* ------------------------------------------------------------------
+   Root variables
+   Defines the colour palette and font family. If you need to adjust
+   colours in the future, modify them here rather than throughout
+   individual selectors.
+------------------------------------------------------------------ */
+:root {
+  /* Brand palette */
+  --bg-deepspace: #0b0b12;
+  --ink: #111216;
+  --white: #fff;
+  --purple: #8a5cf6;
+  --cyan: #2de2e6;
+  --lilac: #cbb6ff;
+  /* Composite gradient for primary accents */
+  --grad: linear-gradient(90deg, var(--purple), var(--cyan));
+  /* Base font stack */
+  --font-stack: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
+}
+
+/* ------------------------------------------------------------------
+   Theme helpers
+   Apply these classes to the body element to switch between dark and
+   light backgrounds. The dark theme uses the deep space colour while
+   the light theme falls back to white.
+------------------------------------------------------------------ */
+body.theme-dark {
+  background: var(--bg-deepspace);
+  color: var(--white);
+}
+body.theme-light {
+  background: #fff;
+  color: var(--ink);
+}
+
+/* ------------------------------------------------------------------
+   Header lockup
+   Use these classes when building a simple brand header at the top of
+   your pages. The .brand-header container holds the logo lockup and a
+   navigation area. The .logo-lockup groups your icon and wordmark,
+   separated by the divider bar. Adjust gap and font sizes here.
+------------------------------------------------------------------ */
+.brand-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 14px;
+}
+.logo-lockup {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: inherit;
+}
+.logo-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+}
+.logo-wordmark {
+  font-family: Poppins, Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+}
+.lockup-divider {
+  width: 2px;
+  height: 20px;
+  background: var(--grad);
+  border-radius: 2px;
+  margin: 0 4px;
+}
+.logo-subline {
+  font: 600 12px/1 var(--font-stack);
+  opacity: 0.85;
+}
+.header-compact .logo-wordmark {
+  font-size: 18px;
+}
+
+/* ------------------------------------------------------------------
+   Button system
+   All buttons share common sizing and typography. Use .btn-primary for
+   solid gradient buttons, .btn-secondary for outline gradient buttons
+   and .btn-ghost for a subtle translucent look. Size modifiers allow
+   you to shrink or enlarge buttons consistently.
+------------------------------------------------------------------ */
+.btn {
+  appearance: none;
+  border: 0;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font: 600 16px/1 var(--font-stack);
+  padding: 0.75rem 1.1rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: 0.16s;
+  white-space: nowrap;
+}
+.btn:hover {
+  transform: translateY(-1px);
+}
+.btn-primary {
+  background: var(--grad);
+  color: #fff;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+}
+.btn-primary:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+}
+.btn-secondary {
+  position: relative;
+  color: inherit;
+  background: transparent;
+  border: 2px solid transparent;
+  background-image: linear-gradient(#0000, #0000), var(--grad);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
+.btn-secondary:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+.btn-ghost {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+body.theme-light .btn-ghost {
+  background: rgba(17, 18, 22, 0.06);
+  color: var(--ink);
+}
+.btn-sm {
+  padding: 0.55rem 0.9rem;
+  font-size: 14px;
+}
+.btn-lg {
+  padding: 1rem 1.25rem;
+  font-size: 18px;
+}
+
+/* ------------------------------------------------------------------
+   Utilities
+   Helper classes for gradient text, vertical spacing and disclosure
+   badges.
+------------------------------------------------------------------ */
+.text-gradient {
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.stack-16 > :not(:last-child) {
+  margin: 0 0 16px;
+}
+.badge-disclosure {
+  display: inline-block;
+  font-size: 12px;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* ------------------------------------------------------------------
+   Hero section
+   Apply the .hero-slab class to a section to create a dark, rounded
+   container with radial background. Within the slab, use .hero-h1,
+   .hero-lead and .hero-cta-row to structure your content. Buttons in
+   this context can use the global .btn classes or hero‑specific
+   modifiers if desired.
+------------------------------------------------------------------ */
+.hero-slab {
+  background: radial-gradient(1200px 600px at 50% -10%, rgba(138, 92, 246, 0.18), transparent 60%),
+    var(--bg-deepspace);
+  color: var(--white);
+  border-radius: 16px;
+  padding: 24px 18px;
+  margin: 0 auto;
+  max-width: 980px;
+  font-family: var(--font-stack);
+}
+.hero-wrap {
+  max-width: 980px;
+  margin: 0 auto;
+}
+.hero-h1 {
+  font-weight: 800;
+  font-size: clamp(30px, 4.2vw, 44px);
+  line-height: 1.15;
+  margin: 0 0 12px;
+}
+.hero-lead {
+  font-size: clamp(16px, 2.1vw, 20px);
+  opacity: 0.94;
+  margin: 0 0 20px;
+  line-height: 1.4;
+}
+.hero-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 20px 0;
+}
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 16px 0;
+  opacity: 0.88;
+  font-size: 12px;
+}
+.hero-badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.12);
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  font-weight: 500;
+}
+.hero-disclosure {
+  font-size: 12px;
+  opacity: 0.78;
+  margin-top: 16px;
+  line-height: 1.4;
+}
+
+/* ------------------------------------------------------------------
+   Thank‑you section
+   Use these classes for your thank‑you pages. They mirror the hero
+   styling but provide additional lists and call‑to‑action rows. Chips
+   allow you to add coupon codes or secondary information to a button.
+------------------------------------------------------------------ */
+.thank-you-section {
+  background: radial-gradient(1200px 600px at 50% -10%, rgba(138, 92, 246, 0.18), transparent 60%),
+    var(--bg-deepspace);
+  color: var(--white);
+  border-radius: 16px;
+  padding: 24px 18px;
+  max-width: 980px;
+  margin: 0 auto;
+  font-family: var(--font-stack);
+}
+.ty-h1 {
+  font-weight: 800;
+  font-size: clamp(28px, 4vw, 40px);
+  line-height: 1.2;
+  margin: 0 0 12px;
+}
+.ty-lead {
+  font-size: clamp(16px, 2vw, 20px);
+  opacity: 0.92;
+  margin: 0 0 20px;
+  line-height: 1.4;
+}
+.ty-steps {
+  background: rgba(255, 255, 255, 0.06);
+  padding: 20px;
+  border-radius: 12px;
+  margin: 20px 0;
+}
+.ty-steps ol {
+  margin: 0;
+  padding-left: 20px;
+}
+.ty-steps li {
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+.ty-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 20px 0;
+}
+.ty-btn {
+  appearance: none;
+  border: 0;
+  cursor: pointer;
+  border-radius: 999px;
+  padding: 1rem 1.25rem;
+  font-weight: 700;
+  font-size: 16px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  transition: 0.16s;
+  white-space: nowrap;
+}
+.ty-btn-primary {
+  background: var(--grad);
+  color: #fff;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+}
+.ty-btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+}
+.ty-btn-secondary {
+  background: transparent;
+  color: #fff;
+  border: 2px solid transparent;
+  background-image: linear-gradient(#0000, #0000), var(--grad);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
+.ty-btn-secondary:hover {
+  transform: translateY(-1px);
+}
+.ty-chip {
+  font-size: 12px;
+  opacity: 0.9;
+  padding: 0.3em 0.6em;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  margin-left: 8px;
+}
+.ty-workflow {
+  background: rgba(255, 255, 255, 0.06);
+  padding: 20px;
+  border-radius: 12px;
+  margin: 20px 0;
+  line-height: 1.5;
+}
+.ty-workflow a {
+  color: var(--lilac);
+  text-decoration: underline;
+}
+.ty-disclosure {
+  font-size: 12px;
+  opacity: 0.78;
+  margin-top: 16px;
+  line-height: 1.4;
+}
+
+/* ------------------------------------------------------------------
+   Responsive adjustments
+   Stack CTAs on small screens. These rules apply to both hero and
+   thank‑you components.
+------------------------------------------------------------------ */
+@media (max-width: 640px) {
+  .hero-slab,
+  .thank-you-section {
+    padding: 20px 16px;
+  }
+  .hero-cta-row,
+  .ty-cta-row {
+    flex-direction: column;
+  }
+  .hero-btn,
+  .ty-btn {
+    justify-content: center;
+  }
+  .hero-meta {
+    justify-content: center;
+  }
+}

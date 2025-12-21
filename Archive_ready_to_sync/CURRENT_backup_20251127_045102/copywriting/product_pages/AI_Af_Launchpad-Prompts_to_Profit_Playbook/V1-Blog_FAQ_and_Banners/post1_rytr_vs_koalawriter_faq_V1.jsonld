@@ -1,0 +1,54 @@
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Which is better for beginners: Rytr or KoalaWriter?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Pick Rytr if you want fast short-form drafts (emails, captions, hooks). Pick KoalaWriter if you want SEO-friendly long-form posts. Try Rytr: https://rytr.me/?via=NextGenCopyAI — Try KoalaWriter: https://koala.sh/?via=NextGenCopyAI (use code INSIGHTFUL15 for 15% off on all payments)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need both tools or just one?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Many beginners use both: Rytr for quick short-form and KoalaWriter for long-form articles. Start with the one that matches your next task and add the second when you publish regularly."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is KoalaWriter only for SEO experts?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. KoalaWriter is beginner-friendly and shines at creating structured long-form drafts that are easy to edit and publish. It simply includes features that help with SEO formatting."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Will these tools guarantee higher Google rankings?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No writing tool can guarantee rankings. Focus on usefulness, clarity, original examples, and publishing consistently. Use tools to draft faster and spend your time improving quality."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is a simple beginner workflow with these tools?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ideate and draft short-form in Rytr → draft long-form in KoalaWriter → publish and capture leads with Systeme.io (https://systeme.io/?sa=sa0238900402f072313107c74cdb59f0c791091516). This keeps your pipeline moving without extra complexity."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is there a discount for KoalaWriter?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Use coupon INSIGHTFUL15 at https://koala.sh/?via=NextGenCopyAI for 15% off on all payments."
+      }
+    }
+  ]
+}

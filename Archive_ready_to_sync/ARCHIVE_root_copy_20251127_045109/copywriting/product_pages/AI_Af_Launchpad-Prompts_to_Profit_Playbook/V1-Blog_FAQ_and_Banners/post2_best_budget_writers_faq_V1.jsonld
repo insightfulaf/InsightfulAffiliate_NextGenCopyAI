@@ -1,0 +1,54 @@
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Which budget AI writer should beginners start with?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Start with Rytr if you need fast short-form (emails, hooks, outlines) — https://rytr.me/?via=NextGenCopyAI. Add KoalaWriter for long-form posts when you are ready to publish articles — https://koala.sh/?via=NextGenCopyAI (code INSIGHTFUL15 for 15% off on all payments)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I get good results without paying for multiple tools?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. You can begin with prompts in a free doc editor and publish. Paid tools help you work faster and stay consistent, but they are not required to start."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need separate SEO software when I’m new?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not at the very beginning. Publish genuinely helpful posts, answer common questions, and improve over time. Consider SEO tooling later if you want deeper optimization."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can AI fully replace my writing?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Use AI to draft faster, but add your own experience, screenshots, and examples. Human insight is what makes content trustworthy and useful."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What should I publish in my first week?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Day 1: Lead magnet page in Systeme.io (https://systeme.io/?sa=sa0238900402f072313107c74cdb59f0c791091516). Day 2: Welcome email (Rytr). Day 3–4: First long-form post (KoalaWriter). Day 5: One 20-second short with a link-in-bio CTA. Days 6–7: Review stats and batch one more post."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How should I handle affiliate disclosures?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Use clear, simple disclosures on pages and in email footers. Place them where readers will see them without scrolling."
+      }
+    }
+  ]
+}

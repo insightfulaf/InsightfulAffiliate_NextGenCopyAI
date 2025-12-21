@@ -1,0 +1,98 @@
+<!-- ====================================================================
+     Unified Head Snippet | InsightfulAffiliate / NextGenCopyAI
+     Usage: Replace {{PLACEHOLDERS}} with your content then paste into
+     Systeme.io → Settings → Edit header code. This snippet references
+     the unified ngcai.css file and your PWA manifest. Upload ngcai.css
+     and site.webmanifest to Systeme's Media and copy their public
+     URLs into the placeholders below.
+==================================================================== -->
+
+<!-- 1. Primary Meta Tags -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{{PAGE_TITLE}}</title>
+<meta name="description" content="{{PAGE_DESCRIPTION}}" />
+<meta name="theme-color" content="#0B0B12" />
+<meta name="color-scheme" content="dark light" />
+
+<!-- 2. SEO, Performance & Indexing -->
+<link rel="canonical" href="{{CANONICAL_URL}}" />
+<!-- Preconnect to font and CDN domains for faster loading -->
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preconnect" href="{{CDN_DOMAIN}}" crossorigin />
+
+<!-- 3. Optimized Font Loading -->
+<link
+  rel="preload"
+  as="style"
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Poppins:wght@700;800&display=swap"
+/>
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Poppins:wght@700;800&display=swap"
+  media="print"
+  onload="this.media='all'"
+/>
+<noscript
+  ><link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Poppins:wght@700;800&display=swap"
+/></noscript>
+
+<!-- 4. Brand Styles -->
+<link rel="stylesheet" href="{{NGCAI_CSS_URL}}" />
+
+<!-- 5. Icons & PWA Manifest -->
+<link rel="icon" href="{{FAVICON_ICO_URL}}" sizes="any" />
+<link rel="apple-touch-icon" href="{{APPLE_TOUCH_ICON_URL}}" />
+<link rel="manifest" href="{{MANIFEST_URL}}" />
+
+<!-- 6. Open Graph / Facebook -->
+<meta property="og:title" content="{{PAGE_TITLE}}" />
+<meta property="og:description" content="{{PAGE_DESCRIPTION}}" />
+<meta property="og:url" content="{{CANONICAL_URL}}" />
+<meta property="og:site_name" content="{{SITE_NAME}}" />
+<meta property="og:image" content="{{OG_IMAGE_URL}}" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="en_US" />
+
+<!-- 7. Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="{{PAGE_TITLE}}" />
+<meta name="twitter:description" content="{{PAGE_DESCRIPTION}}" />
+<meta name="twitter:image" content="{{TWITTER_IMAGE_URL}}" />
+
+<!-- 8. Structured Data (JSON‑LD) for SEO -->
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "{{BRAND_NAME}}",
+    "alternateName": "{{BRAND_ALT_NAME}}",
+    "url": "{{BRAND_WEBSITE}}",
+    "logo": "{{LOGO_URL}}",
+    "sameAs": ["{{TWITTER_URL}}", "{{FACEBOOK_URL}}", "{{LINKEDIN_URL}}"]
+  }
+</script>
+
+<!--
+PLACEHOLDER REFERENCE:
+{{PAGE_TITLE}} – your page title (~60 characters ideal)
+{{PAGE_DESCRIPTION}} – meta description (~150–160 characters ideal)
+{{CANONICAL_URL}} – full URL to this page
+{{SITE_NAME}} – your site/brand name
+{{BRAND_NAME}} – official business name
+{{BRAND_ALT_NAME}} – alternative brand name or sub‑brand
+{{BRAND_WEBSITE}} – main brand website URL
+{{LOGO_URL}} – absolute URL to your 1080×1080 logo image
+{{OG_IMAGE_URL}} – default Open Graph image (1200×630)
+{{TWITTER_IMAGE_URL}} – default Twitter image (1200×628)
+{{FAVICON_ICO_URL}} – URL to your favicon (.ico)
+{{APPLE_TOUCH_ICON_URL}} – URL to your 180×180 Apple touch icon
+{{MANIFEST_URL}} – URL to your site.webmanifest
+{{NGCAI_CSS_URL}} – URL to the uploaded ngcai.css file in Systeme
+{{CDN_DOMAIN}} – optional CDN or host domain for CSS; leave blank if not used
+{{TWITTER_URL}}, {{FACEBOOK_URL}}, {{LINKEDIN_URL}} – your social profiles
+-->

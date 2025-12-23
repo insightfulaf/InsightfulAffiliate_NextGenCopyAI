@@ -1,0 +1,32 @@
+{
+  "_note": "Canonical manifest lives at ../site.webmanifest. Keep this helper copy in sync when exporting assets.",
+  "name": "NextGenCopyAI by InsightfulAffiliate",
+  "short_name": "NextGenCopyAI",
+  "description": "AI writing & affiliate marketing tools for beginners.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0B0B12",
+  "theme_color": "#8A5CF6",
+  "icons": [
+    {
+      "src": "{{ICON_192_URL}}",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "{{ICON_512_URL}}",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "{{ICON_512_MASKABLE_URL}}",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

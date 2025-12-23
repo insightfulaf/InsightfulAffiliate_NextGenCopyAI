@@ -1,0 +1,8 @@
+- [ ] Create products (Starter/Pro/Agency)
+- [ ] Build sales page & paste blocks
+- [ ] Add order bump on checkout
+- [ ] Paste FAQ+Product JSON‑LD in header
+- [ ] Set SEO title + meta description
+- [ ] Paste & schedule 5‑email launch
+- [ ] Upload pack file to Thank‑You or file delivery
+- [ ] Test checkout, bump, email delivery

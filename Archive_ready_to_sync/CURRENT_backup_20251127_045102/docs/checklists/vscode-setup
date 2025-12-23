@@ -1,0 +1,37 @@
+```md
+# VS Code Setup (Canonical Editor)
+
+## One-time project settings
+
+- `.vscode/settings.json` enforces:
+  - UTF-8 encoding
+  - LF line endings
+  - Prettier as default formatter
+  - Format on Save
+- `.editorconfig` mirrors the same rules.
+- `.gitattributes` treats images/PDFs/zips as binary (prevents corruption).
+
+## Extensions to install
+
+- **Prettier** (esbenp.prettier-vscode)
+- **Live Server** (ritwickdey.LiveServer)
+
+## Edit & Preview
+
+- Open folder: `File → Open Folder… → ~/Dropbox/InsightfulAffiliate_NextGenCopyAI`
+- Open `landing_pages/index.html` → click **Go Live** for instant preview.
+
+## Safe editing rules
+
+- Edit code only in VS Code (never Word/Pages/Docs).
+- When pasting from web/docs, use _Paste and Match Style_ to avoid “smart quotes”.
+- Keep assets in `assets/` and reference with relative paths.
+
+## If the editor looks stale
+
+- Dropbox usually syncs in seconds; when it says **Up to date**, VS Code should show the same.
+- If needed:
+  - Command Palette → **Developer: Reload Window**
+  - Or close/reopen VS Code
+  - Run `git status` in the terminal to see actual file changes
+```

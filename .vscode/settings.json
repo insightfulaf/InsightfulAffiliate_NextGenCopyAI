@@ -1,0 +1,44 @@
+{
+  "files.encoding": "utf8",
+  "files.eol": "\n",
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+
+  "prettier.printWidth": 100,
+  "prettier.singleQuote": true,
+  "prettier.endOfLine": "lf",
+  "python-envs.pythonProjects": [],
+  "github.copilot.chat.codesearch.enabled": true,
+  "github.copilot.chat.notebook.followCellExecution.enabled": true,
+  "python.testing.pytestArgs": ["."],
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestEnabled": true,
+  "terminal.integrated.defaultProfile.osx": "zsh",
+  "terminal.integrated.profiles.osx": {
+    "zsh": {
+      "path": "/bin/zsh",
+      "args": ["-l"]
+    }
+  },
+  "terminal.integrated.inheritEnv": true,
+  "terminal.integrated.shellIntegration.enabled": true,
+  "application.shellEnvironmentResolutionTimeout": 30000,
+  "terminal.integrated.cwd": "${workspaceFolder}",
+  "window.restoreWindows": "one",
+  "remoteHub.gitProtocol": "http",
+  "prettier.insertPragma": false,
+  "liveServer.settings.ChromeDebuggingAttachment": false,
+  "search.seedOnFocus": true,
+  "workbench.editor.autoLockGroups": {
+    "chatgpt.conversationEditor": true
+  },
+  "workbench.colorTheme": "Default High Contrast",
+  "workbench.preferredDarkColorTheme": "Abyss",
+  "terminal-keeper.theme": "iconic",
+  "python.terminal.useEnvFile": true
+}

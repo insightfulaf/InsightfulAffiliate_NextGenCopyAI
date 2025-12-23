@@ -1,0 +1,33 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "Prompt\u2011to\u2011Profit Playbook Pack (2025)",
+  "brand": {
+    "@type": "Brand",
+    "name": "NextGenCopyAI by InsightfulAffiliate"
+  },
+  "description": "Outcome\u2011first prompts and workflows to turn ideas into blogs, emails, and short videos\u2014then monetize them.",
+  "offers": [
+    {
+      "@type": "Offer",
+      "name": "Starter",
+      "priceCurrency": "USD",
+      "price": "49.00",
+      "availability": "https://schema.org/InStock"
+    },
+    {
+      "@type": "Offer",
+      "name": "Pro",
+      "priceCurrency": "USD",
+      "price": "129.00",
+      "availability": "https://schema.org/InStock"
+    },
+    {
+      "@type": "Offer",
+      "name": "Agency / White\u2011Label",
+      "priceCurrency": "USD",
+      "price": "249.00",
+      "availability": "https://schema.org/InStock"
+    }
+  ]
+}

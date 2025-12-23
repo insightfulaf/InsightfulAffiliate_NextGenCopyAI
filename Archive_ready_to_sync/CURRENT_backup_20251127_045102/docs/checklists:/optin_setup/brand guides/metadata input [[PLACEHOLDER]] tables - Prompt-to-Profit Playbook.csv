@@ -1,0 +1,12 @@
+Field,Placeholder / Suggested Content,Notes
+<title>,Prompt‑to‑Profit Playbook – 40 AI Prompts & Workflows,Highlight the key benefit; keep it within ~60 characters.
+"<meta name=""description"">","Unlock 40 outcome‑first prompts mapped to full workflows for blogs, emails and videos. The Prompt‑to‑Profit Playbook helps beginners monetize content quickly using AI tools and structured processes.",Describe the page content clearly; include important details like the number of prompts and the target audience.
+"<link rel=""canonical"">",https://yourdomain.com/playbook,Replace with the actual canonical URL of your playbook landing page.
+Open Graph og:title,Prompt‑to‑Profit Playbook – AI Prompts & Workflows,Use a slightly shortened but descriptive title.
+Open Graph og:description,"Get a library of 40 outcome‑oriented prompts and step‑by‑step workflows for blogs, emails and social videos. Ideal for new creators who want to turn AI‑generated content into income fast.",Provide a fuller description that expands on the meta description.
+Open Graph og:url,https://yourdomain.com/playbook,Same as the canonical URL.
+Open Graph og:image,https://yourdomain.com/path/to/NextGenCopyAI_by_InsightfulAffiliate_og_dark_1200x630.png,Use a high‑quality image representing the playbook or your brand.
+Twitter twitter:card,summary_large_image,Standard card type with large image.
+Twitter twitter:title,Same as og:title,
+Twitter twitter:description,Same as og:description,
+Twitter twitter:image,Same as og:image,

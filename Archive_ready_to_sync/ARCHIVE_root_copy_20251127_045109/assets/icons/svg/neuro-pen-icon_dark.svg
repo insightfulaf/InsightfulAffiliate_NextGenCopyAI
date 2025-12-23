@@ -1,0 +1,21 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8A5CF6"/>
+      <stop offset="100%" stop-color="#2DE2E6"/>
+    </linearGradient>
+  </defs>
+  <rect width="1024" height="1024" rx="160" fill="#0B0B12"/>
+  <!-- Circuit arcs -->
+  <path d="M170,640 C170,480 300,350 460,350" fill="none" stroke="url(#g1)" stroke-width="24" stroke-linecap="round"/>
+  <path d="M854,640 C854,480 724,350 564,350" fill="none" stroke="url(#g1)" stroke-width="24" stroke-linecap="round"/>
+  <!-- Nodes -->
+  <circle cx="170" cy="640" r="22" fill="url(#g1)"/>
+  <circle cx="854" cy="640" r="22" fill="url(#g1)"/>
+  <circle cx="512" cy="300" r="18" fill="url(#g1)"/>
+  <!-- Pen nib -->
+  <path d="M512 380 L600 620 L512 680 L424 620 Z" fill="#FFFFFF"/>
+  <circle cx="512" cy="580" r="34" fill="#0B0B12" stroke="#FFFFFF" stroke-width="16"/>
+  <!-- Glow accent -->
+  <ellipse cx="512" cy="730" rx="180" ry="24" fill="url(#g1)" opacity="0.25"/>
+</svg>

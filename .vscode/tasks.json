@@ -1,0 +1,34 @@
+{
+  // VS Code Task runner for your repo
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build funnel map",
+      "type": "shell",
+      "command": "${config:python.defaultInterpreterPath}",
+      "args": ["scripts/build_funnel_map.py"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build + commit funnel map",
+      "type": "shell",
+      "command": "${config:python.defaultInterpreterPath} scripts/build_funnel_map.py && git diff --quiet docs/checklists/funnel_map.md || (git add docs/checklists/funnel_map.md && git commit -m \"docs: update funnel map\")",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Open: Systeme paste guide",
+      "type": "shell",
+      "command": "code docs/checklists/systeme_paste_guide.md",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    }
+  ]
+}

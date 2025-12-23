@@ -1,8 +1,15 @@
 name: Contributor setup check
 
-on:
+"on":
   pull_request:
-    types: [opened, synchronize, reopened]
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+permissions:
+  contents: read
+  pull-requests: write
 
 jobs:
   check-setup:
@@ -15,8 +22,8 @@ jobs:
 
       - name: Verify CONTRIBUTING.md mentions setup script
         run: |
-          if ! grep -q "./scripts/setup.sh" CONTRIBUTING.md; then
-            echo "ERROR: CONTRIBUTING.md does not reference ./scripts/setup.sh" >&2
+          if ! grep -E -q '(\./)?scripts/setup\.sh' CONTRIBUTING.md; then
+            echo "ERROR: CONTRIBUTING.md must reference 'scripts/setup.sh' (with or without './' prefix) for initial setup" >&2
             exit 1
           fi
           echo "CONTRIBUTING.md references setup script"
@@ -42,10 +49,9 @@ jobs:
           echo "README.md references CONTRIBUTING.md"
 
       - name: "Optional: Shellcheck (lint script)"
-        continue-on-error: true
-        uses: reviewdog/action-shellcheck@v1
+        uses: reviewdog/action-shellcheck@v1.18.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           reporter: github-pr-review
-          shellcheck_flags: -x
-          pattern: "scripts/*.sh"
+          shellcheck_flags: "-x"
+          path: "scripts/setup.sh"

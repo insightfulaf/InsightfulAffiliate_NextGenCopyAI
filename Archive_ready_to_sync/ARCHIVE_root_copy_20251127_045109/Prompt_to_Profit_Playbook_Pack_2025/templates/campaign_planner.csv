@@ -1,0 +1,6 @@
+day,asset,goal,cta,link
+1,Email 1,Open>35%,Choose plan,{SALES_URL}
+3,Email 2,Click>8%,See inside,{SALES_URL}
+5,Email 3,Replies>5,Choose plan,{SALES_URL}
+7,Email 4,Click>8%,Choose plan,{SALES_URL}
+8,Email 5,Sales,Get access,{SALES_URL}

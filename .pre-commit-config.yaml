@@ -1,0 +1,87 @@
+# Pre-commit Hook Configuration
+# Install pre-commit: pip install pre-commit
+# Setup: pre-commit install
+# Run manually: pre-commit run --all-files
+
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+
+repos:
+  # General file checks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+        args: ['--maxkb=1000']
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-toml
+      - id: detect-private-key
+        name: Detect Private Keys
+        description: Detects presence of private keys in files
+
+  # Secret detection with detect-secrets
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.4.0
+    hooks:
+      - id: detect-secrets
+        args: 
+          - '--baseline'
+          - '.secrets.baseline'
+        exclude: |
+          (?x)^(
+            .*\.lock|
+            .*package-lock\.json|
+            .*yarn\.lock|
+            .*\.min\.js|
+            docs/SSH_KEY_SECURITY\.md
+          )$
+
+  # Python code quality
+  - repo: https://github.com/psf/black
+    rev: 23.12.1
+    hooks:
+      - id: black
+        language_version: python3
+        files: \.py$
+
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.0.0
+    hooks:
+      - id: flake8
+        args: ['--max-line-length=120', '--extend-ignore=E203,W503']
+        files: \.py$
+
+  # Security checks for Python dependencies
+  - repo: https://github.com/Lucas-C/pre-commit-hooks-safety
+    rev: v1.3.3
+    hooks:
+      - id: python-safety-dependencies-check
+        files: requirements\.txt$
+
+  # Git commit message linting
+  - repo: https://github.com/jorisroovers/gitlint
+    rev: v0.19.1
+    hooks:
+      - id: gitlint
+        stages: [commit-msg]
+
+  # Custom local hooks
+  - repo: local
+    hooks:
+      - id: check-ssh-keys
+        name: Check for SSH Keys in Repository
+        entry: bash -c 'if git diff --cached --name-only | grep -E "(id_rsa|id_dsa|id_ecdsa|id_ed25519|\.pem|\.key)"; then echo "ERROR: Attempting to commit SSH key or private key file!"; exit 1; fi'
+        language: system
+        pass_filenames: false
+        stages: [commit]
+      
+      - id: prevent-ssh-key-content
+        name: Prevent SSH Key Content
+        entry: bash -c 'if git diff --cached | grep -E "BEGIN (RSA|DSA|EC|OPENSSH|ENCRYPTED)? PRIVATE KEY"; then echo "ERROR: Private key content detected in commit!"; exit 1; fi'
+        language: system
+        pass_filenames: false
+        stages: [commit]

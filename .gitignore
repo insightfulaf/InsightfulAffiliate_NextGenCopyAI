@@ -26,6 +26,22 @@ pnpm-debug.log*
 .env.*
 .env.local
 
+# ===== SSH Keys & Credentials =====
+# Never commit SSH keys or private credentials
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+id_dsa*
+id_ecdsa*
+id_ed25519*
+*.ppk
+known_hosts
+authorized_keys
+# Catch any accidentally named ssh files
+*ssh-agent*
+
 # ===== Dependencies & Caches =====
 node_modules/
 .cache/

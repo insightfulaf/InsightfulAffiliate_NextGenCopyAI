@@ -30,6 +30,8 @@ git clone git@github.com:insightfulaf/InsightfulAffiliate_NextGenCopyAI.git
 
 ## Authentication options
 
+> **⚠️ Security Note**: For comprehensive SSH key security practices, please read [SSH Key Security Guide](docs/SSH_KEY_SECURITY.md). This guide covers secure key generation, storage, and emergency response procedures.
+
 A. HTTPS with macOS keychain (recommended for macOS users)
 
 1. Enable the macOS keychain helper (stores credentials securely):
@@ -45,7 +47,11 @@ git config --global credential.helper osxkeychain
    - For basic repo access, the `repo` scope is sufficient for private repos (or select repo permissions in fine-grained tokens).
    - Copy the token and paste it when Git prompts for a password.
 
-B. SSH (no PAT required)
+B. SSH (no PAT required, more secure for regular use)
+
+**🔐 IMPORTANT: Read the [SSH Key Security Guide](docs/SSH_KEY_SECURITY.md) for detailed security practices.**
+
+**Quick Setup (secure method):**
 
 1. Create an SSH key if you don't have one:
 
@@ -55,28 +61,47 @@ ssh-keygen -t ed25519 -C "your_email@example.com"
 # ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
 ```
 
-1. Start the ssh-agent and add your key:
+When prompted:
+- Accept default location (`~/.ssh/id_ed25519`)
+- **Use a strong passphrase** (highly recommended for security)
+
+2. Set proper file permissions:
+
+```bash
+chmod 600 ~/.ssh/id_ed25519      # private key
+chmod 644 ~/.ssh/id_ed25519.pub  # public key
+```
+
+3. Start the ssh-agent and add your key:
 
 ```bash
 eval "$(ssh-agent -s)"
 ssh-add --apple-use-keychain ~/.ssh/id_ed25519  # macOS-specific
-# or: ssh-add ~/.ssh/id_rsa
+# or: ssh-add ~/.ssh/id_ed25519  # Linux
 ```
 
-1. Copy your public key and add it to GitHub (Settings → SSH and GPG keys):
+4. Copy your **public** key and add it to GitHub (Settings → SSH and GPG keys):
 
 ```bash
-cat ~/.ssh/id_ed25519.pub | pbcopy
-# then paste into GitHub
+cat ~/.ssh/id_ed25519.pub | pbcopy  # macOS
+# or: cat ~/.ssh/id_ed25519.pub | xclip -selection clipboard  # Linux
+# then paste into GitHub at https://github.com/settings/keys
 ```
 
-1. Test the connection:
+5. Test the connection:
 
 ```bash
 ssh -T git@github.com
 ```
 
 You should see a success message like `Hi <username>! You've successfully authenticated...`.
+
+**⚠️ Security Reminders:**
+- NEVER commit private keys (files without .pub extension) to git
+- Store SSH keys ONLY in `~/.ssh/` directory
+- Use passphrases to protect your private keys
+- If you accidentally expose a key, revoke it immediately and generate a new one
+- See [SSH Key Security Guide](docs/SSH_KEY_SECURITY.md) for emergency response procedures
 
 ## Recommended workflow
 

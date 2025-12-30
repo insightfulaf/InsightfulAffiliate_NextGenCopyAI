@@ -49,6 +49,7 @@ jobs:
           echo "README.md references CONTRIBUTING.md"
 
       - name: "Optional: Shellcheck (lint script)"
+        continue-on-error: true
         uses: reviewdog/action-shellcheck@v1.18.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

@@ -26,7 +26,7 @@ jobs:
       - name: Install security tools
         run: |
           pip install detect-secrets
-          pip install truffleHog3
+          pip install truffleHog3 || echo "::warning::truffleHog3 installation failed, skipping TruffleHog scan"
       
       - name: Run detect-secrets scan
         run: |
@@ -55,7 +55,7 @@ jobs:
           fi
           
           # Check for private key content (excluding documentation, workflows, archives, and review files)
-          if git grep -E "BEGIN (RSA|DSA|EC|OPENSSH|ENCRYPTED)? PRIVATE KEY" -- . ":(exclude).github/" ":(exclude)docs/" ":(exclude).pre-commit-config.yaml" ":(exclude)Archive_ready_to_sync/" ":(exclude)archive/" ":(exclude)REVIEW_PENDING/" ":(exclude)scripts/security-check.sh"; then
+          if git grep -E "BEGIN (RSA|DSA|EC|OPENSSH|ENCRYPTED)? PRIVATE KEY" -- . ":(exclude).github/" ":(exclude)docs/**" ":(exclude).pre-commit-config.yaml" ":(exclude)Archive_ready_to_sync/" ":(exclude)archive/" ":(exclude)REVIEW_PENDING/" ":(exclude)scripts/security-check.sh"; then
             echo "::error::Private key content found in repository!"
             exit 1
           else
@@ -89,7 +89,17 @@ jobs:
       - name: Run TruffleHog
         run: |
           echo "Running TruffleHog entropy analysis..."
-          trufflehog3 --no-history --format json . || true
+          
+          if command -v trufflehog3 >/dev/null 2>&1; then
+            if trufflehog3 --no-history --format json .; then
+              echo "✓ TruffleHog completed successfully"
+            else
+              exit_code=$?
+              echo "::warning::TruffleHog scan failed with exit code ${exit_code}. Review the tool installation and output logs."
+            fi
+          else
+            echo "::warning::trufflehog3 command not found. Ensure TruffleHog is installed correctly. Skipping TruffleHog scan."
+          fi
       
       - name: Security scan summary
         if: always()

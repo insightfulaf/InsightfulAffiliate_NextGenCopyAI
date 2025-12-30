@@ -192,4 +192,4 @@ cat ~/.ssh/id_ed25519.pub
 
 **Remember**: Security is not optional. Take the time to do it right!
 
-**Last Updated**: 2024-12-30
+**Last Updated**: 2025-12-30

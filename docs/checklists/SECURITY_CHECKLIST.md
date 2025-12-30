@@ -127,5 +127,5 @@ If you have questions about any security practices or need help:
 
 ---
 
-**Last Updated**: 2024-12-30
+**Last Updated**: 2025-12-30
 **Review Frequency**: Quarterly or after security incidents

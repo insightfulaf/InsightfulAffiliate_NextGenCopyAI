@@ -1,3 +1,7 @@
 # Core dependencies for repository automation and agents
 openai>=1.57.0
 pytest>=8.0.0
+
+# Security tools (development)
+detect-secrets>=1.4.0
+pre-commit>=3.5.0

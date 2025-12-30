@@ -12,6 +12,8 @@ This repo powers **InsightfulAffiliate** and **NextGenCopyAI** content workflows
 
 ## Setup
 
+> **🔐 Security First**: Before you begin, review the [SSH Key Security Guide](docs/SSH_KEY_SECURITY.md) to ensure your credentials are properly secured. See the [Security Checklist](docs/checklists/SECURITY_CHECKLIST.md) for a complete security review.
+
 1) **Git remote ([insightfulaf/InsightfulAffiliate_NextGenCopyAI][remoteRepoDefinition])**
    - Update once, then verify:
 

@@ -44,4 +44,50 @@ After running the above, the next time you `git push` Git will prompt for your G
 
 If you prefer to keep using SSH, ensure your SSH key is added to GitHub (Settings → SSH and GPG keys).
 
+## GitHub Copilot Setup
+
+This repository is configured with custom GitHub Copilot agents and skills to enhance your development workflow. These tools help with content generation, landing page creation, affiliate link management, and documentation.
+
+### Available Custom Agents
+
+Located in `.github/agents/`:
+
+1. **Content Generator** - AI copywriting assistant for InsightfulAffiliate and NextGenCopyAI brands
+2. **Landing Page Builder** - Systeme.io specialist for conversion-optimized web components
+3. **Affiliate Link Manager** - Compliance and tracking expert for ethical affiliate marketing
+4. **Documentation Expert** - Technical writer for clear, comprehensive documentation
+5. **Plan Mode** - Strategic planning and architecture assistant
+
+### Available Skills
+
+Located in `.github/skills/`:
+
+1. **Content Generation Workflow** - Automated workflow using `agent_codex.py` for bulk content generation
+2. **Affiliate Compliance Check** - FTC compliance verification and ethical marketing practices
+
+### Using Copilot Agents
+
+**In GitHub Issues**: When assigning an issue to Copilot, select a custom agent from the list to get specialized assistance.
+
+**In VS Code**: Activate custom agents in the Copilot chat alongside built-in agents.
+
+**In Copilot CLI**: Coming soon - custom agent support in terminal workflows.
+
+### Repository Instructions
+
+The file `.github/copilot-instructions.md` contains comprehensive guidelines for:
+- Repository structure and coding standards
+- Brand voice guidelines (InsightfulAffiliate vs NextGenCopyAI)
+- AI integration patterns and best practices
+- Content generation workflows
+- Affiliate marketing compliance
+
+These instructions are automatically available to GitHub Copilot when working in this repository.
+
+### Learn More
+
+- [GitHub Copilot Best Practices](https://gh.io/copilot-coding-agent-tips)
+- [Contributing Guidelines](CONTRIBUTING.md)
+- [Copilot Instructions](.github/copilot-instructions.md)
+
 [remoteRepoDefinition]: https://github.com/insightfulaf/InsightfulAffiliate_NextGenCopyAI.git

@@ -11,7 +11,7 @@
       "**/.venv": true,
       "**/__pycache__": true
     },
-    "python.defaultInterpreterPath": ".venv/bin/python",
+    "python.defaultInterpreterPath": ".venv-1/bin/python",
     "editor.formatOnSave": false
   }
 }

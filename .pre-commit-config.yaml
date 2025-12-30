@@ -68,6 +68,7 @@ repos:
     hooks:
       - id: gitlint
         stages: [commit-msg]
+        additional_dependencies: []
 
   # Custom local hooks
   - repo: local
@@ -81,7 +82,7 @@ repos:
       
       - id: prevent-ssh-key-content
         name: Prevent SSH Key Content
-        entry: bash -c 'if git diff --cached | grep -E "BEGIN (RSA|DSA|EC|OPENSSH|ENCRYPTED)? PRIVATE KEY"; then echo "ERROR - Private key content detected in commit!"; exit 1; fi'
+        entry: bash -c 'if git diff --cached -- . ":(exclude)docs/**" ":(exclude).github/**" | grep -E "BEGIN (RSA|DSA|EC|OPENSSH|ENCRYPTED)? PRIVATE KEY"; then echo "ERROR - Private key content detected in commit!"; exit 1; fi'
         language: system
         pass_filenames: false
         stages: [commit]

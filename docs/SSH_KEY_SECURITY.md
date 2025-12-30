@@ -369,7 +369,7 @@ If the key was committed to git history:
 git filter-repo --path path/to/key --invert-paths
 
 # Option 2: Use BFG Repo-Cleaner
-# Download from: https://rips-scanner.sourceforge.io/
+# Download from: https://rtyley.github.io/bfg-repo-cleaner/
 java -jar bfg.jar --delete-files id_ed25519 .
 
 # After either option, force push
@@ -427,8 +427,8 @@ git remote -v
 ### Verify Repository Security
 
 ```bash
-# Check for accidentally committed keys
-git log --all --source --full-history -S "BEGIN PRIVATE KEY" --oneline
+# Check for accidentally committed keys (use partial string to avoid matching this doc)
+git log --all --source --full-history -S "PRIVATE KEY-----" --oneline
 
 # Check .gitignore
 cat .gitignore | grep -E "id_|\.key|\.pem"

@@ -46,10 +46,23 @@ print_info() {
     echo -e "${BLUE}ℹ${NC} $1"
 }
 
+# Cross-platform stat command helper
+get_permissions() {
+    local path="$1"
+    case "$(uname -s)" in
+        Darwin)
+            stat -f "%A" "$path" 2>/dev/null
+            ;;
+        *)
+            stat -c "%a" "$path" 2>/dev/null
+            ;;
+    esac
+}
+
 # Check 1: SSH directory exists and has correct permissions
 echo "1. Checking SSH directory..."
 if [ -d "$HOME/.ssh" ]; then
-    SSH_DIR_PERMS=$(stat -f "%A" "$HOME/.ssh" 2>/dev/null || stat -c "%a" "$HOME/.ssh" 2>/dev/null)
+    SSH_DIR_PERMS=$(get_permissions "$HOME/.ssh")
     if [ "$SSH_DIR_PERMS" = "700" ]; then
         print_pass "SSH directory exists with correct permissions (700)"
     else
@@ -69,7 +82,7 @@ for keytype in ed25519 rsa ecdsa; do
         KEYS_FOUND=1
         
         # Check private key permissions
-        KEY_PERMS=$(stat -f "%A" "$HOME/.ssh/id_$keytype" 2>/dev/null || stat -c "%a" "$HOME/.ssh/id_$keytype" 2>/dev/null)
+        KEY_PERMS=$(get_permissions "$HOME/.ssh/id_$keytype")
         if [ "$KEY_PERMS" = "600" ]; then
             print_pass "Private key has correct permissions (600)"
         else
@@ -78,7 +91,7 @@ for keytype in ed25519 rsa ecdsa; do
         
         # Check if public key exists
         if [ -f "$HOME/.ssh/id_$keytype.pub" ]; then
-            PUB_PERMS=$(stat -f "%A" "$HOME/.ssh/id_$keytype.pub" 2>/dev/null || stat -c "%a" "$HOME/.ssh/id_$keytype.pub" 2>/dev/null)
+            PUB_PERMS=$(get_permissions "$HOME/.ssh/id_$keytype.pub")
             if [ "$PUB_PERMS" = "644" ]; then
                 print_pass "Public key has correct permissions (644)"
             else
@@ -122,7 +135,12 @@ if ssh -T git@github.com 2>&1 | grep -q "successfully authenticated"; then
 else
     print_fail "Cannot authenticate with GitHub. Ensure your public key is added to GitHub."
     print_info "  Add your key at: https://github.com/settings/keys"
-    print_info "  Copy your public key: cat ~/.ssh/id_ed25519.pub | pbcopy"
+    if [[ "$(uname -s)" == "Darwin" ]]; then
+        print_info "  Copy your public key (macOS): cat ~/.ssh/id_ed25519.pub | pbcopy"
+    else
+        print_info "  Copy your public key (Linux): cat ~/.ssh/id_ed25519.pub | xclip -selection clipboard"
+        print_info "  Or display it: cat ~/.ssh/id_ed25519.pub"
+    fi
 fi
 echo ""
 
@@ -136,7 +154,13 @@ if [ -n "$REMOTE_URL" ]; then
         print_info "  Remote: $REMOTE_URL"
     elif echo "$REMOTE_URL" | grep -q "^https://"; then
         print_warn "Git remote uses HTTPS (SSH recommended for security)"
-        print_info "  Switch to SSH: git remote set-url origin git@github.com:insightfulaf/InsightfulAffiliate_NextGenCopyAI.git"
+        if echo "$REMOTE_URL" | grep -q "^https://github.com/"; then
+            REPO_PATH="${REMOTE_URL#https://github.com/}"
+            REPO_PATH="${REPO_PATH%.git}"
+            print_info "  Switch to SSH: git remote set-url origin git@github.com:${REPO_PATH}.git"
+        else
+            print_info "  Consider switching to SSH for improved security"
+        fi
     else
         print_warn "Unrecognized remote URL format: $REMOTE_URL"
     fi

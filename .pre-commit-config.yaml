@@ -71,7 +71,7 @@ repos:
     hooks:
       - id: check-ssh-keys
         name: Check for SSH Keys in Repository
-        entry: bash -c 'if git diff --cached --name-only | grep -E "(id_rsa|id_dsa|id_ecdsa|id_ed25519|\.pem|\.key)"; then echo "ERROR - Attempting to commit SSH key or private key file!"; exit 1; fi'
+        entry: bash -c 'if git diff --cached --name-only | grep -E "(id_rsa|id_dsa|id_ecdsa|id_ed25519|identity|.*_rsa|.*_dsa|.*_ecdsa|.*_ed25519|\.pem$|\.key$|\.ppk$|\.crt$|\.cer$)"; then echo "ERROR - Attempting to commit SSH key or private key file!"; exit 1; fi'
         language: system
         pass_filenames: false
         stages: [commit]

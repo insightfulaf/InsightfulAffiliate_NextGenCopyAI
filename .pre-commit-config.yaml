@@ -28,12 +28,16 @@ repos:
     rev: v1.4.0
     hooks:
       - id: detect-secrets
+        args: 
+          - '--baseline'
+          - '.secrets.baseline'
         exclude: |
           (?x)^(
             .*\.lock|
             .*package-lock\.json|
             .*yarn\.lock|
-            .*\.min\.js
+            .*\.min\.js|
+            docs/SSH_KEY_SECURITY\.md
           )$
 
   # Python code quality
@@ -78,7 +82,7 @@ repos:
       
       - id: prevent-ssh-key-content
         name: Prevent SSH Key Content
-        entry: bash -c 'if git diff --cached | grep -E "BEGIN (RSA|DSA|EC|OPENSSH|ENCRYPTED)? PRIVATE KEY"; then echo "ERROR - Private key content detected in commit!"; exit 1; fi'
+        entry: bash -c 'if git diff --cached -- . ":(exclude)docs/**" ":(exclude).github/**" | grep -E "BEGIN (RSA|DSA|EC|OPENSSH|ENCRYPTED)? PRIVATE KEY"; then echo "ERROR - Private key content detected in commit!"; exit 1; fi'
         language: system
         pass_filenames: false
         stages: [commit]

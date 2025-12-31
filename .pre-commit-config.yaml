@@ -71,14 +71,14 @@ repos:
     hooks:
       - id: check-ssh-keys
         name: Check for SSH Keys in Repository
-        entry: bash -c 'if git diff --cached --name-only | grep -E "(id_rsa|id_dsa|id_ecdsa|id_ed25519|identity|.*_rsa|.*_dsa|.*_ecdsa|.*_ed25519|\.pem$|\.key$|\.ppk$|\.crt$|\.cer$)"; then echo "ERROR - Attempting to commit SSH key or private key file!"; exit 1; fi'
+        entry: bash -c 'if git diff --cached --name-only | grep -E "(id_rsa|id_dsa|id_ecdsa|id_ed25519|identity|.*_rsa|.*_dsa|.*_ecdsa|.*_ed25519|\.pem$|\.key$|\.ppk$|\.crt$|\.cer$)"; then echo "ERROR: Attempting to commit an SSH or private key file. Remove the file from staging with '\''git reset HEAD <file>'\'' and store your keys in ~/.ssh/ or a secure secrets manager before retrying the commit."; exit 1; fi'
         language: system
         pass_filenames: false
         stages: [commit]
       
       - id: prevent-ssh-key-content
         name: Prevent SSH Key Content
-        entry: bash -c 'if git diff --cached | grep -E "BEGIN (RSA |DSA |EC |OPENSSH |ENCRYPTED )?PRIVATE KEY"; then echo "ERROR - Private key content detected in commit!"; exit 1; fi'
+        entry: bash -c 'if git diff --cached | grep -E "(BEGIN (RSA |DSA |EC |OPENSSH |ENCRYPTED )?PRIVATE KEY|BEGIN PGP PRIVATE KEY BLOCK|BEGIN SSH2 ENCRYPTED PRIVATE KEY|PuTTY-User-Key-File)"; then echo "ERROR: Private key content detected in staged changes. Review what is staged with '\''git diff --cached'\'' and remove any private key material from the files before retrying the commit."; exit 1; fi'
         language: system
         pass_filenames: false
         stages: [commit]

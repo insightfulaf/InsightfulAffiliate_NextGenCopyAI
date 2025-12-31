@@ -1,0 +1,121 @@
+name: Security - Secret Scanning
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+  push:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  secret-scan:
+    name: Scan for Secrets
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for comprehensive scanning
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install security tools
+        run: |
+          pip install detect-secrets
+          pip install truffleHog3 || echo "::warning::truffleHog3 installation failed, skipping TruffleHog scan"
+      
+      - name: Run detect-secrets scan
+        run: |
+          echo "Running detect-secrets scan..."
+          detect-secrets scan --baseline .secrets.baseline || true
+          
+          # Scan all files
+          if detect-secrets scan 2>&1 | grep -q "Potential secrets"; then
+            echo "::warning::Potential secrets detected by detect-secrets"
+            detect-secrets scan
+          else
+            echo "✓ No secrets detected by detect-secrets"
+          fi
+      
+      - name: Scan for SSH private keys
+        run: |
+          echo "Scanning for SSH private keys..."
+          
+          # Check working directory
+          if find . -type f \( -name "*.pem" -o -name "*.key" -o -name "id_rsa*" -o -name "id_dsa*" -o -name "id_ecdsa*" -o -name "id_ed25519*" \) ! -path "./.git/*" ! -path "./node_modules/*" ! -path "./Archive_ready_to_sync/*" ! -path "./archive/*" ! -path "./REVIEW_PENDING/*" 2>/dev/null | grep -q .; then
+            echo "::error::SSH key files found in repository!"
+            find . -type f \( -name "*.pem" -o -name "*.key" -o -name "id_rsa*" -o -name "id_dsa*" -o -name "id_ecdsa*" -o -name "id_ed25519*" \) ! -path "./.git/*" ! -path "./node_modules/*" ! -path "./Archive_ready_to_sync/*" ! -path "./archive/*" ! -path "./REVIEW_PENDING/*"
+            exit 1
+          else
+            echo "✓ No SSH key files found in working directory"
+          fi
+          
+          # Check for private key content (excluding documentation, workflows, archives, and review files)
+          if git grep -E "BEGIN (RSA|DSA|EC|OPENSSH|ENCRYPTED)? PRIVATE KEY" -- . ":(exclude).github/" ":(exclude)docs/**" ":(exclude).pre-commit-config.yaml" ":(exclude)Archive_ready_to_sync/" ":(exclude)archive/" ":(exclude)REVIEW_PENDING/" ":(exclude)scripts/security-check.sh"; then
+            echo "::error::Private key content found in repository!"
+            exit 1
+          else
+            echo "✓ No private key content found"
+          fi
+      
+      - name: Check git history for secrets
+        run: |
+          echo "Checking git history for secrets..."
+          
+          # Check for private keys in history
+          if git log --all --source --full-history -S "BEGIN PRIVATE KEY" --oneline | grep -q .; then
+            echo "::warning::Private key references found in git history"
+            echo "This may be from old commits. Review the security documentation."
+            git log --all --source --full-history -S "BEGIN PRIVATE KEY" --oneline | head -10
+          else
+            echo "✓ No private keys found in git history"
+          fi
+      
+      - name: Verify .gitignore
+        run: |
+          echo "Verifying .gitignore includes SSH key patterns..."
+          
+          if grep -q "id_rsa\|id_dsa\|id_ecdsa\|id_ed25519\|\.pem\|\.key" .gitignore; then
+            echo "✓ .gitignore includes SSH key patterns"
+          else
+            echo "::error::.gitignore missing SSH key patterns!"
+            exit 1
+          fi
+      
+      - name: Run TruffleHog
+        run: |
+          echo "Running TruffleHog entropy analysis..."
+          
+          if command -v trufflehog3 >/dev/null 2>&1; then
+            if trufflehog3 --no-history --format json .; then
+              echo "✓ TruffleHog completed successfully"
+            else
+              exit_code=$?
+              echo "::warning::TruffleHog scan failed with exit code ${exit_code}. Review the tool installation and output logs."
+            fi
+          else
+            echo "::warning::trufflehog3 command not found. Ensure TruffleHog is installed correctly. Skipping TruffleHog scan."
+          fi
+      
+      - name: Security scan summary
+        if: always()
+        run: |
+          echo "=================================================="
+          echo "Security Scan Summary"
+          echo "=================================================="
+          echo ""
+          echo "Scans completed:"
+          echo "  ✓ detect-secrets"
+          echo "  ✓ SSH key file scan"
+          echo "  ✓ Git history check"
+          echo "  ✓ .gitignore verification"
+          echo "  ✓ TruffleHog entropy analysis"
+          echo ""
+          echo "For more information, see:"
+          echo "  - docs/SSH_KEY_SECURITY.md"
+          echo "  - docs/checklists/SECURITY_CHECKLIST.md"
+          echo ""

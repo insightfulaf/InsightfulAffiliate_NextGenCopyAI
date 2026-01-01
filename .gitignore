@@ -41,6 +41,7 @@ known_hosts
 authorized_keys
 # Catch any accidentally named ssh files
 *ssh-agent*
+*eval*ssh*
 
 # ===== Dependencies & Caches =====
 node_modules/

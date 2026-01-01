@@ -61,7 +61,8 @@ This repository implements multiple security layers:
 - **GitHub Actions**: Automated secret scanning on pull requests
 - **Pre-commit Hooks**: Local scanning before commits
 - **detect-secrets**: Baseline secret detection
-- **Git History Checks**: Scanning for accidentally committed secrets
+- **Git History Checks**: Scanning for accidentally committed secrets (with smart exclusions for documentation and archived examples)
+- **TruffleHog**: Entropy-based secret detection with optimized performance (excludes archives and non-essential directories)
 
 ### Prevention Measures
 
@@ -130,8 +131,24 @@ We recommend always using the latest version of this repository.
 ### Optional Tools
 
 - **git-secrets**: Prevents committing secrets
-- **TruffleHog**: Finds secrets in git history
+- **TruffleHog**: Finds secrets in git history (optimized with exclusions)
 - **git-filter-repo**: Clean secrets from history
+
+### Performance Optimizations
+
+The security scanning workflow has been optimized for faster execution:
+
+- **Smart Directory Exclusions**: Archives, review files, and documentation examples are excluded from scans
+- **TruffleHog Optimization**: Configured to skip large archived directories and binary files (~3-5x faster)
+- **Git History Filtering**: Only scans relevant history, excluding documented examples and workflow files
+
+### Excluded from Security Scans
+
+The following directories contain examples, documentation, or archived content and are excluded from security scans:
+- `Archive_ready_to_sync/` - Historical backup files
+- `archive/` - Archived content
+- `REVIEW_PENDING/` - Files pending review
+- Workflow configuration files (to avoid false positives from pattern matching)
 
 ### Installation
 

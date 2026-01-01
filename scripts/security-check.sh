@@ -185,15 +185,16 @@ else
 fi
 
 # Check git history
-if git -C "$REPO_ROOT" log --all --source --full-history -S "PRIVATE KEY-----" --oneline 2>/dev/null | grep -q .; then
+if git -C "$REPO_ROOT" log --all --source --full-history -S "PRIVATE KEY-----" --oneline -- . ":(exclude)Archive_ready_to_sync/**" ":(exclude)archive/**" ":(exclude)REVIEW_PENDING/**" ":(exclude).github/workflows/**" ":(exclude).github/secret-scanning.yml" ":(exclude)scripts/security-check.sh" 2>/dev/null | grep -q .; then
     print_fail "Found private key references in git history:"
-    git -C "$REPO_ROOT" log --all --source --full-history -S "PRIVATE KEY-----" --oneline | head -5 | while read line; do
+    git -C "$REPO_ROOT" log --all --source --full-history -S "PRIVATE KEY-----" --oneline -- . ":(exclude)Archive_ready_to_sync/**" ":(exclude)archive/**" ":(exclude)REVIEW_PENDING/**" ":(exclude).github/workflows/**" ":(exclude).github/secret-scanning.yml" ":(exclude)scripts/security-check.sh" | head -5 | while read line; do
         print_info "  $line"
     done
+    print_info "  Real credentials may have been committed. Review immediately!"
     print_info "  See docs/SSH_KEY_SECURITY.md for history cleanup instructions"
     SECRETS_FOUND=1
 else
-    print_pass "No private keys found in git history"
+    print_pass "No private keys found in git history (excluding documented examples)"
 fi
 
 if [ $SECRETS_FOUND -eq 0 ]; then

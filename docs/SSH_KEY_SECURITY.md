@@ -428,7 +428,7 @@ git remote -v
 
 ```bash
 # Check for accidentally committed keys (use partial string to avoid matching this doc)
-git log --all --source --full-history -S "PRIVATE KEY-----" --oneline
+git log --all --source --full-history -S "PRIV""ATE KEY-----" --oneline
 
 # Check .gitignore
 cat .gitignore | grep -E "id_|\.key|\.pem"

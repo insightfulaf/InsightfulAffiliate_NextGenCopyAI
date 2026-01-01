@@ -185,9 +185,9 @@ else
 fi
 
 # Check git history
-if git -C "$REPO_ROOT" log --all --source --full-history -S "BEGIN PRIVATE KEY" --oneline 2>/dev/null | grep -q .; then
+if git -C "$REPO_ROOT" log --all --source --full-history -S "PRIVATE KEY-----" --oneline 2>/dev/null | grep -q .; then
     print_fail "Found private key references in git history:"
-    git -C "$REPO_ROOT" log --all --source --full-history -S "BEGIN PRIVATE KEY" --oneline | head -5 | while read line; do
+    git -C "$REPO_ROOT" log --all --source --full-history -S "PRIVATE KEY-----" --oneline | head -5 | while read line; do
         print_info "  $line"
     done
     print_info "  See docs/SSH_KEY_SECURITY.md for history cleanup instructions"

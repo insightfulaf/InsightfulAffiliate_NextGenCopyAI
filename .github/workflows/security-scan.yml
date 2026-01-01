@@ -66,14 +66,22 @@ jobs:
         run: |
           echo "Checking git history for secrets..."
           
-          # Define exclusion pathspecs for consistent use
-          GIT_PATHSPECS='. ":(exclude)Archive_ready_to_sync/**" ":(exclude)archive/**" ":(exclude)REVIEW_PENDING/**" ":(exclude).github/workflows/**" ":(exclude).github/secret-scanning.yml" ":(exclude)scripts/security-check.sh"'
-          
           # Check for private keys in history (excluding archived/review directories and workflow files)
-          if eval "git log --all --source --full-history -S 'PRIVATE KEY-----' --oneline -- $GIT_PATHSPECS" | grep -q .; then
+          # Using array-based approach to avoid eval security risks
+          git log --all --source --full-history -S "PRIVATE KEY-----" --oneline -- \
+            . \
+            ":(exclude)Archive_ready_to_sync/**" \
+            ":(exclude)archive/**" \
+            ":(exclude)REVIEW_PENDING/**" \
+            ":(exclude).github/workflows/**" \
+            ":(exclude).github/secret-scanning.yml" \
+            ":(exclude)scripts/security-check.sh" \
+            > /tmp/git-history-check.txt || true
+          
+          if [ -s /tmp/git-history-check.txt ]; then
             echo "::error::Private key references found in git history"
             echo "Real credentials may have been committed. Review immediately!"
-            eval "git log --all --source --full-history -S 'PRIVATE KEY-----' --oneline -- $GIT_PATHSPECS" | head -10
+            head -10 /tmp/git-history-check.txt
             exit 1
           else
             echo "✓ No private keys found in git history (excluding documented examples)"

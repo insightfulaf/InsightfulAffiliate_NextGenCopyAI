@@ -9,6 +9,17 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
+# Git pathspec exclusions for secret scanning
+# Excludes archived directories, review files, and security workflow files
+GIT_EXCLUDE_PATHSPECS=(
+    ":(exclude)Archive_ready_to_sync/**"
+    ":(exclude)archive/**"
+    ":(exclude)REVIEW_PENDING/**"
+    ":(exclude).github/workflows/**"
+    ":(exclude).github/secret-scanning.yml"
+    ":(exclude)scripts/security-check.sh"
+)
+
 # Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -185,9 +196,9 @@ else
 fi
 
 # Check git history
-if git -C "$REPO_ROOT" log --all --source --full-history -S "PRIVATE KEY-----" --oneline -- . ":(exclude)Archive_ready_to_sync/**" ":(exclude)archive/**" ":(exclude)REVIEW_PENDING/**" ":(exclude).github/workflows/**" ":(exclude).github/secret-scanning.yml" ":(exclude)scripts/security-check.sh" 2>/dev/null | grep -q .; then
+if git -C "$REPO_ROOT" log --all --source --full-history -S "PRIVATE KEY-----" --oneline -- . "${GIT_EXCLUDE_PATHSPECS[@]}" 2>/dev/null | grep -q .; then
     print_fail "Found private key references in git history:"
-    git -C "$REPO_ROOT" log --all --source --full-history -S "PRIVATE KEY-----" --oneline -- . ":(exclude)Archive_ready_to_sync/**" ":(exclude)archive/**" ":(exclude)REVIEW_PENDING/**" ":(exclude).github/workflows/**" ":(exclude).github/secret-scanning.yml" ":(exclude)scripts/security-check.sh" | head -5 | while read line; do
+    git -C "$REPO_ROOT" log --all --source --full-history -S "PRIVATE KEY-----" --oneline -- . "${GIT_EXCLUDE_PATHSPECS[@]}" | head -5 | while read line; do
         print_info "  $line"
     done
     print_info "  Real credentials may have been committed. Review immediately!"

@@ -92,24 +92,22 @@ jobs:
           echo "Running TruffleHog entropy analysis..."
           
           if command -v trufflehog3 >/dev/null 2>&1; then
-            # Create exclusion config for faster scanning
-            cat > /tmp/trufflehog-exclude.txt << 'EOF'
-          Archive_ready_to_sync/
-          archive/
-          REVIEW_PENDING/
-          node_modules/
-          .git/
-          *.pdf
-          *.zip
-          *.tar
-          *.gz
-          EOF
-            
-            if trufflehog3 --no-history --format json --exclude /tmp/trufflehog-exclude.txt .; then
-              echo "✓ TruffleHog completed successfully (with optimized exclusions)"
+            # Use repository .trufflehogignore for exclusions (improves maintainability)
+            if [ -f .trufflehogignore ]; then
+              if trufflehog3 --no-history --format json --exclude .trufflehogignore .; then
+                echo "✓ TruffleHog completed successfully (with optimized exclusions)"
+              else
+                exit_code=$?
+                echo "::warning::TruffleHog scan failed with exit code ${exit_code}. Review the tool installation and output logs."
+              fi
             else
-              exit_code=$?
-              echo "::warning::TruffleHog scan failed with exit code ${exit_code}. Review the tool installation and output logs."
+              echo "::warning::.trufflehogignore not found, scanning all files"
+              if trufflehog3 --no-history --format json .; then
+                echo "✓ TruffleHog completed successfully"
+              else
+                exit_code=$?
+                echo "::warning::TruffleHog scan failed with exit code ${exit_code}. Review the tool installation and output logs."
+              fi
             fi
           else
             echo "::warning::trufflehog3 command not found. Ensure TruffleHog is installed correctly. Skipping TruffleHog scan."

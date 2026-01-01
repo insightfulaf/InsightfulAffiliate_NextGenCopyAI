@@ -67,10 +67,10 @@ jobs:
           echo "Checking git history for secrets..."
           
           # Check for private keys in history
-          if git log --all --source --full-history -S "BEGIN PRIVATE KEY" --oneline | grep -q .; then
+          if git log --all --source --full-history -S "PRIVATE KEY-----" --oneline | grep -q .; then
             echo "::warning::Private key references found in git history"
             echo "This may be from old commits. Review the security documentation."
-            git log --all --source --full-history -S "BEGIN PRIVATE KEY" --oneline | head -10
+            git log --all --source --full-history -S "PRIVATE KEY-----" --oneline | head -10
           else
             echo "✓ No private keys found in git history"
           fi

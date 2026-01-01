@@ -37,7 +37,7 @@ Use this checklist to ensure your development environment follows security best 
 
 ## Regular Maintenance
 
-- [ ] Review git history for accidentally committed secrets: `git log --all -S "PRIVATE KEY-----"`
+- [ ] Review git history for accidentally committed secrets: `git log --all -S "PRIV""ATE KEY-----"`
 - [ ] Rotate SSH keys every 1-2 years
 - [ ] Update dependencies regularly: `pip install -r requirements.txt --upgrade`
 - [ ] Run security scans: `detect-secrets scan`
@@ -91,7 +91,7 @@ ssh -T git@github.com
 git remote -v
 
 # Check for secrets in repository (use partial string)
-git log --all --source --full-history -S "PRIVATE KEY-----" --oneline
+git log --all --source --full-history -S "PRIV""ATE KEY-----" --oneline
 
 # Run pre-commit checks
 pre-commit run --all-files

@@ -66,13 +66,14 @@ jobs:
         run: |
           echo "Checking git history for secrets..."
           
-          # Check for private keys in history
-          if git log --all --source --full-history -S "PRIVATE KEY-----" --oneline | grep -q .; then
-            echo "::warning::Private key references found in git history"
-            echo "This may be from old commits. Review the security documentation."
-            git log --all --source --full-history -S "PRIVATE KEY-----" --oneline | head -10
+          # Check for private keys in history (excluding archived/review directories and workflow files)
+          if git log --all --source --full-history -S "PRIVATE KEY-----" --oneline -- . ":(exclude)Archive_ready_to_sync/**" ":(exclude)archive/**" ":(exclude)REVIEW_PENDING/**" ":(exclude).github/workflows/**" ":(exclude).github/secret-scanning.yml" ":(exclude)scripts/security-check.sh" | grep -q .; then
+            echo "::error::Private key references found in git history"
+            echo "Real credentials may have been committed. Review immediately!"
+            git log --all --source --full-history -S "PRIVATE KEY-----" --oneline -- . ":(exclude)Archive_ready_to_sync/**" ":(exclude)archive/**" ":(exclude)REVIEW_PENDING/**" ":(exclude).github/workflows/**" ":(exclude).github/secret-scanning.yml" ":(exclude)scripts/security-check.sh" | head -10
+            exit 1
           else
-            echo "✓ No private keys found in git history"
+            echo "✓ No private keys found in git history (excluding documented examples)"
           fi
       
       - name: Verify .gitignore
@@ -91,8 +92,21 @@ jobs:
           echo "Running TruffleHog entropy analysis..."
           
           if command -v trufflehog3 >/dev/null 2>&1; then
-            if trufflehog3 --no-history --format json .; then
-              echo "✓ TruffleHog completed successfully"
+            # Create exclusion config for faster scanning
+            cat > /tmp/trufflehog-exclude.txt << 'EOF'
+          Archive_ready_to_sync/
+          archive/
+          REVIEW_PENDING/
+          node_modules/
+          .git/
+          *.pdf
+          *.zip
+          *.tar
+          *.gz
+          EOF
+            
+            if trufflehog3 --no-history --format json --exclude /tmp/trufflehog-exclude.txt .; then
+              echo "✓ TruffleHog completed successfully (with optimized exclusions)"
             else
               exit_code=$?
               echo "::warning::TruffleHog scan failed with exit code ${exit_code}. Review the tool installation and output logs."

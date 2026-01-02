@@ -7,8 +7,8 @@ archive/**
 REVIEW_PENDING/**
 
 # Dependencies and build artifacts
-node_modules/
-.git/
+node_modules/** 
+.git/**
 
 # Binary files and compressed archives
 *.pdf

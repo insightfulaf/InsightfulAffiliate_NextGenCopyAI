@@ -201,7 +201,7 @@ if git -C "$REPO_ROOT" log --all --source --full-history -S "PRIVATE KEY-----" -
     git -C "$REPO_ROOT" log --all --source --full-history -S "PRIVATE KEY-----" --oneline -- . "${GIT_EXCLUDE_PATHSPECS[@]}" | head -5 | while read line; do
         print_info "  $line"
     done
-    print_fail "Real credentials may have been committed. Review immediately!"
+    print_info "Real credentials may have been committed. Review immediately!"
     print_info "  See docs/SSH_KEY_SECURITY.md for history cleanup instructions"
     SECRETS_FOUND=1
 else

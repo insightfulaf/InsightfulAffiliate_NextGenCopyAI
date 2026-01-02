@@ -74,7 +74,6 @@ jobs:
             ":(exclude)archive/**" \
             ":(exclude)REVIEW_PENDING/**" \
             ":(exclude).github/workflows/**" \
-            ":(exclude).github/secret-scanning.yml" \
             ":(exclude)scripts/security-check.sh" \
             > /tmp/git-history-check.txt || true
           

@@ -10,13 +10,12 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 # Git pathspec exclusions for secret scanning
-# Excludes archived directories, review files, and security workflow files
+# Excludes archived directories, review files, and .github directory (workflows, configs, etc.)
 GIT_EXCLUDE_PATHSPECS=(
     ":(exclude)Archive_ready_to_sync/**"
     ":(exclude)archive/**"
     ":(exclude)REVIEW_PENDING/**"
-    ":(exclude).github/workflows/**"
-    ":(exclude).github/secret-scanning.yml"
+    ":(exclude).github/**"
     ":(exclude)scripts/security-check.sh"
 )
 

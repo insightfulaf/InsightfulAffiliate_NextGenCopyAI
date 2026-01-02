@@ -75,7 +75,13 @@ jobs:
             ":(exclude)REVIEW_PENDING/**" \
             ":(exclude).github/workflows/**" \
             ":(exclude)scripts/security-check.sh" \
-            > /tmp/git-history-check.txt || true
+            > /tmp/git-history-check.txt
+          
+          git_log_status=$?
+          if [ "$git_log_status" -ne 0 ]; then
+            echo "::error::git log command failed (exit code $git_log_status). Unable to complete git history secret scan."
+            exit "$git_log_status"
+          fi
           
           if [ -s /tmp/git-history-check.txt ]; then
             echo "::error::Private key references found in git history"

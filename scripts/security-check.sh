@@ -196,9 +196,18 @@ else
 fi
 
 # Check git history
-if git -C "$REPO_ROOT" log --all --source --full-history -S "PRIVATE KEY-----" --oneline -- . "${GIT_EXCLUDE_PATHSPECS[@]}" 2>/dev/null | grep -q .; then
+# Validate that GIT_EXCLUDE_PATHSPECS array is properly defined
+if [ ${#GIT_EXCLUDE_PATHSPECS[@]} -eq 0 ]; then
+    print_warn "GIT_EXCLUDE_PATHSPECS array is empty, scanning all git history"
+    git -C "$REPO_ROOT" log --all --source --full-history -S "PRIVATE KEY-----" --oneline > /tmp/git-history-check.txt 2>/dev/null || true
+else
+    # Array is populated, use pathspec exclusions with proper quoting
+    git -C "$REPO_ROOT" log --all --source --full-history -S "PRIVATE KEY-----" --oneline -- . "${GIT_EXCLUDE_PATHSPECS[@]}" > /tmp/git-history-check.txt 2>/dev/null || true
+fi
+
+if [ -s /tmp/git-history-check.txt ]; then
     print_fail "Found private key references in git history:"
-    git -C "$REPO_ROOT" log --all --source --full-history -S "PRIVATE KEY-----" --oneline -- . "${GIT_EXCLUDE_PATHSPECS[@]}" | head -5 | while read line; do
+    head -5 /tmp/git-history-check.txt | while read line; do
         print_info "  $line"
     done
     print_info "Real credentials may have been committed. Review immediately!"

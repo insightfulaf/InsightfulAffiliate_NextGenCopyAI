@@ -108,9 +108,9 @@ jobs:
           echo "Running TruffleHog entropy analysis..."
           
           if command -v trufflehog3 >/dev/null 2>&1; then
-            # Use repository .trufflehogignore for exclusions (improves maintainability)
+            # Use repository .trufflehogignore for exclusions (improves maintainability via auto-detection)
             if [ -f .trufflehogignore ]; then
-              if trufflehog3 --no-history --format json --exclude .trufflehogignore .; then
+              if trufflehog3 --no-history --format json .; then
                 echo "✓ TruffleHog completed successfully (with optimized exclusions)"
               else
                 exit_code=$?

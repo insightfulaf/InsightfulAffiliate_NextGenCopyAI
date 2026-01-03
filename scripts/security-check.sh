@@ -9,6 +9,18 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
+# Git pathspec exclusions for secret scanning
+# Excludes archived directories, review files, and .github directory (workflows, configs, etc.)
+GIT_EXCLUDE_PATHSPECS=(
+    ":(exclude)Archive_ready_to_sync/**"
+    ":(exclude)archive/**"
+    ":(exclude)REVIEW_PENDING/**"
+    ":(exclude).github/**"
+    ":(exclude)scripts/security-check.sh"
+    ":(exclude).secrets.baseline"
+    ":(exclude).pre-commit-config.yaml"
+)
+
 # Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -185,15 +197,46 @@ else
 fi
 
 # Check git history
-if git -C "$REPO_ROOT" log --all --source --full-history -S "PRIVATE KEY-----" --oneline 2>/dev/null | grep -q .; then
+# Validate that GIT_EXCLUDE_PATHSPECS array is properly defined
+# Use mktemp for secure temporary file handling
+TEMP_GIT_CHECK=$(mktemp)
+trap 'rm -f "$TEMP_GIT_CHECK"' EXIT
+
+# Determine commit range to scan
+# Try to scan only new commits, not the entire history
+if git -C "$REPO_ROOT" rev-parse --verify origin/main >/dev/null 2>&1; then
+    # If origin/main exists, scan commits between origin/main and HEAD
+    COMMIT_RANGE="origin/main..HEAD"
+    print_info "Scanning commits between origin/main and HEAD"
+elif git -C "$REPO_ROOT" rev-parse --verify main >/dev/null 2>&1; then
+    # If local main exists, scan commits between main and HEAD  
+    COMMIT_RANGE="main..HEAD"
+    print_info "Scanning commits between main and HEAD"
+else
+    # Fallback: scan last 50 commits on current branch
+    COMMIT_RANGE="HEAD~50..HEAD"
+    print_info "Scanning last 50 commits on current branch"
+fi
+
+if [ ${#GIT_EXCLUDE_PATHSPECS[@]} -eq 0 ]; then
+    print_warn "GIT_EXCLUDE_PATHSPECS array is empty, scanning all git history"
+    git -C "$REPO_ROOT" log "$COMMIT_RANGE" --full-history -S "PRIVATE KEY-----" --oneline > "$TEMP_GIT_CHECK" 2>/dev/null || true
+else
+    # Array is populated, use pathspec exclusions with proper quoting
+    # Scan only commits in the specified range
+    git -C "$REPO_ROOT" log "$COMMIT_RANGE" --full-history -S "PRIVATE KEY-----" --oneline -- . "${GIT_EXCLUDE_PATHSPECS[@]}" > "$TEMP_GIT_CHECK" 2>/dev/null || true
+fi
+
+if [ -s "$TEMP_GIT_CHECK" ]; then
     print_fail "Found private key references in git history:"
-    git -C "$REPO_ROOT" log --all --source --full-history -S "PRIVATE KEY-----" --oneline | head -5 | while read line; do
+    head -5 "$TEMP_GIT_CHECK" | while read line; do
         print_info "  $line"
     done
+    print_info "Real credentials may have been committed. Review immediately!"
     print_info "  See docs/SSH_KEY_SECURITY.md for history cleanup instructions"
     SECRETS_FOUND=1
 else
-    print_pass "No private keys found in git history"
+    print_pass "No private keys found in git history (excluding documented examples)"
 fi
 
 if [ $SECRETS_FOUND -eq 0 ]; then

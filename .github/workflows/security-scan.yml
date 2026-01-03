@@ -66,13 +66,55 @@ jobs:
         run: |
           echo "Checking git history for secrets..."
           
-          # Check for private keys in history
-          if git log --all --source --full-history -S "PRIVATE KEY-----" --oneline | grep -q .; then
-            echo "::warning::Private key references found in git history"
-            echo "This may be from old commits. Review the security documentation."
-            git log --all --source --full-history -S "PRIVATE KEY-----" --oneline | head -10
+          # Check for private keys in history (excluding archived/review directories and workflow files)
+          # Using array-based approach to avoid eval security risks
+          # Use mktemp for secure temporary file with automatic cleanup
+          TEMP_GIT_CHECK=$(mktemp)
+          trap 'rm -f "$TEMP_GIT_CHECK"' EXIT
+          
+          # Determine the base branch for comparison
+          # For PRs, scan only new commits (HEAD but not in base branch)
+          # For push to main/develop, scan only the pushed commits
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BASE_REF="${{ github.event.pull_request.base.sha }}"
+            echo "Scanning PR commits between $BASE_REF and HEAD"
+            COMMIT_RANGE="$BASE_REF..HEAD"
           else
-            echo "✓ No private keys found in git history"
+            # For push events, scan only commits in this push
+            BASE_REF="${{ github.event.before }}"
+            if [ "$BASE_REF" = "0000000000000000000000000000000000000000" ]; then
+              # New branch, scan last 20 commits
+              COMMIT_RANGE="HEAD~20..HEAD"
+            else
+              COMMIT_RANGE="$BASE_REF..HEAD"
+            fi
+          fi
+          
+          # Scan for private keys in the commit range
+          git log "$COMMIT_RANGE" --full-history -S "PRIVATE KEY-----" --oneline -- \
+            . \
+            ":(exclude)Archive_ready_to_sync/**" \
+            ":(exclude)archive/**" \
+            ":(exclude)REVIEW_PENDING/**" \
+            ":(exclude).github/**" \
+            ":(exclude)scripts/security-check.sh" \
+            ":(exclude).secrets.baseline" \
+            ":(exclude).pre-commit-config.yaml" \
+            > "$TEMP_GIT_CHECK"
+          
+          git_log_status=$?
+          if [ "$git_log_status" -ne 0 ]; then
+            echo "::error::git log command failed (exit code $git_log_status). Unable to complete git history secret scan."
+            exit "$git_log_status"
+          fi
+          
+          if [ -s "$TEMP_GIT_CHECK" ]; then
+            echo "::error::Private key references found in git history"
+            echo "Real credentials may have been committed. Review immediately!"
+            head -10 "$TEMP_GIT_CHECK"
+            exit 1
+          else
+            echo "✓ No private keys found in git history (excluding documented examples)"
           fi
       
       - name: Verify .gitignore
@@ -91,11 +133,22 @@ jobs:
           echo "Running TruffleHog entropy analysis..."
           
           if command -v trufflehog3 >/dev/null 2>&1; then
-            if trufflehog3 --no-history --format json .; then
-              echo "✓ TruffleHog completed successfully"
+            # Use repository .trufflehogignore for exclusions (improves maintainability via auto-detection)
+            if [ -f .trufflehogignore ]; then
+              if trufflehog3 --no-history --format json .; then
+                echo "✓ TruffleHog completed successfully (with optimized exclusions)"
+              else
+                exit_code=$?
+                echo "::warning::TruffleHog scan failed with exit code ${exit_code}. Review the tool installation and output logs."
+              fi
             else
-              exit_code=$?
-              echo "::warning::TruffleHog scan failed with exit code ${exit_code}. Review the tool installation and output logs."
+              echo "::warning::.trufflehogignore not found, scanning all files"
+              if trufflehog3 --no-history --format json .; then
+                echo "✓ TruffleHog completed successfully"
+              else
+                exit_code=$?
+                echo "::warning::TruffleHog scan failed with exit code ${exit_code}. Review the tool installation and output logs."
+              fi
             fi
           else
             echo "::warning::trufflehog3 command not found. Ensure TruffleHog is installed correctly. Skipping TruffleHog scan."

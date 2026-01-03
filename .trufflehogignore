@@ -1,0 +1,19 @@
+# TruffleHog exclusion patterns for optimized scanning
+# Excludes archived content, large binaries, and non-essential directories
+
+# Archived and review directories (using glob patterns for compatibility)
+Archive_ready_to_sync/**
+archive/**
+REVIEW_PENDING/**
+
+# Dependencies and build artifacts
+node_modules/** 
+.git/**
+
+# Binary files and compressed archives
+*.pdf
+*.zip
+*.tar
+*.gz
+*.rar
+*.7z

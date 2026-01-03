@@ -79,6 +79,8 @@ jobs:
             ":(exclude)REVIEW_PENDING/**" \
             ":(exclude).github/**" \
             ":(exclude)scripts/security-check.sh" \
+            ":(exclude).secrets.baseline" \
+            ":(exclude).pre-commit-config.yaml" \
             > "$TEMP_GIT_CHECK"
           
           git_log_status=$?

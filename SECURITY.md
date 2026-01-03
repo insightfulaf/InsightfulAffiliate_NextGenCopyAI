@@ -141,6 +141,7 @@ The security scanning workflow has been optimized for faster execution:
 - **Smart Directory Exclusions**: Archives, review files, and documentation examples are excluded from scans
 - **TruffleHog Optimization**: Configured to skip large archived directories and binary files (~3-5x faster)
 - **Git History Filtering**: Only scans relevant history, excluding documented examples and workflow files
+- **Commit Range Scanning**: For PRs, scans only new commits being introduced (not entire repository history)
 
 ### Excluded from Security Scans
 

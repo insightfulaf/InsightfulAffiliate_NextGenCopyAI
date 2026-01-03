@@ -72,8 +72,26 @@ jobs:
           TEMP_GIT_CHECK=$(mktemp)
           trap 'rm -f "$TEMP_GIT_CHECK"' EXIT
           
-          # Scan only the current branch (HEAD) instead of --all to avoid flagging archived content in other branches
-          git log HEAD --full-history -S "PRIVATE KEY-----" --oneline -- \
+          # Determine the base branch for comparison
+          # For PRs, scan only new commits (HEAD but not in base branch)
+          # For push to main/develop, scan only the pushed commits
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BASE_REF="${{ github.event.pull_request.base.sha }}"
+            echo "Scanning PR commits between $BASE_REF and HEAD"
+            COMMIT_RANGE="$BASE_REF..HEAD"
+          else
+            # For push events, scan only commits in this push
+            BASE_REF="${{ github.event.before }}"
+            if [ "$BASE_REF" = "0000000000000000000000000000000000000000" ]; then
+              # New branch, scan last 20 commits
+              COMMIT_RANGE="HEAD~20..HEAD"
+            else
+              COMMIT_RANGE="$BASE_REF..HEAD"
+            fi
+          fi
+          
+          # Scan for private keys in the commit range
+          git log "$COMMIT_RANGE" --full-history -S "PRIVATE KEY-----" --oneline -- \
             . \
             ":(exclude)Archive_ready_to_sync/**" \
             ":(exclude)archive/**" \

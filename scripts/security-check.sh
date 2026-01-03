@@ -17,6 +17,8 @@ GIT_EXCLUDE_PATHSPECS=(
     ":(exclude)REVIEW_PENDING/**"
     ":(exclude).github/**"
     ":(exclude)scripts/security-check.sh"
+    ":(exclude).secrets.baseline"
+    ":(exclude).pre-commit-config.yaml"
 )
 
 # Colors for output

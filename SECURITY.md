@@ -144,11 +144,13 @@ The security scanning workflow has been optimized for faster execution:
 
 ### Excluded from Security Scans
 
-The following directories contain examples, documentation, or archived content and are excluded from security scans:
+The following directories and files contain examples, documentation, or archived content and are excluded from security scans:
 - `Archive_ready_to_sync/` - Historical backup files
 - `archive/` - Archived content
 - `REVIEW_PENDING/` - Files pending review
-- Workflow configuration files (to avoid false positives from pattern matching)
+- `.secrets.baseline` - Detect-secrets baseline configuration
+- `.pre-commit-config.yaml` - Pre-commit hook configuration
+- `.github/` - Workflow configuration files (to avoid false positives from pattern matching)
 
 ### Installation
 

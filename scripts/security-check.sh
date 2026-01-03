@@ -204,10 +204,10 @@ trap 'rm -f "$TEMP_GIT_CHECK"' EXIT
 
 if [ ${#GIT_EXCLUDE_PATHSPECS[@]} -eq 0 ]; then
     print_warn "GIT_EXCLUDE_PATHSPECS array is empty, scanning all git history"
-    git -C "$REPO_ROOT" log --all --source --full-history -S "PRIVATE KEY-----" --oneline > "$TEMP_GIT_CHECK" 2>/dev/null || true
+    git -C "$REPO_ROOT" log --all --full-history -S "PRIVATE KEY-----" --oneline > "$TEMP_GIT_CHECK" 2>/dev/null || true
 else
     # Array is populated, use pathspec exclusions with proper quoting
-    git -C "$REPO_ROOT" log --all --source --full-history -S "PRIVATE KEY-----" --oneline -- . "${GIT_EXCLUDE_PATHSPECS[@]}" > "$TEMP_GIT_CHECK" 2>/dev/null || true
+    git -C "$REPO_ROOT" log --all --full-history -S "PRIVATE KEY-----" --oneline -- . "${GIT_EXCLUDE_PATHSPECS[@]}" > "$TEMP_GIT_CHECK" 2>/dev/null || true
 fi
 
 if [ -s "$TEMP_GIT_CHECK" ]; then

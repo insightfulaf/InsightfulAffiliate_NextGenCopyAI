@@ -202,13 +202,29 @@ fi
 TEMP_GIT_CHECK=$(mktemp)
 trap 'rm -f "$TEMP_GIT_CHECK"' EXIT
 
+# Determine commit range to scan
+# Try to scan only new commits, not the entire history
+if git -C "$REPO_ROOT" rev-parse --verify origin/main >/dev/null 2>&1; then
+    # If origin/main exists, scan commits between origin/main and HEAD
+    COMMIT_RANGE="origin/main..HEAD"
+    print_info "Scanning commits between origin/main and HEAD"
+elif git -C "$REPO_ROOT" rev-parse --verify main >/dev/null 2>&1; then
+    # If local main exists, scan commits between main and HEAD  
+    COMMIT_RANGE="main..HEAD"
+    print_info "Scanning commits between main and HEAD"
+else
+    # Fallback: scan last 50 commits on current branch
+    COMMIT_RANGE="HEAD~50..HEAD"
+    print_info "Scanning last 50 commits on current branch"
+fi
+
 if [ ${#GIT_EXCLUDE_PATHSPECS[@]} -eq 0 ]; then
     print_warn "GIT_EXCLUDE_PATHSPECS array is empty, scanning all git history"
-    git -C "$REPO_ROOT" log HEAD --full-history -S "PRIVATE KEY-----" --oneline > "$TEMP_GIT_CHECK" 2>/dev/null || true
+    git -C "$REPO_ROOT" log "$COMMIT_RANGE" --full-history -S "PRIVATE KEY-----" --oneline > "$TEMP_GIT_CHECK" 2>/dev/null || true
 else
     # Array is populated, use pathspec exclusions with proper quoting
-    # Scan only HEAD (current branch) instead of --all to avoid flagging archived content in other branches
-    git -C "$REPO_ROOT" log HEAD --full-history -S "PRIVATE KEY-----" --oneline -- . "${GIT_EXCLUDE_PATHSPECS[@]}" > "$TEMP_GIT_CHECK" 2>/dev/null || true
+    # Scan only commits in the specified range
+    git -C "$REPO_ROOT" log "$COMMIT_RANGE" --full-history -S "PRIVATE KEY-----" --oneline -- . "${GIT_EXCLUDE_PATHSPECS[@]}" > "$TEMP_GIT_CHECK" 2>/dev/null || true
 fi
 
 if [ -s "$TEMP_GIT_CHECK" ]; then

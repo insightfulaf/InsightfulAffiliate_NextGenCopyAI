@@ -152,6 +152,9 @@ The following directories and files contain examples, documentation, or archived
 - `.secrets.baseline` - Detect-secrets baseline configuration
 - `.pre-commit-config.yaml` - Pre-commit hook configuration
 - `.github/` - Workflow configuration files (to avoid false positives from pattern matching)
+- `docs/SSH_KEY_SECURITY.md` - SSH key security documentation with example patterns
+- `docs/SSH_SECURITY_SUMMARY.md` - SSH security implementation summary
+- `.github/secret-scanning.yml` - Secret scanning pattern definitions
 
 ### Installation
 

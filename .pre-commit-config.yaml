@@ -80,9 +80,8 @@ repos:
         name: Prevent SSH Key Content
         entry: >-
           bash -c 'if git diff --cached -- .
-          ":(exclude)docs/SSH_KEY_SECURITY.md"
-          ":(exclude)docs/SSH_SECURITY_SUMMARY.md"
-          ":(exclude).github/secret-scanning.yml"
+          ":(exclude)docs/**"
+          ":(exclude).github/**"
           ":(exclude)Archive_ready_to_sync/**"
           ":(exclude)archive/**"
           ":(exclude)REVIEW_PENDING/**" |

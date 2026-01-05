@@ -88,6 +88,7 @@ These instructions are automatically available to GitHub Copilot when working in
 
 ### Learn More
 
+- [Workflow Operations Guide](docs/WORKFLOW_OPERATIONS_GUIDE.md) - **New!** Comprehensive reference for Python environment, agents, skills, and common workflows
 - [GitHub Copilot Best Practices](https://gh.io/copilot-coding-agent-tips)
 - [Contributing Guidelines](CONTRIBUTING.md)
 - [Copilot Instructions](.github/copilot-instructions.md)

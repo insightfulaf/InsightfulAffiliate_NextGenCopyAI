@@ -85,9 +85,23 @@ jobs:
             if [ "$BASE_REF" = "0000000000000000000000000000000000000000" ]; then
               # New branch, scan last 20 commits
               COMMIT_RANGE="HEAD~20..HEAD"
+              echo "New branch detected, scanning last 20 commits"
             else
-              COMMIT_RANGE="$BASE_REF..HEAD"
+              # Verify that BASE_REF exists before creating range
+              if git rev-parse --verify "$BASE_REF" >/dev/null 2>&1; then
+                COMMIT_RANGE="$BASE_REF..HEAD"
+                echo "Scanning push commits between $BASE_REF and HEAD"
+              else
+                echo "::warning::Base commit $BASE_REF not found in repository (possibly force-pushed). Scanning last 20 commits instead."
+                COMMIT_RANGE="HEAD~20..HEAD"
+              fi
             fi
+          fi
+          
+          # Verify the commit range is valid before scanning
+          if ! git rev-parse --verify "$COMMIT_RANGE" >/dev/null 2>&1; then
+            echo "::warning::Invalid commit range $COMMIT_RANGE. Falling back to scanning HEAD only."
+            COMMIT_RANGE="HEAD"
           fi
           
           # Scan for private keys in the commit range

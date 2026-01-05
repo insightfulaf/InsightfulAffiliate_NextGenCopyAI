@@ -407,12 +407,12 @@ GitHub Copilot agents are specialized AI assistants configured for specific task
 - Adding/updating affiliate links
 - Ensuring FTC disclosure compliance
 - Auditing content for affiliate link issues
-- Managing `docs/affiliate_links/affiliate_links_mapping_FINAL.json`
+- Managing `docs/affiliate_links/aff_link_mapping/affiliate_links_mapping_FINAL.json`
 
 **Key capabilities:**
 - Link compliance checking
 - FTC disclosure templates
-- Link mapping management
+- Link mapping management (`docs/affiliate_links/aff_link_mapping/affiliate_links_mapping_FINAL.json`)
 - Ethical affiliate marketing guidance
 
 **Example use:**
@@ -651,7 +651,7 @@ done
 - [ ] Honest assessment (pros/cons)
 
 **Resources:**
-- Link mapping: `docs/affiliate_links/affiliate_links_mapping_FINAL.json`
+- Link mapping: `docs/affiliate_links/aff_link_mapping/affiliate_links_mapping_FINAL.json`
 - FTC Guidelines: [FTC Disclosures 101](https://www.ftc.gov/business-guidance/resources/disclosures-101-social-media-influencers)
 
 **Documentation:** `.github/skills/affiliate-compliance-check/SKILL.md`
@@ -783,7 +783,7 @@ git push
 
 ```bash
 # 1. Update mapping file
-vim docs/affiliate_links/affiliate_links_mapping_FINAL.json
+vim docs/affiliate_links/aff_link_mapping/affiliate_links_mapping_FINAL.json
 
 # Add entry:
 {

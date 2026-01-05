@@ -145,16 +145,31 @@ The security scanning workflow has been optimized for faster execution:
 
 ### Excluded from Security Scans
 
-The following directories and files contain examples, documentation, or archived content and are excluded from security scans:
-- `Archive_ready_to_sync/` - Historical backup files
-- `archive/` - Archived content
-- `REVIEW_PENDING/` - Files pending review
-- `.secrets.baseline` - Detect-secrets baseline configuration
-- `.pre-commit-config.yaml` - Pre-commit hook configuration
-- `.github/` - Workflow configuration files (to avoid false positives from pattern matching)
+The following directories and files contain examples, documentation, or archived content and are excluded from security scans. **Note:** Different security tools use different exclusion patterns as detailed below.
+
+#### Pre-commit Hook Exclusions
+
+The `prevent-ssh-key-content` pre-commit hook excludes these specific files and directories:
 - `docs/SSH_KEY_SECURITY.md` - SSH key security documentation with example patterns
 - `docs/SSH_SECURITY_SUMMARY.md` - SSH security implementation summary
 - `.github/secret-scanning.yml` - Secret scanning pattern definitions
+- `Archive_ready_to_sync/**` - Historical backup files
+- `archive/**` - Archived content
+- `REVIEW_PENDING/**` - Files pending review
+
+#### Security Script and Workflow Exclusions
+
+The `security-check.sh` script and GitHub Actions workflows use broader exclusion patterns:
+- `.github/**` - All GitHub configuration and workflow files (to avoid false positives from pattern matching)
+- `docs/**` - Documentation and generated AI outputs (excluded by GitHub workflow to avoid false positives from example content)
+- `Archive_ready_to_sync/**` - Historical backup files
+- `archive/**` - Archived content
+- `REVIEW_PENDING/**` - Files pending review
+- `.secrets.baseline` - Detect-secrets baseline configuration
+- `.pre-commit-config.yaml` - Pre-commit hook configuration
+- `scripts/security-check.sh` - The security script itself
+
+**Note:** The GitHub workflow uses mixed patterns (`.github/` without `**` in some places, `.github/**` in others) depending on the git command used. Both patterns effectively exclude the `.github` directory.
 
 ### Installation
 

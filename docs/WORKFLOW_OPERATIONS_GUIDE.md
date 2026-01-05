@@ -303,7 +303,7 @@ export AI_DEFAULT_MODEL="gpt-4o"
 
 #### `AI_ENABLE_PREVIEW`
 
-**Purpose:** Enable preview/beta models (e.g., GPT-5, Codex)
+**Purpose:** Enable preview/beta models (e.g., `gpt-future`, `preview-model-name`)
 
 **Possible values:** `true`, `false`
 

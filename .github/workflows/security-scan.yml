@@ -99,9 +99,17 @@ jobs:
           fi
           
           # Verify the commit range is valid before scanning
-          if ! git rev-parse --verify "$COMMIT_RANGE" >/dev/null 2>&1; then
-            echo "::warning::Invalid commit range $COMMIT_RANGE. Falling back to scanning HEAD only."
-            COMMIT_RANGE="HEAD"
+          if ! git log --oneline --max-count=1 "$COMMIT_RANGE" >/dev/null 2>&1; then
+            echo "::warning::Invalid commit range $COMMIT_RANGE. Falling back to scanning last 20 commits."
+            COMMIT_RANGE="HEAD~20..HEAD"
+            
+            # If repository has fewer than 20 commits, fall back to scanning all commits
+            if ! git log --oneline --max-count=1 "$COMMIT_RANGE" >/dev/null 2>&1; then
+              echo "::warning::Repository has fewer than 20 commits. Scanning all commits from root."
+              # Get the root commit and scan from there
+              ROOT_COMMIT=$(git rev-list --max-parents=0 HEAD)
+              COMMIT_RANGE="$ROOT_COMMIT..HEAD"
+            fi
           fi
           
           # Scan for private keys in the commit range

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # scripts/security-check.sh
-# 
+#
 # Security audit script to verify SSH key setup and check for exposed secrets
 # Run this script periodically to ensure your development environment is secure
 
@@ -14,7 +14,6 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 GIT_EXCLUDE_PATHSPECS=(
     ":(exclude)Archive_ready_to_sync/**"
     ":(exclude)archive/**"
-    ":(exclude)REVIEW_PENDING/**"
     ":(exclude).github/**"
     ":(exclude)scripts/security-check.sh"
     ":(exclude).secrets.baseline"
@@ -41,17 +40,17 @@ echo ""
 # Function to print status
 print_pass() {
     echo -e "${GREEN}✓${NC} $1"
-    ((PASSED++))
+    PASSED=$((PASSED + 1))
 }
 
 print_fail() {
     echo -e "${RED}✗${NC} $1"
-    ((FAILED++))
+    FAILED=$((FAILED + 1))
 }
 
 print_warn() {
     echo -e "${YELLOW}⚠${NC} $1"
-    ((WARNINGS++))
+    WARNINGS=$((WARNINGS + 1))
 }
 
 print_info() {
@@ -92,7 +91,7 @@ for keytype in ed25519 rsa ecdsa; do
     if [ -f "$HOME/.ssh/id_$keytype" ]; then
         print_info "Found $keytype key: ~/.ssh/id_$keytype"
         KEYS_FOUND=1
-        
+
         # Check private key permissions
         KEY_PERMS=$(get_permissions "$HOME/.ssh/id_$keytype")
         if [ "$KEY_PERMS" = "600" ]; then
@@ -100,7 +99,7 @@ for keytype in ed25519 rsa ecdsa; do
         else
             print_fail "Private key has incorrect permissions ($KEY_PERMS). Run: chmod 600 ~/.ssh/id_$keytype"
         fi
-        
+
         # Check if public key exists
         if [ -f "$HOME/.ssh/id_$keytype.pub" ]; then
             PUB_PERMS=$(get_permissions "$HOME/.ssh/id_$keytype.pub")
@@ -124,16 +123,19 @@ echo ""
 echo "3. Checking SSH agent..."
 if [ -n "${SSH_AUTH_SOCK:-}" ]; then
     print_pass "SSH agent is running"
-    
+
     # Check if keys are loaded
-    LOADED_KEYS=$(ssh-add -l 2>/dev/null | wc -l)
-    if [ "$LOADED_KEYS" -gt 0 ]; then
+    SSH_ADD_LIST=$(ssh-add -l 2>/dev/null || true)
+    if echo "$SSH_ADD_LIST" | grep -q "The agent has no identities"; then
+        print_warn "No keys loaded in SSH agent. Add your key with: ssh-add ~/.ssh/id_ed25519"
+    elif [ -n "$SSH_ADD_LIST" ]; then
+        LOADED_KEYS=$(echo "$SSH_ADD_LIST" | wc -l | tr -d ' ')
         print_pass "$LOADED_KEYS key(s) loaded in SSH agent"
-        ssh-add -l | while read line; do
-            print_info "  $line"
+        echo "$SSH_ADD_LIST" | while read line; do
+            [ -n "$line" ] && print_info "  $line"
         done
     else
-        print_warn "No keys loaded in SSH agent. Add your key with: ssh-add ~/.ssh/id_ed25519"
+        print_warn "Unable to list SSH agent keys. Try: ssh-add -l"
     fi
 else
     print_fail "SSH agent not running. Start it with: eval \"\$(ssh-agent -s)\""
@@ -142,11 +144,15 @@ echo ""
 
 # Check 4: Test GitHub SSH connection
 echo "4. Testing GitHub SSH connection..."
-if ssh -T git@github.com 2>&1 | grep -q "successfully authenticated"; then
+GITHUB_SSH_OUTPUT=$(ssh -o BatchMode=yes -o ConnectTimeout=5 -T git@github.com 2>&1 || true)
+if echo "$GITHUB_SSH_OUTPUT" | grep -q "successfully authenticated"; then
     print_pass "Successfully authenticated with GitHub via SSH"
 else
     print_fail "Cannot authenticate with GitHub. Ensure your public key is added to GitHub."
     print_info "  Add your key at: https://github.com/settings/keys"
+    if [ -n "$GITHUB_SSH_OUTPUT" ]; then
+        print_info "  SSH output: $GITHUB_SSH_OUTPUT"
+    fi
     if [[ "$(uname -s)" == "Darwin" ]]; then
         print_info "  Copy your public key (macOS): cat ~/.ssh/id_ed25519.pub | pbcopy"
     else
@@ -186,9 +192,19 @@ echo "6. Scanning repository for accidentally committed SSH keys..."
 SECRETS_FOUND=0
 
 # Check working directory
-if find "$REPO_ROOT" -type f \( -name "*.pem" -o -name "*.key" -o -name "id_rsa*" -o -name "id_dsa*" -o -name "id_ecdsa*" -o -name "id_ed25519*" \) ! -path "*/.git/*" 2>/dev/null | grep -q .; then
+if find "$REPO_ROOT" -type f \( -name "*.pem" -o -name "*.key" -o -name "id_rsa*" -o -name "id_dsa*" -o -name "id_ecdsa*" -o -name "id_ed25519*" \) \
+    ! -path "*/.git/*" \
+    ! -path "*/.venv/*" ! -path "*/.venv-*/*" ! -path "*/venv/*" \
+    ! -path "*/site-packages/*" \
+    ! -path "*/Archive_ready_to_sync/*" ! -path "*/archive/*" \
+    2>/dev/null | grep -q .; then
     print_fail "Found potential SSH key files in working directory:"
-    find "$REPO_ROOT" -type f \( -name "*.pem" -o -name "*.key" -o -name "id_rsa*" -o -name "id_dsa*" -o -name "id_ecdsa*" -o -name "id_ed25519*" \) ! -path "*/.git/*" 2>/dev/null | while read file; do
+    find "$REPO_ROOT" -type f \( -name "*.pem" -o -name "*.key" -o -name "id_rsa*" -o -name "id_dsa*" -o -name "id_ecdsa*" -o -name "id_ed25519*" \) \
+        ! -path "*/.git/*" \
+        ! -path "*/.venv/*" ! -path "*/.venv-*/*" ! -path "*/venv/*" \
+        ! -path "*/site-packages/*" \
+        ! -path "*/Archive_ready_to_sync/*" ! -path "*/archive/*" \
+        2>/dev/null | while read file; do
         print_info "  $file"
     done
     SECRETS_FOUND=1
@@ -209,7 +225,7 @@ if git -C "$REPO_ROOT" rev-parse --verify origin/main >/dev/null 2>&1; then
     COMMIT_RANGE="origin/main..HEAD"
     print_info "Scanning commits between origin/main and HEAD"
 elif git -C "$REPO_ROOT" rev-parse --verify main >/dev/null 2>&1; then
-    # If local main exists, scan commits between main and HEAD  
+    # If local main exists, scan commits between main and HEAD
     COMMIT_RANGE="main..HEAD"
     print_info "Scanning commits between main and HEAD"
 else
@@ -258,7 +274,7 @@ echo ""
 echo "8. Checking pre-commit hooks..."
 if [ -f "$REPO_ROOT/.pre-commit-config.yaml" ]; then
     print_pass "Pre-commit configuration file exists"
-    
+
     if [ -f "$REPO_ROOT/.git/hooks/pre-commit" ]; then
         print_pass "Pre-commit hooks are installed"
     else

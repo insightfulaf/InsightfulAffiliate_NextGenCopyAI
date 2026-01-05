@@ -2,6 +2,8 @@
 
 Thanks for contributing! This file explains how to set up your local environment and the recommended workflows for cloning, authentication, and pushing changes.
 
+> **📖 Quick Reference**: For comprehensive workflow documentation including Python environment setup, environment variables, available agents, and common workflows, see the [Workflow Operations Guide](docs/WORKFLOW_OPERATIONS_GUIDE.md).
+
 ## Run setup script (recommended first step)
 
 We provide a small helper script to automates macOS credential helper setup and run quick connectivity checks. Run it after cloning and before making your first push:

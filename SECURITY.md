@@ -209,9 +209,12 @@ git diff
 
 ### Documentation
 
+- [Quick Setup Guide](SETUP_SECRETS.md) - 5-minute secrets management setup
+- [Secrets Management Guide](docs/SECRETS_MANAGEMENT.md) - GitHub Secrets and environment variables
 - [SSH Key Security Guide](docs/SSH_KEY_SECURITY.md) - Comprehensive SSH security
 - [Security Checklist](docs/checklists/SECURITY_CHECKLIST.md) - Security verification
 - [Contributing Guide](CONTRIBUTING.md) - Repository contribution guidelines
+- [Example Secrets Workflow](.github/workflows/example-secrets-usage.yml) - Working examples
 
 ### External Resources
 
@@ -245,4 +248,4 @@ We thank all security researchers and contributors who help keep this repository
 
 **Remember**: Security is everyone's responsibility. When in doubt, ask!
 
-**Last Updated**: 2025-12-30
+**Last Updated**: 2025-01-11

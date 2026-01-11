@@ -23,8 +23,17 @@ pnpm-debug.log*
 
 # ===== Environment / Secrets =====
 .env
-.env.*
 .env.local
+.env.*.local
+*.env
+!.env.example
+secrets.yml
+secrets.yaml
+secrets.json
+!secrets-*.md
+credentials.json
+credentials.yml
+credentials.yaml
 
 # ===== SSH Keys & Credentials =====
 # Never commit SSH keys or private credentials
@@ -32,6 +41,9 @@ pnpm-debug.log*
 *.key
 *.p12
 *.pfx
+*.crt
+*.cer
+*.der
 id_rsa*
 id_dsa*
 id_ecdsa*
@@ -42,6 +54,46 @@ authorized_keys
 # Catch any accidentally named ssh files
 *ssh-agent*
 *eval*ssh*
+
+# ===== API Keys & Tokens =====
+*api_key*
+*apikey*
+*api-key*
+*api.key*
+*token*
+*.token
+*secret*
+!*secrets-*.yml
+!*secrets-*.yaml
+!*secrets-*.md
+*password*
+*passwd*
+
+# ===== Cloud Provider Credentials =====
+# AWS
+.aws/credentials
+.aws/config
+*aws_access_key*
+*aws_secret_key*
+
+# Google Cloud Platform
+*gcp-credentials*.json
+*google-credentials*.json
+*service-account*.json
+*gcloud-service-key*.json
+application_default_credentials.json
+
+# Azure
+.azure/
+*azureProfile*.json
+*azureauth*.json
+
+# Database Credentials
+*database.yml
+*database.yaml
+.pgpass
+.my.cnf
+.psqlrc
 
 # ===== Dependencies & Caches =====
 node_modules/

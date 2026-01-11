@@ -23,6 +23,7 @@ pnpm-debug.log*
 
 # ===== Environment / Secrets =====
 .env
+.env.*
 .env.local
 .env.*.local
 *.env

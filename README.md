@@ -1,20 +1,20 @@
 # README — Root of repo
 
-## File: README.md  (location: /)
+## File: README.md (location: /)
 
 ## Introduction
 
 This repo powers **InsightfulAffiliate** and **NextGenCopyAI** content workflows: write locally in **Dropbox** (VS Code), commit to **GitHub**, generate/paste **Systeme.io** sections, and automate bulk edits with a **Codex-style agent**.
 
 - Working folder (on disk): `~/Dropbox/InsightfulAffiliate_NextGenCopyAI`.
-- Backups: Dropbox cloud + GitHub remote history.  See “Where files live”.
+- Backups: Dropbox cloud + GitHub remote history. See “Where files live”.
 - Key tools: VS Code, Git, GitHub, Git LFS, Codex IDE/CLI, GitHub Copilot.
 
 ## Setup
 
 > **🔐 Security First**: Before you begin, review the [SSH Key Security Guide](docs/SSH_KEY_SECURITY.md) to ensure your credentials are properly secured. See the [Security Checklist](docs/checklists/SECURITY_CHECKLIST.md) for a complete security review.
 
-1) **Git remote ([insightfulaf/InsightfulAffiliate_NextGenCopyAI][remoteRepoDefinition])**
+1. **Git remote ([insightfulaf/InsightfulAffiliate_NextGenCopyAI][remoteRepoDefinition])**
    - Update once, then verify:
 
 > Recommended first step: see `CONTRIBUTING.md` and run `./scripts/setup.sh` after cloning.
@@ -78,6 +78,7 @@ Located in `.github/skills/`:
 ### Repository Instructions
 
 The file `.github/copilot-instructions.md` contains comprehensive guidelines for:
+
 - Repository structure and coding standards
 - Brand voice guidelines (InsightfulAffiliate vs NextGenCopyAI)
 - AI integration patterns and best practices

@@ -64,17 +64,18 @@ ssh-keygen -t ed25519 -C "your_email@example.com"
 ```
 
 When prompted:
+
 - Accept default location (`~/.ssh/id_ed25519`)
 - **Use a strong passphrase** (highly recommended for security)
 
-2. Set proper file permissions:
+1. Set proper file permissions:
 
 ```bash
 chmod 600 ~/.ssh/id_ed25519      # private key
 chmod 644 ~/.ssh/id_ed25519.pub  # public key
 ```
 
-3. Start the ssh-agent and add your key:
+1. Start the ssh-agent and add your key:
 
 ```bash
 eval "$(ssh-agent -s)"
@@ -82,7 +83,7 @@ ssh-add --apple-use-keychain ~/.ssh/id_ed25519  # macOS-specific
 # or: ssh-add ~/.ssh/id_ed25519  # Linux
 ```
 
-4. Copy your **public** key and add it to GitHub (Settings → SSH and GPG keys):
+1. Copy your **public** key and add it to GitHub (Settings → SSH and GPG keys):
 
 ```bash
 cat ~/.ssh/id_ed25519.pub | pbcopy  # macOS
@@ -90,7 +91,7 @@ cat ~/.ssh/id_ed25519.pub | pbcopy  # macOS
 # then paste into GitHub at https://github.com/settings/keys
 ```
 
-5. Test the connection:
+1. Test the connection:
 
 ```bash
 ssh -T git@github.com
@@ -99,6 +100,7 @@ ssh -T git@github.com
 You should see a success message like `Hi <username>! You've successfully authenticated...`.
 
 **⚠️ Security Reminders:**
+
 - NEVER commit private keys (files without .pub extension) to git
 - Store SSH keys ONLY in `~/.ssh/` directory
 - Use passphrases to protect your private keys
@@ -131,6 +133,7 @@ git push -u origin feature/short-description
 ## When to use HTTPS vs SSH
 
 - Use HTTPS if:
+
   - You prefer username + PAT and want credential storage in macOS keychain.
   - You cannot use SSH due to company network policies.
 

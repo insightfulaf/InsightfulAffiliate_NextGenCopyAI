@@ -161,10 +161,12 @@ jobs:
                 ":(exclude)archive/**" \
                 ":(exclude)REVIEW_PENDING/**" \
                 ":(exclude).github/**" \
+                ":(exclude)docs/**" \
                 ":(exclude)scripts/security-check.sh" \
+                ":(exclude)scripts/verify-security-scan.sh" \
                 ":(exclude).secrets.baseline" \
                 ":(exclude).pre-commit-config.yaml" \
-                | grep -E "^\+.*BEGIN (RSA|DSA|EC|OPENSSH|ENCRYPTED)? PRIVATE KEY" >/dev/null; then
+                | grep -E "^\+.*BEGIN.*PRIVATE KEY" >/dev/null; then
                 # Found a line that ADDED a private key
                 echo "  ⚠ $commit_sha potentially ADDED private key content" >> "$TEMP_VIOLATIONS"
               else

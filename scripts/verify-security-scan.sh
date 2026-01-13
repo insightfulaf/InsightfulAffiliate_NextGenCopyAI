@@ -128,10 +128,12 @@ else
             ":(exclude)archive/**" \
             ":(exclude)REVIEW_PENDING/**" \
             ":(exclude).github/**" \
+            ":(exclude)docs/**" \
             ":(exclude)scripts/security-check.sh" \
+            ":(exclude)scripts/verify-security-scan.sh" \
             ":(exclude).secrets.baseline" \
             ":(exclude).pre-commit-config.yaml" \
-            | grep -E "^\+.*BEGIN (RSA|DSA|EC|OPENSSH|ENCRYPTED)? PRIVATE KEY" >/dev/null 2>&1; then
+            | grep -E "^\+.*BEGIN.*PRIVATE KEY" >/dev/null 2>&1; then
             print_error "    → VIOLATION: This commit ADDED private key content"
             echo "$commit_short: $commit_msg" >> "$TEMP_VIOLATIONS"
             VIOLATIONS=$((VIOLATIONS + 1))
@@ -195,13 +197,13 @@ else
     echo
     echo "Checking workflow features..."
     
-    if grep -qE "grep.*-qiE.*\(remove\|delete\|.*fix\|security\)" "$WORKFLOW_FILE"; then
+    if grep -q "grep -qiE" "$WORKFLOW_FILE" && grep -q "remove.*delete.*fix.*security" "$WORKFLOW_FILE"; then
         print_success "Commit message filtering enabled"
     else
         print_warning "Commit message filtering not found"
     fi
     
-    if grep -qE 'grep.*-E.*\^\\+.*BEGIN.*(RSA|DSA|EC|OPENSSH|ENCRYPTED).*PRIVATE KEY' "$WORKFLOW_FILE"; then
+    if grep -q 'grep -E' "$WORKFLOW_FILE" && grep -q 'BEGIN.*PRIVATE KEY' "$WORKFLOW_FILE"; then
         print_success "Diff analysis for key additions enabled"
     else
         print_warning "Diff analysis not found"

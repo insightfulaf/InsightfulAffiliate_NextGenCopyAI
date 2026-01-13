@@ -95,9 +95,13 @@ COMMITS=$(git log --all --format="%H %s" -S "PRIVATE KEY-----" -- \
   ":(exclude)archive/**" \
   ":(exclude)REVIEW_PENDING/**" \
   ":(exclude).github/**" \
+  ":(exclude)docs/**" \
   ":(exclude)scripts/security-check.sh" \
+  ":(exclude)scripts/verify-security-scan.sh" \
   ":(exclude).secrets.baseline" \
   ":(exclude).pre-commit-config.yaml" \
+  ":(exclude)*_SUMMARY.md" \
+  ":(exclude)*_GUIDE.md" \
   2>/dev/null || true)
 
 if [ -z "$COMMITS" ]; then

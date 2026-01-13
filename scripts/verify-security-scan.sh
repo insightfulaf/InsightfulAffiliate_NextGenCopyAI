@@ -61,7 +61,7 @@ fi
 
 echo
 echo "Checking for private key content in files..."
-KEY_CONTENT=$(git grep -E "BEGIN (RSA|DSA|EC|OPENSSH|ENCRYPTED)? PRIVATE KEY" -- \
+KEY_CONTENT=$(git grep -E "BEGIN (RSA |DSA |EC |OPENSSH |ENCRYPTED )?PRIVATE KEY" -- \
   . \
   ":(exclude).github/" \
   ":(exclude)docs/**" \

@@ -116,10 +116,9 @@ else
         
         echo "  Analyzing: $commit_short - $commit_msg"
         
-        # Check if message indicates removal/fix (both word orders)
+        # If message indicates removal/fix, treat as a hint only (still inspect diff)
         if echo "$commit_msg" | grep -qiE "(remove|delete|clean|strip|redact|fix|security).*(key|secret|credential|ssh)|(key|secret|credential|ssh).*(remove|delete|clean|strip|redact)"; then
-            print_info "    → SKIP (message indicates key removal/security fix)"
-            continue
+            print_info "    → Message suggests key removal/security fix; verifying diff for additions..."
         fi
         
         # Check if diff adds private keys

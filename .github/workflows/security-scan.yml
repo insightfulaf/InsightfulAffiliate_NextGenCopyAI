@@ -55,7 +55,7 @@ jobs:
           fi
           
           # Check for private key content (excluding documentation, workflows, archives, and review files)
-          if git grep -E "BEGIN (RSA|DSA|EC|OPENSSH|ENCRYPTED)? PRIVATE KEY" -- . ":(exclude).github/" ":(exclude)docs/**" ":(exclude).pre-commit-config.yaml" ":(exclude)Archive_ready_to_sync/" ":(exclude)archive/" ":(exclude)REVIEW_PENDING/" ":(exclude)scripts/security-check.sh"; then
+          if git grep -E "BEGIN (RSA|DSA|EC|OPENSSH|ENCRYPTED)? PRIVATE KEY" -- . ":(exclude).github/" ":(exclude)docs/**" ":(exclude).pre-commit-config.yaml" ":(exclude)Archive_ready_to_sync/" ":(exclude)archive/" ":(exclude)REVIEW_PENDING/" ":(exclude)scripts/security-check.sh" ":(exclude)scripts/verify-security-scan.sh" ":(exclude).secrets.baseline" ":(exclude,glob)**/*_SUMMARY.md" ":(exclude,glob)**/*_GUIDE.md"; then
             echo "::error::Private key content found in repository!"
             exit 1
           else

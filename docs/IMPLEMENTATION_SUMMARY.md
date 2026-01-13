@@ -2,7 +2,7 @@
 
 ## 🎯 Problem Solved
 
-Your GitHub Actions security scan was failing with false positives, detecting commits that **removed** SSH keys (b964330, 33d9c94) as security violations, when the real issue was commit 28effe0 that originally **added** the keys.
+Your GitHub Actions security scan was failing with false positives, detecting commits that **removed** SSH keys as security violations, when the real security issue was commits that originally **added** the keys. The workflow was unable to distinguish between key additions (violations) and key removals (security fixes).
 
 ## ✅ Solution Delivered
 
@@ -29,10 +29,10 @@ else
 ```
 
 **Result:**
-- ✅ b964330 (removal commit) → Skipped via message filter
-- ✅ 33d9c94 (fix commit) → Skipped via diff analysis
-- ✅ 1fc4f1e (docs commit) → Skipped via path exclusion
-- ⚠️ 28effe0 (added keys) → Would be flagged (but it's in base branch, not scanned)
+- ✅ Commits with removal messages (e.g., "remove keys", "delete secrets") → Skipped via message filter
+- ✅ Commits that only remove keys (no additions in diff) → Skipped via diff analysis
+- ✅ Documentation commits → Skipped via path exclusion
+- ⚠️ Commits that add keys → Correctly flagged as violations
 
 ### 2. Improved .gitignore Patterns
 
@@ -54,7 +54,7 @@ Added patterns to prevent future accidents:
 - Prevention best practices
 
 #### Updated `SECURITY.md`
-- Documented historical keys in commit 28effe0
+- Documented any historical keys that may exist in git history
 - Explained workflow improvements
 - Added guidance for key rotation
 
@@ -77,10 +77,9 @@ bash scripts/verify-security-scan.sh
 ```
 ✓ No SSH keys in working directory
 ✓ No private key content in files
-✓ 1fc4f1e correctly skipped (documentation)
-✓ 33d9c94 correctly skipped (removal only)
-✓ b964330 correctly skipped (removal message)
-✗ 28effe0 correctly flagged (actual addition)
+✓ Documentation commits correctly skipped (path exclusions)
+✓ Removal commits correctly skipped (message filtering)
+✓ Commits with only key removals skipped (diff analysis)
 ✓ All .gitignore patterns present
 ✓ Commit message filtering enabled
 ✓ Diff analysis enabled
@@ -95,7 +94,7 @@ CodeQL Analysis: 0 vulnerabilities found
 ## 🎓 Answers to Your Questions
 
 ### Q: Is the security scan triggering on commits that removed keys?
-**A: YES (was).** The original workflow used `git log -S "PRIVATE KEY-----"` which detects ANY change. Commits b964330 and 33d9c94 removed keys but were flagged.
+**A: YES (was).** The original workflow used `git log -S "PRIVATE KEY-----"` which detects ANY change. Commits that removed keys were being incorrectly flagged.
 
 **FIXED:** Now uses diff analysis (`grep '^\+.*BEGIN.*PRIVATE KEY'`) to detect only additions.
 
@@ -129,7 +128,7 @@ When you merge this PR, the security scan will:
 3. **Skip removal commits** → ✅ PASS (message filtering works)
 4. **Skip documentation** → ✅ PASS (path exclusions work)
 
-**Important:** The workflow scans commits **from the base branch** (main) to the PR branch. Since commits b964330 and 33d9c94 are already in main, they won't be re-scanned. The workflow will only analyze NEW commits in PRs.
+**Important:** The workflow scans commits **from the base branch** (main) to the PR branch. Only NEW commits in PRs are analyzed, preventing re-scanning of historical commits already in the main branch.
 
 ## 📝 Files Changed
 
@@ -145,12 +144,12 @@ When you merge this PR, the security scan will:
 
 ## ⚠️ Important Notes
 
-### Historical Keys (Commit 28effe0)
-- **Status:** Keys exist in git history from commit 28effe0
-- **Removed:** Working tree cleaned in b964330
-- **Risk:** Keys in history can still be extracted
+### Historical Keys in Git History
+- **Status:** If keys exist in git history from any past commit
+- **Removed:** Working tree may be cleaned, but keys remain in history
+- **Risk:** Keys in history can still be extracted by anyone with repository access
 - **Action Required:** 
-  1. ✅ Rotate/revoke the keys (if not already done)
+  1. ✅ Rotate/revoke any exposed keys immediately
   2. 📖 Optional: Clean history using guide in `docs/SECURITY_SCAN_FIX_GUIDE.md`
 
 ### Why Not Clean History Automatically?
@@ -167,7 +166,7 @@ When you merge this PR, the security scan will:
 # Run verification script
 bash scripts/verify-security-scan.sh
 
-# Expected: All checks pass except historical 28effe0 flagged (correct)
+# Expected: All checks pass (no violations in current working tree)
 ```
 
 ### After Merging (CI)

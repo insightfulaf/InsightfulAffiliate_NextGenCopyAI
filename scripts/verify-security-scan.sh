@@ -195,13 +195,13 @@ else
     echo
     echo "Checking workflow features..."
     
-    if grep -q "grep -qiE.*remove.*delete.*fix.*security" "$WORKFLOW_FILE"; then
+    if grep -qE "grep.*-qiE.*\(remove\|delete\|.*fix\|security\)" "$WORKFLOW_FILE"; then
         print_success "Commit message filtering enabled"
     else
         print_warning "Commit message filtering not found"
     fi
     
-    if grep -q 'grep -E.*\^\+.*BEGIN.*PRIVATE KEY' "$WORKFLOW_FILE"; then
+    if grep -qE 'grep.*-E.*\^\\+.*BEGIN.*(RSA|DSA|EC|OPENSSH|ENCRYPTED).*PRIVATE KEY' "$WORKFLOW_FILE"; then
         print_success "Diff analysis for key additions enabled"
     else
         print_warning "Diff analysis not found"

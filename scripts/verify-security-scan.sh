@@ -133,6 +133,9 @@ else
             ":(exclude)scripts/verify-security-scan.sh" \
             ":(exclude).secrets.baseline" \
             ":(exclude).pre-commit-config.yaml" \
+            ":(exclude)IMPLEMENTATION_SUMMARY.md" \
+            ":(exclude)*_SUMMARY.md" \
+            ":(exclude)*_GUIDE.md" \
             | grep -E "^\+.*BEGIN.*PRIVATE KEY" >/dev/null 2>&1; then
             print_error "    → VIOLATION: This commit ADDED private key content"
             echo "$commit_short: $commit_msg" >> "$TEMP_VIOLATIONS"

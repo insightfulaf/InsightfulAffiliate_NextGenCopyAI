@@ -197,14 +197,14 @@ for commit in $(git log --all --format=%H -S "PRIVATE KEY-----"); do
   msg=$(git log --format=%B -n 1 $commit | head -1)
   echo "Checking: $commit - $msg"
   
-  # Skip if message indicates removal
-  if echo "$msg" | grep -qiE "(remove|delete|fix|security)"; then
+  # Skip if message indicates removal of credentials (action word + credential word, or vice versa)
+  if echo "$msg" | grep -qiE "((remove|delete|fix|security).*(key|keys|secret|secrets|credential|credentials|token|tokens)|(key|keys|secret|secrets|credential|credentials|token|tokens).*(remove|delete|fix|security))"; then
     echo "  → SKIP (removal/fix)"
     continue
   fi
   
-  # Check if diff adds keys
-  if git show $commit | grep -q '^\+.*BEGIN.*PRIVATE KEY'; then
+  # Check if diff adds keys (match PEM private key headers like BEGIN OPENSSH PRIVATE KEY)
+  if git show $commit | grep -q '^\+.*BEGIN [A-Z0-9_-]\+ PRIVATE KEY'; then
     echo "  → VIOLATION (added keys)"
   else
     echo "  → OK (no keys added)"

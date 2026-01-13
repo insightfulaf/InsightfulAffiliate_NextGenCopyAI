@@ -166,8 +166,8 @@ jobs:
                 ":(exclude)scripts/verify-security-scan.sh" \
                 ":(exclude).secrets.baseline" \
                 ":(exclude).pre-commit-config.yaml" \
-                ":(exclude)*_SUMMARY.md" \
-                ":(exclude)*_GUIDE.md" \
+                ":(exclude,glob)**/*_SUMMARY.md" \
+                ":(exclude,glob)**/*_GUIDE.md" \
                 | grep -E "^\+.*BEGIN.*PRIVATE KEY" >/dev/null; then
                 # Found a line that ADDED a private key
                 echo "  ⚠ $commit_sha potentially ADDED private key content" >> "$TEMP_VIOLATIONS"

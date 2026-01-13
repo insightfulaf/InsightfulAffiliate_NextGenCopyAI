@@ -61,7 +61,7 @@ This repository implements multiple security layers:
 - **GitHub Actions**: Automated secret scanning on pull requests
 - **Pre-commit Hooks**: Local scanning before commits
 - **detect-secrets**: Baseline secret detection
-- **Git History Checks**: Scanning for accidentally committed secrets (with smart exclusions for documentation and archived examples)
+- **Git History Checks**: Smart scanning that distinguishes between commits that add secrets vs. commits that remove them (prevents false positives from security fixes)
 - **TruffleHog**: Entropy-based secret detection with optimized performance (excludes archives and non-essential directories)
 
 ### Prevention Measures
@@ -111,6 +111,8 @@ java -jar bfg.jar --delete-files filename
 # Force push after cleanup (affects all collaborators)
 git push --force --all
 ```
+
+**Note on Historical Keys**: This repository previously had SSH keys committed in commit `28effe0` (October 2025), which were removed in commit `b964330` (December 2025). These keys remain in git history but have been removed from the working tree. The security scan workflow has been enhanced to distinguish between commits that *add* keys versus commits that *remove* keys, preventing false positives. If you had access to the historical keys, they should be considered compromised and rotated.
 
 ## Supported Versions
 

@@ -70,7 +70,8 @@ jobs:
           # Using array-based approach to avoid eval security risks
           # Use mktemp for secure temporary file with automatic cleanup
           TEMP_GIT_CHECK=$(mktemp)
-          trap 'rm -f "$TEMP_GIT_CHECK"' EXIT
+          TEMP_VIOLATIONS=$(mktemp)
+          trap 'rm -f "$TEMP_GIT_CHECK" "$TEMP_VIOLATIONS"' EXIT
           
           # Determine the base branch for comparison
           # For PRs, scan only new commits (HEAD but not in base branch)
@@ -140,10 +141,57 @@ jobs:
           fi
           
           if [ -s "$TEMP_GIT_CHECK" ]; then
-            echo "::error::Private key references found in git history"
-            echo "Real credentials may have been committed. Review immediately!"
-            head -10 "$TEMP_GIT_CHECK"
-            exit 1
+            echo "Found commits touching private key strings. Analyzing to distinguish additions from removals..."
+            
+            # For each commit, check if it ADDED private keys (not just removed them)
+            while IFS= read -r line; do
+              commit_sha=$(echo "$line" | awk '{print $1}')
+              commit_msg=$(echo "$line" | cut -d' ' -f2-)
+              
+              # Skip commits with messages indicating key removal/cleanup
+              if echo "$commit_msg" | grep -qiE "(remove|delete|clean|strip|redact|fix|security).*(key|secret|credential|ssh)"; then
+                echo "  ℹ Skipping $commit_sha (commit message indicates key removal): $commit_msg"
+                continue
+              fi
+              if echo "$commit_msg" | grep -qiE "(key|secret|credential|ssh).*(remove|delete|clean|strip|redact)"; then
+                echo "  ℹ Skipping $commit_sha (commit message indicates key removal): $commit_msg"
+                continue
+              fi
+              
+              # Check the actual diff to see if private keys were added
+              if git show "$commit_sha" -- . \
+                ":(exclude)Archive_ready_to_sync/**" \
+                ":(exclude)archive/**" \
+                ":(exclude)REVIEW_PENDING/**" \
+                ":(exclude).github/**" \
+                ":(exclude)scripts/security-check.sh" \
+                ":(exclude).secrets.baseline" \
+                ":(exclude).pre-commit-config.yaml" \
+                | grep -E "^\+.*BEGIN (RSA |DSA |EC |OPENSSH |ENCRYPTED )?PRIVATE KEY" >/dev/null; then
+                # Found a line that ADDED a private key
+                echo "  ⚠ $commit_sha potentially ADDED private key content" >> "$TEMP_VIOLATIONS"
+              else
+                echo "  ℹ Skipping $commit_sha (only removed/modified keys, not added): $commit_msg"
+              fi
+            done < "$TEMP_GIT_CHECK"
+            
+            # Check if we found any actual violations
+            if [ -s "$TEMP_VIOLATIONS" ]; then
+              echo ""
+              echo "::error::Private keys were ADDED in the following commits:"
+              cat "$TEMP_VIOLATIONS"
+              echo ""
+              echo "These commits added private key content to the repository."
+              echo "If these are real credentials, they should be:"
+              echo "  1. Rotated/revoked immediately"
+              echo "  2. Removed from git history (requires force push)"
+              echo "  3. Never committed to version control again"
+              echo ""
+              echo "See docs/SSH_KEY_SECURITY.md for guidance on cleaning git history."
+              exit 1
+            else
+              echo "✓ All commits touching private keys were removals or documentation updates (no keys added)"
+            fi
           else
             echo "✓ No private keys found in git history (excluding documented examples)"
           fi

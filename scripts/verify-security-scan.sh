@@ -70,6 +70,7 @@ KEY_CONTENT=$(git grep -E "BEGIN (RSA|DSA|EC|OPENSSH|ENCRYPTED)? PRIVATE KEY" --
   ":(exclude)archive/" \
   ":(exclude)REVIEW_PENDING/" \
   ":(exclude)scripts/security-check.sh" \
+  ":(exclude)scripts/verify-security-scan.sh" \
   2>/dev/null || true)
 
 if [ -z "$KEY_CONTENT" ]; then
@@ -82,6 +83,10 @@ fi
 
 # ===== Check 2: Git History Analysis =====
 print_header "Check 2: Analyzing Git History for Private Keys"
+
+# Set up temp file and cleanup trap early
+TEMP_VIOLATIONS=$(mktemp)
+trap 'rm -f "$TEMP_VIOLATIONS"' EXIT
 
 echo "Finding commits that modified 'PRIVATE KEY-----'..."
 COMMITS=$(git log --all --format="%H %s" -S "PRIVATE KEY-----" -- \
@@ -106,8 +111,6 @@ else
     echo
     
     VIOLATIONS=0
-    TEMP_VIOLATIONS=$(mktemp)
-    trap 'rm -f "$TEMP_VIOLATIONS"' EXIT
     
     while IFS= read -r line; do
         commit_sha=$(echo "$line" | awk '{print $1}')

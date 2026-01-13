@@ -103,8 +103,8 @@ COMMITS=$(git log --all --format="%H %s" -S "PRIVATE KEY-----" -- \
   ":(exclude)scripts/verify-security-scan.sh" \
   ":(exclude).secrets.baseline" \
   ":(exclude).pre-commit-config.yaml" \
-  ":(exclude)*_SUMMARY.md" \
-  ":(exclude)*_GUIDE.md" \
+  ":(exclude,glob)**/*_SUMMARY.md" \
+  ":(exclude,glob)**/*_GUIDE.md" \
   2>/dev/null || true)
 
 if [ -z "$COMMITS" ]; then

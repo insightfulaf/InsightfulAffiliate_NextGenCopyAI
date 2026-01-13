@@ -84,7 +84,7 @@ fi
 print_header "Check 2: Analyzing Git History for Private Keys"
 
 echo "Finding commits that modified 'PRIVATE KEY-----'..."
-COMMITS=$(git log --all --format=%H -S "PRIVATE KEY-----" --oneline -- \
+COMMITS=$(git log --all --format="%H %s" -S "PRIVATE KEY-----" -- \
   . \
   ":(exclude)Archive_ready_to_sync/**" \
   ":(exclude)archive/**" \

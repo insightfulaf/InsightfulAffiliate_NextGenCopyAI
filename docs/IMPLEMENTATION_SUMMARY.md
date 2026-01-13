@@ -21,7 +21,7 @@ if message contains (remove|delete|clean|fix|security) + (key|secret|ssh)
   → SKIP (this is a fix, not a violation)
 
 # Step 2: Analyze the actual diff for key additions
-if git show commit | grep '^\+.*BEGIN.*PRIVATE KEY'
+if git show commit | grep '^\+.*BEGIN [A-Z0-9_-]+ PRIVATE KEY'
   → VIOLATION (commit added keys)
 else
   → SAFE (commit only removed/modified keys)

@@ -17,7 +17,7 @@ Your GitHub Actions security scan was failing with false positives, detecting co
 **How It Works:**
 ```bash
 # Step 1: Check commit message for removal/fix keywords
-if message contains (remove|delete|clean|fix|security) + (key|secret|ssh)
+if message contains (remove|delete|clean|fix|strip|redact|security) + (key|secret|ssh|credential)
   → SKIP (this is a fix, not a violation)
 
 # Step 2: Analyze the actual diff for key additions

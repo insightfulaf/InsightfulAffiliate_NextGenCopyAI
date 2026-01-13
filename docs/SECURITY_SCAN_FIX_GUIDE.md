@@ -137,8 +137,14 @@ git push --force --tags origin
 #### Using BFG Repo-Cleaner
 
 ```bash
-# 1. Download BFG
+# 1. Download BFG and verify checksum
 wget https://repo1.maven.org/maven2/com/madgag/bfg/1.14.0/bfg-1.14.0.jar
+# Verify SHA-256 checksum for integrity
+echo "1a75e9390541f4b55d9c01256b361b815c1e0a263e2fb3d072b55c2911ead0b7  bfg-1.14.0.jar" | sha256sum -c
+
+# Alternative: Install via package manager (recommended for security)
+# Homebrew: brew install bfg
+# Arch Linux: pacman -S bfg
 
 # 2. Clone a fresh bare repository
 git clone --mirror <repo-url> repo-mirror.git

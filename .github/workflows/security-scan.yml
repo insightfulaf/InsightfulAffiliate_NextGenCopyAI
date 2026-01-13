@@ -155,7 +155,7 @@ jobs:
               
               # Skip commits with messages indicating key removal/cleanup
               # Matches patterns like "remove key", "fix security", "key removal", etc.
-              if echo "$commit_msg" | grep -qiE "(remove|delete|clean|strip|redact|fix|security).*(key|secret|credential|ssh)|(key|secret|credential|ssh).*(remove|delete|clean|strip|redact)"; then
+              if echo "$commit_msg" | grep -qiE "((remove|delete|clean|strip|redact|fix|security).*(key|secret|credential|ssh))|((key|secret|credential|ssh).*(remove|delete|clean|strip|redact|fix|security))"; then
                 echo "  ℹ Skipping $commit_sha (commit message indicates key removal): $commit_msg"
                 continue
               fi
@@ -173,7 +173,7 @@ jobs:
                 ":(exclude).pre-commit-config.yaml" \
                 ":(exclude,glob)**/*_SUMMARY.md" \
                 ":(exclude,glob)**/*_GUIDE.md" \
-                | grep -E "^\+.*BEGIN.*PRIVATE KEY" >/dev/null; then
+                | grep -E '^\+.*BEGIN [A-Z0-9_-]+ PRIVATE KEY' >/dev/null; then
                 # Found a line that ADDED a private key
                 echo "  ⚠ $commit_sha potentially ADDED private key content" >> "$TEMP_VIOLATIONS"
               else

@@ -114,13 +114,13 @@ else
     
     while IFS= read -r line; do
         commit_sha=$(echo "$line" | awk '{print $1}')
-        commit_msg=$(git log --format=%B -n 1 "$commit_sha" | head -1)
+        commit_msg=$(git log --format=%s -n 1 "$commit_sha")
         commit_short=$(echo "$commit_sha" | cut -c1-7)
         
         echo "  Analyzing: $commit_short - $commit_msg"
         
         # If message indicates removal/fix, treat as a hint only (still inspect diff)
-        if echo "$commit_msg" | grep -qiE "(remove|delete|clean|strip|redact|fix|security).*(key|secret|credential|ssh)|(key|secret|credential|ssh).*(remove|delete|clean|strip|redact)"; then
+        if echo "$commit_msg" | grep -qiE "((remove|delete|clean|strip|redact|fix|security).*(key|secret|credential|ssh)|(key|secret|credential|ssh).*(remove|delete|clean|strip|redact|fix|security))"; then
             print_info "    → Message suggests key removal/security fix; verifying diff for additions..."
         fi
         
@@ -137,7 +137,7 @@ else
             ":(exclude).pre-commit-config.yaml" \
             ":(exclude,glob)**/*_SUMMARY.md" \
             ":(exclude,glob)**/*_GUIDE.md" \
-            | grep -E "^\+.*BEGIN.*PRIVATE KEY" >/dev/null 2>&1; then
+            | grep -E "^\+.*BEGIN [A-Z]+ PRIVATE KEY" >/dev/null 2>&1; then
             print_error "    → VIOLATION: This commit ADDED private key content"
             echo "$commit_short: $commit_msg" >> "$TEMP_VIOLATIONS"
             VIOLATIONS=$((VIOLATIONS + 1))

@@ -72,8 +72,8 @@ KEY_CONTENT=$(git grep -E "BEGIN (RSA |DSA |EC |OPENSSH |ENCRYPTED )?PRIVATE KEY
   ":(exclude)scripts/security-check.sh" \
   ":(exclude)scripts/verify-security-scan.sh" \
   ":(exclude).secrets.baseline" \
-  ":(exclude)*_SUMMARY.md" \
-  ":(exclude)*_GUIDE.md" \
+  ":(exclude,glob)**/*_SUMMARY.md" \
+  ":(exclude,glob)**/*_GUIDE.md" \
   2>/dev/null || true)
 
 if [ -z "$KEY_CONTENT" ]; then

@@ -16,8 +16,9 @@ Your GitHub Actions security scan was failing with false positives, detecting co
 
 **How It Works:**
 ```bash
-# Step 1: Check commit message for removal/fix keywords
-if message contains (remove|delete|clean|fix|strip|redact|security) + (key|secret|ssh|credential)
+# Step 1: Check commit message for removal/fix keywords (symmetric pattern)
+if message contains (remove|delete|clean|strip|redact|fix|security) + (key|secret|credential|ssh)
+   OR (key|secret|credential|ssh) + (remove|delete|clean|strip|redact|fix|security)
   → SKIP (this is a fix, not a violation)
 
 # Step 2: Analyze the actual diff for key additions
@@ -99,10 +100,11 @@ CodeQL Analysis: 0 vulnerabilities found
 **FIXED:** Now uses diff analysis (`grep '^\+.*BEGIN.*PRIVATE KEY'`) to detect only additions.
 
 ### Q: Should the workflow ignore commits with messages containing "remove" or "delete" keys?
-**A: IMPLEMENTED.** The workflow now filters commits with messages matching:
+**A: IMPLEMENTED.** The workflow now filters commits with messages matching (symmetric pattern):
 ```regex
-(?:(remove|delete|clean|strip|redact|fix|security).*(key|secret|credential|ssh)|(key|secret|credential|ssh).*(remove|delete|clean|strip|redact|fix|security))
+((remove|delete|clean|strip|redact|fix|security).*(key|secret|credential|ssh)|(key|secret|credential|ssh).*(remove|delete|clean|strip|redact|fix|security))
 ```
+This matches messages like "remove keys" OR "keys removed".
 
 ### Q: Are there legitimate key examples in documentation that need whitelisting?
 **A: HANDLED.** The workflow now excludes:

@@ -197,7 +197,7 @@ for commit in $(git log --all --format=%H -S "PRIVATE KEY-----"); do
   msg=$(git log --format=%B -n 1 $commit | head -1)
   echo "Checking: $commit - $msg"
   
-  # Skip if message indicates removal of credentials (action word + credential word, or vice versa)
+  # Skip if message indicates removal of credentials (symmetric pattern)
   if echo "$msg" | grep -qiE "((remove|delete|clean|strip|redact|fix|security).*(key|secret|credential|ssh)|(key|secret|credential|ssh).*(remove|delete|clean|strip|redact|fix|security))"; then
     echo "  → SKIP (removal/fix)"
     continue

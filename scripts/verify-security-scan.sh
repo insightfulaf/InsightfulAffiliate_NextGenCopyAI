@@ -137,7 +137,7 @@ else
             ":(exclude).pre-commit-config.yaml" \
             ":(exclude,glob)**/*_SUMMARY.md" \
             ":(exclude,glob)**/*_GUIDE.md" \
-            | grep -E "^\+.*BEGIN [A-Z]+ PRIVATE KEY" >/dev/null 2>&1; then
+            | grep -E "^\+.*BEGIN [A-Z0-9_-]+ PRIVATE KEY" >/dev/null 2>&1; then
             print_error "    → VIOLATION: This commit ADDED private key content"
             echo "$commit_short: $commit_msg" >> "$TEMP_VIOLATIONS"
             VIOLATIONS=$((VIOLATIONS + 1))

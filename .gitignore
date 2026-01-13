@@ -52,9 +52,12 @@ id_ed25519*
 *.ppk
 known_hosts
 authorized_keys
-# Catch any accidentally named ssh files
+# Catch any accidentally named ssh files or command output
 *ssh-agent*
 *eval*ssh*
+*ssh-add*
+*.pub
+!*.epub
 
 # ===== API Keys & Tokens =====
 *api_key*

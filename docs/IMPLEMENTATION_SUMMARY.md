@@ -101,7 +101,7 @@ CodeQL Analysis: 0 vulnerabilities found
 ### Q: Should the workflow ignore commits with messages containing "remove" or "delete" keys?
 **A: IMPLEMENTED.** The workflow now filters commits with messages matching:
 ```regex
-(remove|delete|clean|strip|redact|fix|security).*(key|secret|credential|ssh)
+(?:(remove|delete|clean|strip|redact|fix|security).*(key|secret|credential|ssh)|(key|secret|credential|ssh).*(remove|delete|clean|strip|redact|fix|security))
 ```
 
 ### Q: Are there legitimate key examples in documentation that need whitelisting?

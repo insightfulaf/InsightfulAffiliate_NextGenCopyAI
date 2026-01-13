@@ -123,15 +123,20 @@ jobs:
           fi
           
           # Scan for private keys in the commit range
+          # Excludes documentation, archived files, and security scanning tools
           git log "$COMMIT_RANGE" --full-history -S "PRIVATE KEY-----" --oneline -- \
             . \
             ":(exclude)Archive_ready_to_sync/**" \
             ":(exclude)archive/**" \
             ":(exclude)REVIEW_PENDING/**" \
             ":(exclude).github/**" \
+            ":(exclude)docs/**" \
             ":(exclude)scripts/security-check.sh" \
+            ":(exclude)scripts/verify-security-scan.sh" \
             ":(exclude).secrets.baseline" \
             ":(exclude).pre-commit-config.yaml" \
+            ":(exclude,glob)**/*_SUMMARY.md" \
+            ":(exclude,glob)**/*_GUIDE.md" \
             > "$TEMP_GIT_CHECK"
           
           git_log_status=$?

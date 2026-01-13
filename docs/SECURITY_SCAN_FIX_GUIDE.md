@@ -55,7 +55,7 @@ Examples of messages that are now skipped:
 
 #### Diff Analysis
 For commits that pass the message filter, the workflow analyzes the actual diff:
-- Looks for lines that **add** private key content: `^\+.*BEGIN.*PRIVATE KEY`
+- Looks for lines that **add** private key content: `^\+.*BEGIN [A-Z0-9_-]+ PRIVATE KEY`
 - Ignores commits that only remove or modify existing keys
 - Distinguishes between security violations (additions) and security fixes (removals)
 

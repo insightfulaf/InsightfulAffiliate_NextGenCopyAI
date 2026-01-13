@@ -116,13 +116,9 @@ else
         
         echo "  Analyzing: $commit_short - $commit_msg"
         
-        # Check if message indicates removal/fix
-        if echo "$commit_msg" | grep -qiE "(remove|delete|clean|strip|redact|fix|security).*(key|secret|credential|ssh)"; then
+        # Check if message indicates removal/fix (both word orders)
+        if echo "$commit_msg" | grep -qiE "(remove|delete|clean|strip|redact|fix|security).*(key|secret|credential|ssh)|(key|secret|credential|ssh).*(remove|delete|clean|strip|redact)"; then
             print_info "    → SKIP (message indicates key removal/security fix)"
-            continue
-        fi
-        if echo "$commit_msg" | grep -qiE "(key|secret|credential|ssh).*(remove|delete|clean|strip|redact)"; then
-            print_info "    → SKIP (message indicates key removal)"
             continue
         fi
         
@@ -135,7 +131,7 @@ else
             ":(exclude)scripts/security-check.sh" \
             ":(exclude).secrets.baseline" \
             ":(exclude).pre-commit-config.yaml" \
-            | grep -E "^\+.*BEGIN (RSA |DSA |EC |OPENSSH |ENCRYPTED )?PRIVATE KEY" >/dev/null 2>&1; then
+            | grep -E "^\+.*BEGIN (RSA|DSA|EC|OPENSSH|ENCRYPTED)? PRIVATE KEY" >/dev/null 2>&1; then
             print_error "    → VIOLATION: This commit ADDED private key content"
             echo "$commit_short: $commit_msg" >> "$TEMP_VIOLATIONS"
             VIOLATIONS=$((VIOLATIONS + 1))

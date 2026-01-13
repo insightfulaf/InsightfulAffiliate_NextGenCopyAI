@@ -41,7 +41,7 @@ This caused false positives for commits b964330 and 33d9c94.
 
 ### 1. Enhanced Workflow Logic
 
-The security scan workflow (`/github/workflows/security-scan.yml`) has been updated with intelligent filtering:
+The security scan workflow (`.github/workflows/security-scan.yml`) has been updated with intelligent filtering:
 
 #### Commit Message Filtering
 The workflow now skips commits with messages indicating key removal/fixes:

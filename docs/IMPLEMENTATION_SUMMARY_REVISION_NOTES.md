@@ -10,9 +10,7 @@ The original `IMPLEMENTATION_SUMMARY.md` document contained references to specif
 
 ## Root Cause
 
-The repository has undergone history changes (grafted at commit 628c7b2) and currently only contains 2 commits:
-1. `628c7b2` - Merge pull request #50 (grafted)
-2. `232b2fb` - Initial plan
+The repository has undergone history changes (grafted) and currently contains only a limited commit history.
 
 This means any references to commits before the graft point are invalid and cannot be verified.
 

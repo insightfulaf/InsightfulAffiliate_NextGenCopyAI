@@ -10,9 +10,11 @@ The original `IMPLEMENTATION_SUMMARY.md` document contained references to specif
 
 ## Root Cause
 
-The repository has undergone history changes (grafted) and currently contains only a limited commit history.
+The repository has undergone history changes and currently only contains 2 commits:
+1. A grafted merge commit for pull request #50
+2. An initial planning commit
 
-This means any references to commits before the graft point are invalid and cannot be verified.
+This means any references to commits before the current root commit are invalid and cannot be verified.
 
 ## Why This Caused Issues
 

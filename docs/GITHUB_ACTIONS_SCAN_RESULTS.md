@@ -51,7 +51,7 @@ All GitHub Actions workflows in this repository have been scanned and validated.
 - **Trigger:** Pull requests and pushes to main/develop branches, plus manual trigger
 - **Purpose:** Scans for secrets, SSH keys, and security vulnerabilities
 - **Status:** ✅ Valid and properly configured
-- **Jobs:** 1 comprehensive security scan job with 7 steps
+- **Jobs:** 1 comprehensive security scan job with 9 steps
 - **Action Versions:**
   - actions/checkout@v4 ✅
   - actions/setup-python@v5 ✅

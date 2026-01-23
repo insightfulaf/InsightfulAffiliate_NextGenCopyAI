@@ -37,7 +37,7 @@ Use this checklist each time you perform a branch cleanup session. Copy this tem
 - [ ] Count total branches: `git branch -a | wc -l`
 
 ### 3. Create Tracking Document
-- [ ] Open issue using [Branch Cleanup Template](.github/ISSUE_TEMPLATE/branch-cleanup.md)
+- [ ] Open issue using [Branch Cleanup Template](../../.github/ISSUE_TEMPLATE/branch-cleanup.md)
 - [ ] Or create local tracking file for this session
 - [ ] List all candidate branches for review
 

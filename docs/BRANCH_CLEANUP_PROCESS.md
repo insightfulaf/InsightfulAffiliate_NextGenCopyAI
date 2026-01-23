@@ -465,7 +465,7 @@ git checkout -b branch-name archive/branch-name
 
 ### Using GitHub Issues
 
-Create a recurring issue using the [Branch Cleanup Template](.github/ISSUE_TEMPLATE/branch-cleanup.md):
+Create a recurring issue using the [Branch Cleanup Template](../.github/ISSUE_TEMPLATE/branch-cleanup.md):
 
 1. Open new issue from template
 2. Fill in branch list

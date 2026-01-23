@@ -546,7 +546,7 @@ jobs:
 
 - [Branch Cleanup Checklist](checklists/BRANCH_CLEANUP_CHECKLIST.md) - Practical checklist format
 - [CONTRIBUTING.md](../CONTRIBUTING.md) - Repository contribution guidelines
-- [Branch Cleanup Issue Template](.github/ISSUE_TEMPLATE/branch-cleanup.md) - GitHub issue template
+- [Branch Cleanup Issue Template](../.github/ISSUE_TEMPLATE/branch-cleanup.md) - GitHub issue template
 
 ### GitHub Documentation
 

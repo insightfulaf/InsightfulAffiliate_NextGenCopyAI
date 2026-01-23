@@ -358,7 +358,7 @@ git branch backup/branch-name branch-name
 - Person who approved/performed deletion
 
 **Use:**
-- GitHub issue with [branch cleanup template](.github/ISSUE_TEMPLATE/branch-cleanup.md)
+- GitHub issue with [branch cleanup template](../.github/ISSUE_TEMPLATE/branch-cleanup.md)
 - Team wiki or documentation
 - Cleanup checklist
 

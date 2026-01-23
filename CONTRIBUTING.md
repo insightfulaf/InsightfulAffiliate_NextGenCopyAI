@@ -130,6 +130,95 @@ git push -u origin feature/short-description
 
 - Use PRs for reviews. Keep PRs small and focused.
 
+## Branch Management
+
+> **📖 Detailed Guide**: For comprehensive branch cleanup procedures, see the [Branch Cleanup Process](docs/BRANCH_CLEANUP_PROCESS.md) documentation.
+
+### Branch Naming Conventions
+
+Use clear, descriptive branch names that indicate the purpose of the work:
+
+**Recommended patterns:**
+- `feature/short-description` - New features
+- `fix/bug-description` or `bugfix/issue-description` - Bug fixes
+- `docs/topic` - Documentation updates
+- `refactor/component-name` - Code refactoring
+- `test/feature-name` - Test additions or improvements
+
+**Examples:**
+```bash
+git checkout -b feature/add-affiliate-tracking
+git checkout -b fix/login-validation-error
+git checkout -b docs/update-setup-guide
+```
+
+### When to Create Branches
+
+- Always create a new branch for any changes (never commit directly to `main`)
+- Branch from `main` for new work
+- Keep branches focused on a single feature or fix
+- Create separate branches for unrelated changes
+
+### Keeping Branches Up to Date
+
+**Sync with main regularly:**
+
+```bash
+# While on your feature branch
+git checkout main
+git pull origin main
+git checkout your-feature-branch
+git merge main
+
+# Or use rebase (if you're comfortable with it)
+git rebase main
+```
+
+**Best practices:**
+- Sync with main before starting work each day
+- Sync before opening a pull request
+- Resolve conflicts locally before pushing
+
+### When to Delete Branches
+
+**Delete branches after:**
+- Pull request is merged
+- Changes are integrated into main
+- Work is abandoned and no longer needed
+
+**How to delete:**
+
+```bash
+# Delete local branch (after PR is merged)
+git branch -d branch-name
+
+# Delete remote branch (if not auto-deleted by GitHub)
+git push origin --delete branch-name
+```
+
+**Automatic deletion:**
+- GitHub can automatically delete branches after PR merge
+- Repository owners can enable this in Settings → General → Pull Requests
+
+### Branch Cleanup
+
+We maintain repository hygiene through regular branch cleanup:
+
+- **Stale branches** (>90 days old with no activity) are reviewed quarterly
+- **Merged branches** should be deleted promptly after PR merge
+- Use the [Branch Cleanup Checklist](docs/checklists/BRANCH_CLEANUP_CHECKLIST.md) for systematic cleanup
+- Create cleanup tracking issues using the [Branch Cleanup Template](.github/ISSUE_TEMPLATE/branch-cleanup.md)
+
+**Before deleting a branch, always verify:**
+- [ ] Associated PR is closed or merged
+- [ ] No unique unmerged commits exist
+- [ ] No one is actively working on it
+
+**Resources:**
+- [Branch Cleanup Process](docs/BRANCH_CLEANUP_PROCESS.md) - Full documentation
+- [Branch Cleanup Checklist](docs/checklists/BRANCH_CLEANUP_CHECKLIST.md) - Practical checklist
+- [Branch Cleanup Issue Template](.github/ISSUE_TEMPLATE/branch-cleanup.md) - Tracking template
+
 ## When to use HTTPS vs SSH
 
 - Use HTTPS if:

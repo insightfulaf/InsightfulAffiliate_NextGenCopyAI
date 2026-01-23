@@ -573,7 +573,7 @@ If you have questions about branch cleanup:
 1. Review this documentation
 2. Check the [Branch Cleanup Checklist](checklists/BRANCH_CLEANUP_CHECKLIST.md)
 3. Consult [CONTRIBUTING.md](../CONTRIBUTING.md) for branch management guidelines
-4. Open an issue using the [Branch Cleanup Template](.github/ISSUE_TEMPLATE/branch-cleanup.md)
+4. Open an issue using the [Branch Cleanup Template](../.github/ISSUE_TEMPLATE/branch-cleanup.md)
 5. Contact repository maintainers
 
 ---

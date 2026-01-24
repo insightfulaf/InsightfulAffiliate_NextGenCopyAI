@@ -185,7 +185,7 @@ After executing deletion:
 - [ ] Confirm main branch is intact
 - [ ] Run `git fetch --prune` to clean up local refs
 - [ ] Update documentation if needed
-- [ ] Close this PR (#57) after merge
+- [ ] Delete any temporary cleanup branches associated with this execution after merge (if not auto-deleted)
 
 ---
 

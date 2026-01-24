@@ -28,18 +28,29 @@ declare -a BRANCHES=(
 )
 
 # Corresponding PRs and SHAs (for reference/recovery)
-declare -A BRANCH_INFO=(
-    ["workflow-consolidation"]="PR #3 | SHA: f124cbb6a3d197faf4beba4ea1ad28758f7b231d | Merged: 2025-12-21"
-    ["workflow-consolidation-2"]="Duplicate | SHA: f124cbb6a3d197faf4beba4ea1ad28758f7b231d | N/A"
-    ["copilot/fix-secrets-usage-errors"]="PR #53 | SHA: f7354f98685769a4a6fad26f904fe840c729c020 | Merged: 2026-01-15"
-    ["copilot/setup-copilot-instructions"]="PR #31 | SHA: 22541649387d9ce442370035677c61b30ec6186f | Merged: 2025-12-30"
-)
+# (Kept inline below to avoid Bash 4+ associative arrays for compatibility)
 
 echo -e "${YELLOW}This script will delete the following branches from remote:${NC}"
 echo ""
 for branch in "${BRANCHES[@]}"; do
     echo -e "  - ${RED}$branch${NC}"
-    echo -e "    ${BRANCH_INFO[$branch]}"
+    case "$branch" in
+        "workflow-consolidation")
+            echo -e "    PR #3 | SHA: f124cbb6a3d197faf4beba4ea1ad28758f7b231d | Merged: 2025-12-21"
+            ;;
+        "workflow-consolidation-2")
+            echo -e "    Duplicate | SHA: f124cbb6a3d197faf4beba4ea1ad28758f7b231d | N/A"
+            ;;
+        "copilot/fix-secrets-usage-errors")
+            echo -e "    PR #53 | SHA: f7354f98685769a4a6fad26f904fe840c729c020 | Merged: 2026-01-15"
+            ;;
+        "copilot/setup-copilot-instructions")
+            echo -e "    PR #31 | SHA: 22541649387d9ce442370035677c61b30ec6186f | Merged: 2025-12-30"
+            ;;
+        *)
+            echo -e "    (no additional info available)"
+            ;;
+    esac
     echo ""
 done
 

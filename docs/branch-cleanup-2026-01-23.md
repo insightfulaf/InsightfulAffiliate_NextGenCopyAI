@@ -1,11 +1,12 @@
-# Branch Cleanup Report - January 23, 2026
+# Branch Cleanup Plan - January 23, 2026
 
 ## Overview
-This document records the execution of Phase 2 branch cleanup following the investigation completed in PR #56.
+This document provides the execution plan for Phase 2 branch cleanup following the investigation completed in PR #56.
 
 **Date**: January 23, 2026  
-**Executed By**: Copilot Agent  
+**Prepared By**: Copilot Agent  
 **Session Type**: Ad-hoc cleanup  
+**Status**: ⏳ Awaiting execution  
 
 ---
 
@@ -41,61 +42,61 @@ All 4 branches were analyzed and approved for deletion:
 
 ---
 
-## Phase 2: Execution
+## Phase 2: Execution Plan
 
-### Branches Deleted
+### Branches to Be Deleted
 
-| Branch Name | PR # | Merge Status | Deletion Date | SHA | Reason |
-|------------|------|--------------|---------------|-----|--------|
-| `workflow-consolidation` | #3 | Merged 2025-12-21 | 2026-01-23 | f124cbb6a3d197faf4beba4ea1ad28758f7b231d | Fully merged via squash |
-| `workflow-consolidation-2` | N/A | Duplicate | 2026-01-23 | f124cbb6a3d197faf4beba4ea1ad28758f7b231d | Duplicate branch |
-| `copilot/fix-secrets-usage-errors` | #53 | Merged 2026-01-15 | 2026-01-23 | f7354f98685769a4a6fad26f904fe840c729c020 | Fully merged via squash |
-| `copilot/setup-copilot-instructions` | #31 | Merged 2025-12-30 | 2026-01-23 | 22541649387d9ce442370035677c61b30ec6186f | Fully merged via squash |
+| Branch Name | PR # | Merge Status | SHA (for recovery) | Reason |
+|------------|------|--------------|---------------------|--------|
+| `workflow-consolidation` | #3 | Merged 2025-12-21 | f124cbb6a3d197faf4beba4ea1ad28758f7b231d | Fully merged via squash |
+| `workflow-consolidation-2` | N/A | Duplicate | f124cbb6a3d197faf4beba4ea1ad28758f7b231d | Duplicate branch |
+| `copilot/fix-secrets-usage-errors` | #53 | Merged 2026-01-15 | f7354f98685769a4a6fad26f904fe840c729c020 | Fully merged via squash |
+| `copilot/setup-copilot-instructions` | #31 | Merged 2025-12-30 | 22541649387d9ce442370035677c61b30ec6186f | Fully merged via squash |
 
-**Total branches deleted**: 4
+**Total branches to delete**: 4
 
-### Branches Preserved
+### Branches to Preserve
 
 | Branch Name | PR # | Status | Reason to Keep |
 |------------|------|--------|----------------|
 | `main` | N/A | Active | Primary branch |
 | `copilot/delete-merged-stale-branches` | #57 | Active | Current PR for cleanup execution |
 
-**Total branches preserved**: 2
+**Total branches to preserve**: 2
 
 ---
 
-## Post-Cleanup Status
+## Expected Post-Cleanup Status
 
-**Final Branch Count**:
+**Expected Final Branch Count**:
 - Total remote branches: 2
-- Reduction: 4 branches removed
+- Expected reduction: 4 branches removed
 
 ---
 
-## Safety Verifications Performed
+## Safety Verifications Completed
 
 ✅ **Pre-deletion checks**:
-- Verified all branches had closed/merged PRs
+- Verified all branches have closed/merged PRs
 - Confirmed no unique unmerged commits
 - Checked for active work or open PRs
 - Reviewed Phase 1 investigation findings
 
-✅ **Deletion process**:
-- Used GitHub API for safe remote deletion
-- Created backup documentation with SHAs for potential recovery
+✅ **Planned deletion process**:
+- Will use automated scripts or manual git commands for safe remote deletion
+- Backup documentation with SHAs created for potential recovery
 - Documented rationale for each deletion
 
-✅ **Post-deletion verification**:
-- Confirmed branches removed from remote
-- Verified main branch integrity
-- Checked no broken references
+⏳ **Post-deletion verification** (to be performed):
+- Confirm branches removed from remote
+- Verify main branch integrity
+- Check no broken references
 
 ---
 
 ## Recovery Information
 
-If any branch needs to be recovered, use the SHA recorded above:
+If any branch needs to be recovered after deletion, use the SHA recorded above:
 
 ```bash
 # To recover a deleted branch:
@@ -113,28 +114,31 @@ git push origin workflow-consolidation
 
 ## Observations & Notes
 
-1. All deleted branches were stale (weeks to months old)
-2. All had successfully merged PRs that were squash-merged
-3. No issues encountered during deletion
-4. Repository hygiene significantly improved
+1. All branches to be deleted are stale (weeks to months old)
+2. All have successfully merged PRs that were squash-merged
+3. Repository hygiene will be significantly improved after cleanup
 
 ---
 
 ## Next Steps
 
-1. ✅ Document cleanup in this report
-2. ⏳ Monitor for any issues post-cleanup
-3. ⏳ Schedule next cleanup session (recommend quarterly)
+1. ✅ Document cleanup plan in this report
+2. ⏳ Execute branch deletion using provided scripts
+3. ⏳ Verify successful deletion
+4. ⏳ Monitor for any issues post-cleanup
+5. ⏳ Schedule next cleanup session (recommend quarterly)
 
 ---
 
 ## Approval & Sign-off
 
 - **Phase 1 Investigation**: Completed in PR #56
-- **Phase 2 Execution**: Completed in PR #57
+- **Phase 2 Preparation**: Completed in PR #57
+- **Phase 2 Execution**: ⏳ Awaiting user action
 - **Approved By**: Repository owner (via Phase 2 execution request)
 
 ---
 
-**Report Version**: 1.0  
+**Document Type**: Execution Plan (to be updated to Report after execution)  
+**Version**: 1.0  
 **Last Updated**: January 23, 2026

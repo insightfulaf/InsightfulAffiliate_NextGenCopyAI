@@ -185,7 +185,8 @@ After executing deletion:
 - [ ] Confirm main branch is intact
 - [ ] Run `git fetch --prune` to clean up local refs
 - [ ] Update documentation if needed
-- [ ] Delete any temporary cleanup branches associated with this execution after merge (if not auto-deleted)
+- [ ] Merge this PR (#57) - GitHub will auto-close the PR
+- [ ] Delete the `copilot/delete-merged-stale-branches` branch after merge (if not auto-deleted)
 
 ---
 

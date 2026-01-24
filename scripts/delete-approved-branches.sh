@@ -69,10 +69,10 @@ for branch in "${BRANCHES[@]}"; do
     
     if git push origin --delete "$branch" 2>/dev/null; then
         echo -e "  ${GREEN}✓ Successfully deleted${NC}"
-        ((deleted_count++))
+        ((++deleted_count))
     else
         echo -e "  ${RED}✗ Failed to delete${NC}"
-        ((failed_count++))
+        ((++failed_count))
         failed_branches+=("$branch")
     fi
     echo ""

@@ -1,8 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Branch Cleanup Execution Script
 # Generated: January 23, 2026
 # Based on Phase 1 Investigation (PR #56)
+# Compatible with bash (will run even if your default shell is zsh)
 
 set -e  # Exit on error
 

@@ -10,6 +10,8 @@ Phase 2 of branch cleanup is ready. **4 branches** are approved and ready for de
 ./scripts/delete-approved-branches.sh
 ```
 
+**Note**: Works with zsh - the script will run in bash automatically.
+
 Or manually:
 
 ```bash

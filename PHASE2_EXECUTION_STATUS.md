@@ -56,6 +56,8 @@ The following 4 branches are approved and ready for deletion:
 ./scripts/delete-approved-branches.sh
 ```
 
+**Note**: This script uses bash and will work even if your default shell is zsh.
+
 This script will:
 - Show all branches to be deleted
 - Ask for confirmation
@@ -69,6 +71,8 @@ This script will:
 # From repository root
 ./scripts/delete-approved-branches-gh.sh
 ```
+
+**Note**: This script uses bash and will work even if your default shell is zsh.
 
 Requires GitHub CLI authentication: `gh auth login`
 

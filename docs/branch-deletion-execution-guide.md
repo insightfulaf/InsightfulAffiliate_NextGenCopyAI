@@ -29,6 +29,8 @@ cd /path/to/InsightfulAffiliate_NextGenCopyAI
 ./scripts/delete-approved-branches.sh
 ```
 
+**Note**: This script uses bash and will work even if your default shell is zsh.
+
 ### Using GitHub CLI
 ```bash
 # Navigate to repository
@@ -37,6 +39,8 @@ cd /path/to/InsightfulAffiliate_NextGenCopyAI
 # Run the GitHub CLI deletion script
 ./scripts/delete-approved-branches-gh.sh
 ```
+
+**Note**: This script uses bash and will work even if your default shell is zsh.
 
 Both scripts will:
 - Show you what will be deleted

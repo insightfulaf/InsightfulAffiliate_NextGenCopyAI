@@ -1,0 +1,148 @@
+{
+  "folders": [
+    {
+      "path": ".",
+      "name": "IA/NGCAI Main"
+    }
+  ],
+  "settings": {
+    // ====================
+    // Memory Optimization
+    // ====================
+    
+    // Exclude heavy directories from file explorer
+    "files.exclude": {
+      "archive": true,
+      "Archive_ready_to_sync": true,
+      "**/.venv": true,
+      "**/.venv-1": true,
+      "**/__pycache__": true,
+      "**/.git": true,
+      "**/node_modules": true,
+      "**/.DS_Store": true,
+      "**/.pytest_cache": true
+    },
+    
+    // Exclude from search indexing (saves memory and speeds up search)
+    "search.exclude": {
+      "Archive_ready_to_sync/**": true,
+      "archive/**": true,
+      "**/node_modules": true,
+      "**/.venv": true,
+      "**/.venv-1": true,
+      "**/__pycache__": true,
+      "**/.git": true,
+      "**/dist": true,
+      "**/build": true,
+      "**/.pytest_cache": true,
+      // Exclude nested AI outputs (redundant generated content)
+      "docs/ai_outputs/ai_outputs/**": true,
+      "docs/ai_outputs/checklists/**": true
+    },
+    
+    // Exclude from file watcher (reduces CPU/memory usage)
+    "files.watcherExclude": {
+      "**/.git/objects/**": true,
+      "**/.git/subtree-cache/**": true,
+      "**/node_modules/**": true,
+      "**/.venv/**": true,
+      "**/.venv-1/**": true,
+      "**/Archive_ready_to_sync/**": true,
+      "**/archive/**": true,
+      "**/__pycache__/**": true,
+      "**/dist/**": true,
+      "**/build/**": true,
+      "**/.pytest_cache/**": true
+    },
+    
+    // ====================
+    // Git Configuration
+    // ====================
+    
+    // Disable auto-fetch to reduce memory and network usage
+    "git.autofetch": false,
+    "git.autorefresh": true,
+    "git.enabled": true,
+    "git.decorations.enabled": true,
+    
+    // ====================
+    // Python Configuration
+    // ====================
+    
+    "python.defaultInterpreterPath": ".venv-1/bin/python",
+    "python.testing.pytestArgs": ["."],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+    "python.terminal.useEnvFile": true,
+    
+    // ====================
+    // Editor Configuration
+    // ====================
+    
+    "editor.formatOnSave": false,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    
+    // ====================
+    // File Configuration
+    // ====================
+    
+    "files.encoding": "utf8",
+    "files.eol": "\n",
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    
+    // ====================
+    // Prettier Configuration
+    // ====================
+    
+    "prettier.printWidth": 100,
+    "prettier.singleQuote": true,
+    "prettier.endOfLine": "lf",
+    "prettier.insertPragma": false,
+    
+    // ====================
+    // Terminal Configuration
+    // ====================
+    
+    "terminal.integrated.cwd": "${workspaceFolder}",
+    "terminal.integrated.inheritEnv": true,
+    "terminal.integrated.shellIntegration.enabled": true,
+    
+    // ====================
+    // Performance Optimization
+    // ====================
+    
+    // Reduce TypeScript/JavaScript overhead for non-JS projects
+    "typescript.tsc.autoDetect": "off",
+    
+    // Window behavior
+    "window.restoreWindows": "one",
+    
+    // Limit extensions that auto-activate
+    "extensions.autoUpdate": false,
+    
+    // ====================
+    // GitHub Copilot
+    // ====================
+    
+    "github.copilot.chat.codesearch.enabled": true,
+    "github.copilot.chat.notebook.followCellExecution.enabled": true
+  },
+  
+  // ====================
+  // Extensions Recommendations
+  // ====================
+  
+  "extensions": {
+    "recommendations": [
+      "esbenp.prettier-vscode",
+      "ms-python.python",
+      "ritwickdey.liveserver",
+      "github.copilot",
+      "github.copilot-chat"
+    ],
+    "unwantedRecommendations": []
+  }
+}

@@ -1,23 +1,94 @@
 {
+  // ====================
+  // File Configuration
+  // ====================
   "files.encoding": "utf8",
   "files.eol": "\n",
   "files.trimTrailingWhitespace": true,
   "files.insertFinalNewline": true,
 
+  // Memory Optimization: Exclude heavy directories from file explorer
+  "files.exclude": {
+    "archive": true,
+    "Archive_ready_to_sync": true,
+    "**/.venv": true,
+    "**/.venv-1": true,
+    "**/__pycache__": true,
+    "**/node_modules": true,
+    "**/.DS_Store": true,
+    "**/.pytest_cache": true
+  },
+
+  // ====================
+  // Search Configuration
+  // ====================
+  "search.seedOnFocus": true,
+
+  // Memory Optimization: Exclude from search indexing
+  "search.exclude": {
+    "Archive_ready_to_sync/**": true,
+    "archive/**": true,
+    "**/node_modules": true,
+    "**/.venv": true,
+    "**/.venv-1": true,
+    "**/__pycache__": true,
+    "**/.git": true,
+    "**/dist": true,
+    "**/build": true,
+    "**/.pytest_cache": true,
+    "docs/ai_outputs/ai_outputs/**": true,
+    "docs/ai_outputs/checklists/**": true
+  },
+
+  // Memory Optimization: Exclude from file watcher
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/**": true,
+    "**/.venv/**": true,
+    "**/.venv-1/**": true,
+    "**/Archive_ready_to_sync/**": true,
+    "**/archive/**": true,
+    "**/__pycache__/**": true,
+    "**/dist/**": true,
+    "**/build/**": true,
+    "**/.pytest_cache/**": true
+  },
+
+  // ====================
+  // Editor Configuration
+  // ====================
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
 
+  // ====================
+  // Prettier Configuration
+  // ====================
   "prettier.printWidth": 100,
   "prettier.singleQuote": true,
   "prettier.endOfLine": "lf",
+  "prettier.insertPragma": false,
+
+  // ====================
+  // Python Configuration
+  // ====================
   "python-envs.pythonProjects": [],
-  "github.copilot.chat.codesearch.enabled": true,
-  "github.copilot.chat.notebook.followCellExecution.enabled": true,
   "python.testing.pytestArgs": ["."],
   "python.testing.unittestEnabled": false,
   "python.testing.pytestEnabled": true,
+  "python.terminal.useEnvFile": true,
+
+  // ====================
+  // GitHub Copilot
+  // ====================
+  "github.copilot.chat.codesearch.enabled": true,
+  "github.copilot.chat.notebook.followCellExecution.enabled": true,
+
+  // ====================
+  // Terminal Configuration
+  // ====================
   "terminal.integrated.defaultProfile.osx": "zsh",
   "terminal.integrated.profiles.osx": {
     "zsh": {
@@ -27,18 +98,33 @@
   },
   "terminal.integrated.inheritEnv": true,
   "terminal.integrated.shellIntegration.enabled": true,
-  "application.shellEnvironmentResolutionTimeout": 30000,
   "terminal.integrated.cwd": "${workspaceFolder}",
+  "terminal-keeper.theme": "iconic",
+
+  // ====================
+  // Performance Configuration
+  // ====================
+  "application.shellEnvironmentResolutionTimeout": 30000,
   "window.restoreWindows": "one",
-  "remoteHub.gitProtocol": "http",
-  "prettier.insertPragma": false,
-  "liveServer.settings.ChromeDebuggingAttachment": false,
-  "search.seedOnFocus": true,
+
+  // Performance Optimization: Reduce TypeScript overhead
+  "typescript.tsc.autoDetect": "off",
+
+  // Performance Optimization: Disable Git auto-fetch
+  "git.autofetch": false,
+
+  // ====================
+  // Workbench Configuration
+  // ====================
   "workbench.editor.autoLockGroups": {
     "chatgpt.conversationEditor": true
   },
   "workbench.colorTheme": "Default High Contrast",
   "workbench.preferredDarkColorTheme": "Abyss",
-  "terminal-keeper.theme": "iconic",
-  "python.terminal.useEnvFile": true
+
+  // ====================
+  // Miscellaneous
+  // ====================
+  "remoteHub.gitProtocol": "http",
+  "liveServer.settings.ChromeDebuggingAttachment": false
 }

@@ -91,6 +91,44 @@ The file `.github/copilot-instructions.md` contains comprehensive guidelines for
 
 These instructions are automatically available to GitHub Copilot when working in this repository.
 
+## Workflow Tracker
+
+**New!** Keep track of your tasks and workflow steps when working solo.
+
+The Workflow Tracker helps you:
+- Remember where you left off on tasks
+- Follow structured workflows for common activities
+- Track your progress through complex multi-step processes
+- Maintain consistency in your work habits
+
+### Quick Start
+
+```bash
+# See what you're currently working on
+./scripts/workflow_tracker.py status
+
+# Load a pre-built workflow template
+./scripts/workflow_tracker.py templates
+./scripts/workflow_tracker.py load-template content-generation
+
+# Complete steps as you work
+./scripts/workflow_tracker.py complete-step 0
+
+# Finish when done
+./scripts/workflow_tracker.py finish
+```
+
+### Pre-built Workflow Templates
+
+- **content-generation**: Use agent_codex.py to generate AI content
+- **landing-page-creation**: Build Systeme.io landing pages and components
+- **affiliate-compliance-check**: Verify FTC compliance for affiliate content
+- **repository-maintenance**: Regular cleanup and organization
+- **new-feature-development**: Develop and integrate new features
+- **content-review-and-publish**: Review and publish content to production
+
+See the [Workflow Tracker Guide](docs/WORKFLOW_TRACKER_GUIDE.md) for detailed documentation and examples.
+
 ### Learn More
 
 - [Workflow Operations Guide](docs/WORKFLOW_OPERATIONS_GUIDE.md) - **New!** Comprehensive reference for Python environment, agents, skills, and common workflows

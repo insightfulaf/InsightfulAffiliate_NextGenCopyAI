@@ -114,6 +114,9 @@ venv/
 __pycache__/
 *.pyc
 
+# ===== Workflow Tracker =====
+.workflow/
+
 # ===== OS / Cloud miscellany =====
 Thumbs.db
 Desktop.ini

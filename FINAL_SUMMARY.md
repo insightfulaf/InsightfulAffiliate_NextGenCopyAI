@@ -32,7 +32,7 @@ I reviewed all three workflows in `.github/workflows/`:
 
 I simulated both main workflows locally and confirmed they will pass:
 
-**Contributor Setup Check:**
+**Contributor setup check:**
 ```
 ✅ CONTRIBUTING.md references scripts/setup.sh
 ✅ scripts/setup.sh exists and is executable
@@ -72,7 +72,7 @@ GitHub Actions requires **manual approval** before running workflows on pull req
 
 Go to: https://github.com/insightfulaf/InsightfulAffiliate_NextGenCopyAI/pulls
 
-Find: "[WIP] Review action and correct for successful execution"
+Find: "Document GitHub Actions \"action_required\" status and verify workflow configurations"
 
 ### Step 2: Approve the Workflows
 
@@ -120,7 +120,7 @@ I've created two comprehensive guides for you:
 ```
 Current State:
 ┌─────────────────────────────────────────┐
-│ Workflow: Contributor Setup Check      │
+│ Workflow: Contributor setup check      │
 │ Status: action_required (waiting)      │
 │ Local Test: ✅ PASS                    │
 │ Expected Result: ✅ PASS               │
@@ -135,7 +135,7 @@ Current State:
 
 After Approval:
 ┌─────────────────────────────────────────┐
-│ Workflow: Contributor Setup Check      │
+│ Workflow: Contributor setup check      │
 │ Status: success ✅                     │
 └─────────────────────────────────────────┘
 

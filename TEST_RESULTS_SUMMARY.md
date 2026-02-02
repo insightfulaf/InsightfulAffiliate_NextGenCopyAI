@@ -19,7 +19,7 @@ Reviewed all workflow files in `.github/workflows/`:
 
 Ran all workflow checks locally to verify they will pass:
 
-#### Contributor Setup Check Results:
+#### Contributor setup check Results:
 ```
 ✅ PASS - CONTRIBUTING.md references scripts/setup.sh
 ✅ PASS - scripts/setup.sh exists and is executable
@@ -50,7 +50,7 @@ This is **not an error** - it's a security best practice!
 
 1. **Navigate to the Pull Request**
    - Go to: https://github.com/insightfulaf/InsightfulAffiliate_NextGenCopyAI/pulls
-   - Find PR: "[WIP] Review action and correct for successful execution"
+   - Find PR: "Document GitHub Actions \"action_required\" status and verify workflow configurations"
 
 2. **Approve Workflow Runs**
    - Scroll to the "Checks" section at the bottom of the PR
@@ -73,7 +73,7 @@ This is **not an error** - it's a security best practice!
 
 ## Detailed Test Output
 
-### Full Contributor Setup Check Simulation
+### Full Contributor setup check Simulation
 
 ```bash
 Step 1: Verify CONTRIBUTING.md mentions setup script
@@ -139,7 +139,7 @@ For more detailed information, see:
 
 If workflows fail after approval (unlikely based on tests):
 
-### If Contributor Setup Check Fails:
+### If Contributor setup check Fails:
 ```bash
 # Verify locally:
 grep -E '(\./)?scripts/setup\.sh' CONTRIBUTING.md

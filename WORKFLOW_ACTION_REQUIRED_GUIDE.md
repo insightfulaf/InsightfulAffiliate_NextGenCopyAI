@@ -24,7 +24,7 @@ GitHub requires manual approval for workflows when:
 If you have maintainer or admin access to the repository:
 
 1. **Go to the Pull Request**: Navigate to https://github.com/insightfulaf/InsightfulAffiliate_NextGenCopyAI/pulls
-2. **Find your PR**: Look for the PR titled "[WIP] Review action and correct for successful execution"
+2. **Find your PR**: Look for the PR titled "Document GitHub Actions \"action_required\" status and verify workflow configurations"
 3. **Review the Checks Section**: Scroll down to see the workflow runs
 4. **Approve the Workflows**: Click "Approve and run" button for each workflow that shows "action_required"
 
@@ -42,7 +42,7 @@ If you're a contributor without admin access:
 
 I've verified that all your workflows are properly configured:
 
-### 1. Contributor Setup Check Workflow
+### 1. Contributor setup check workflow
 - **Status**: ✅ Properly configured
 - **File**: `.github/workflows/contributor-setup-check.yml`
 - **Checks**:
@@ -87,7 +87,7 @@ All required files exist and are properly configured:
 
 While you wait for approval, you can verify the workflow logic locally:
 
-### Test Contributor Setup Check
+### Test Contributor setup check
 
 ```bash
 # Test that CONTRIBUTING.md references setup script
@@ -121,7 +121,7 @@ grep "id_rsa\|id_dsa\|id_ecdsa\|id_ed25519\|\.pem\|\.key" .gitignore && echo "�
 
 Once approved and run, you should see:
 
-### ✅ Contributor Setup Check - SHOULD PASS
+### ✅ Contributor setup check - SHOULD PASS
 - All files are in place
 - All references are correct
 - Script has proper permissions

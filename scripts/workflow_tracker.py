@@ -35,6 +35,7 @@ import argparse
 import json
 import os
 import sys
+import tempfile
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Optional
@@ -150,26 +151,79 @@ class WorkflowTracker:
                 "context": {}
             }
         
-        with open(self.status_file, 'r') as f:
-            return json.load(f)
+        try:
+            with open(self.status_file, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except (json.JSONDecodeError, UnicodeDecodeError) as e:
+            # If the status file is corrupted or has invalid encoding,
+            # reset it to a clean default state instead of raising.
+            print(
+                f"⚠️  Warning: Could not read status from {self.status_file} "
+                "- the file appears to be invalid JSON or improperly encoded. "
+                "Resetting workflow status."
+            )
+            default_status = {
+                "current_task": None,
+                "steps": [],
+                "started_at": None,
+                "context": {}
+            }
+            self.save_status(default_status)
+            return default_status
 
     def save_status(self, status: Dict) -> None:
-        """Save current workflow status."""
-        with open(self.status_file, 'w') as f:
-            json.dump(status, f, indent=2)
+        """Save current workflow status atomically."""
+        self.status_file.parent.mkdir(parents=True, exist_ok=True)
+        # Use atomic write to prevent corruption if interrupted
+        with tempfile.NamedTemporaryFile(
+            mode='w',
+            encoding='utf-8',
+            delete=False,
+            dir=str(self.status_file.parent),
+            suffix='.tmp'
+        ) as tmp:
+            json.dump(status, tmp, indent=2)
+            tmp.flush()
+            os.fsync(tmp.fileno())
+            tmp_path = Path(tmp.name)
+        tmp_path.replace(self.status_file)
 
     def load_history(self) -> List[Dict]:
         """Load workflow history."""
         if not self.history_file.exists():
             return []
         
-        with open(self.history_file, 'r') as f:
-            return json.load(f)
+        try:
+            with open(self.history_file, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except (json.JSONDecodeError, UnicodeDecodeError) as e:
+            # If the history file is corrupted or has invalid encoding,
+            # reset it to an empty history instead of raising.
+            print(
+                f"⚠️  Warning: Could not read history from {self.history_file} "
+                "- the file appears to be invalid JSON or improperly encoded. "
+                "Resetting workflow history."
+            )
+            empty_history: List[Dict] = []
+            self.save_history(empty_history)
+            return empty_history
 
     def save_history(self, history: List[Dict]) -> None:
-        """Save workflow history."""
-        with open(self.history_file, 'w') as f:
-            json.dump(history, f, indent=2)
+        """Save workflow history atomically."""
+        self.history_file.parent.mkdir(parents=True, exist_ok=True)
+        # Use atomic write to prevent corruption if interrupted
+        with tempfile.NamedTemporaryFile(
+            mode='w',
+            encoding='utf-8',
+            delete=False,
+            dir=str(self.history_file.parent),
+            suffix='.tmp'
+        ) as tmp:
+            json.dump(history, tmp, indent=2)
+            tmp.flush()
+            os.fsync(tmp.fileno())
+            tmp_path = Path(tmp.name)
+        tmp_path.replace(self.history_file)
 
     def start_task(self, task_name: str, context: Optional[Dict] = None) -> None:
         """Start a new task."""
@@ -200,7 +254,8 @@ class WorkflowTracker:
         status = self.load_status()
         
         if not status["current_task"]:
-            print("❌ No active task. Start a task first with: workflow_tracker.py start \"Task name\"")
+            script_name = os.path.basename(sys.argv[0])
+            print(f"❌ No active task. Start a task first with: {script_name} start \"Task name\"")
             return
 
         step = {
@@ -280,10 +335,12 @@ class WorkflowTracker:
         """Display current workflow status."""
         status = self.load_status()
         
+        script_name = os.path.basename(sys.argv[0])
+        
         if not status["current_task"]:
             print("📋 No active task")
-            print("\nStart a new task with: workflow_tracker.py start \"Task name\"")
-            print("Or load a template with: workflow_tracker.py load-template <template-name>")
+            print(f"\nStart a new task with: {script_name} start \"Task name\"")
+            print(f"Or load a template with: {script_name} load-template <template-name>")
             return
 
         print(f"📋 Current Task: {status['current_task']}")
@@ -303,7 +360,7 @@ class WorkflowTracker:
                 if step["completed"] and step["completed_at"]:
                     print(f"     Completed: {step['completed_at']}")
         else:
-            print("\n📝 No steps yet. Add steps with: workflow_tracker.py add-step \"Step description\"")
+            print(f"\n📝 No steps yet. Add steps with: {script_name} add-step \"Step description\"")
 
     def show_history(self, limit: int = 10) -> None:
         """Display workflow history."""

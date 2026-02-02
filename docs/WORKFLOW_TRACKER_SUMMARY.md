@@ -233,12 +233,13 @@ Six ready-to-use templates for common repository tasks:
 
 ## Files Added/Modified
 
-### New Files (7)
+### New Files (6)
 1. `scripts/workflow_tracker.py` - Main CLI tool (executable)
 2. `docs/WORKFLOW_TRACKER_GUIDE.md` - Complete documentation
 3. `docs/WORKFLOW_TRACKER_EXAMPLE.md` - Real-world example
 4. `docs/WORKFLOW_TRACKER_ALIASES.md` - Shell aliases guide
 5. `docs/checklists/WORKFLOW_TRACKER_QUICKREF.md` - Quick reference
+6. `docs/WORKFLOW_TRACKER_SUMMARY.md` - Implementation summary (this file)
 
 ### Modified Files (2)
 1. `.gitignore` - Added `.workflow/` exclusion

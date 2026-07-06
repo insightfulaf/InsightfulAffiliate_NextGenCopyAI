@@ -1,12 +1,13 @@
 {
   "name": "ia-ngcai-devcontainer",
   "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "description": "Future/Codespaces reference only. Local dev containers are intentionally inactive on this Mac unless Docker or another compatible runtime is installed.",
   "features": {},
-  "postCreateCommand": "python -m venv .venv && . .venv/bin/activate && pip install -r requirements.txt || true",
+  "postCreateCommand": "python -m venv .venv-1 && . .venv-1/bin/activate && pip install -r requirements.txt || true",
   "customizations": {
     "vscode": {
       "settings": {
-        "python.defaultInterpreterPath": ".venv/bin/python",
+        "python.defaultInterpreterPath": ".venv-1/bin/python",
         "files.exclude": {
           "archive": true,
           "Archive_ready_to_sync": true

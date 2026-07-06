@@ -59,7 +59,7 @@
   // Editor Configuration
   // ====================
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true,
+  "editor.formatOnSave": false,
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
 

@@ -2,11 +2,11 @@
 
 ## 🎯 Quick Answer: What Should You Use?
 
-**For this repository: Use Single Folder Mode** ✅
+**For this repository: use the optimized workspace file** ✅
 
-Open just the folder (not a workspace file):
+Open the workspace file:
 ```bash
-code ~/Dropbox/InsightfulAffiliate_NextGenCopyAI
+code ~/Dropbox/InsightfulAffiliate_NextGenCopyAI/ia-ngcai-optimized.code-workspace
 ```
 
 ## 📊 Your Current Setup Analysis
@@ -15,7 +15,7 @@ code ~/Dropbox/InsightfulAffiliate_NextGenCopyAI
 - **Repository size**: 49MB
 - **Largest directory**: Archive_ready_to_sync (28MB) - old backups
 - **Active working files**: ~21MB
-- **Current workspace file**: `ia-ngcai-main.code-workspace`
+- **Current workspace file**: `ia-ngcai-optimized.code-workspace`
 
 ### Memory Impact
 - **Before optimization**: ~600-800MB RAM usage
@@ -43,24 +43,15 @@ code ~/Dropbox/InsightfulAffiliate_NextGenCopyAI
 
 ## 🚀 Next Steps (Choose Your Path)
 
-### Option A: Single Folder Mode (Recommended)
-
-1. **Close any open workspace files** in VS Code
-2. **Open just the folder**:
-   - File → Open Folder → `~/Dropbox/InsightfulAffiliate_NextGenCopyAI`
-   - Or: `code ~/Dropbox/InsightfulAffiliate_NextGenCopyAI`
-3. **Reload VS Code**: Command Palette → "Developer: Reload Window"
-4. **Verify**: Check that Archive_ready_to_sync doesn't show in Explorer
-
-✅ **Done!** Your setup is now optimized.
-
-### Option B: Optimized Workspace Mode (Alternative)
+### Optimized Workspace Mode (Recommended)
 
 1. **Use the new workspace file**:
    - File → Open Workspace from File
    - Select: `ia-ngcai-optimized.code-workspace`
 2. **Reload VS Code**: Command Palette → "Developer: Reload Window"
 3. **Verify**: Check memory usage in Activity Monitor
+
+✅ **Done!** Your setup is now optimized.
 
 ## 📝 Key Optimizations Applied
 
@@ -173,7 +164,7 @@ For single-repository work, folder mode is always lighter and faster.
 For complete details, see:
 - **`docs/guides/VSCODE_WORKSPACE_OPTIMIZATION.md`** - Comprehensive guide
 - **`.vscode/settings.json`** - Active settings
-- **`ia-ngcai-optimized.code-workspace`** - Alternative workspace config
+- **`ia-ngcai-optimized.code-workspace`** - Active workspace config
 
 ## ⚡ Quick Commands Reference
 

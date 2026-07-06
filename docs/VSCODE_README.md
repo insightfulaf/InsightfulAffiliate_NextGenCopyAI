@@ -58,8 +58,8 @@ This directory contains documentation about optimizing your VS Code workspace fo
   - Well-organized with comments
 
 #### Workspace Files
-- **`ia-ngcai-main.code-workspace`** - Original workspace (preserved)
-- **`ia-ngcai-optimized.code-workspace`** ⭐ NEW - Optimized alternative
+- **`ia-ngcai-optimized.code-workspace`** ⭐ ACTIVE - Optimized workspace
+- `ia-ngcai-main.code-workspace` was removed; do not reopen or recreate it unless you intentionally need a compatibility copy.
 
 ### Documentation Files
 

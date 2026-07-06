@@ -314,7 +314,7 @@ rm -rf ~/.config/Code/Cache/*  # Linux
 ```bash
 cd ~/Dropbox/InsightfulAffiliate_NextGenCopyAI
 cp .vscode/settings.json .vscode/settings.json.backup
-cp ia-ngcai-main.code-workspace ia-ngcai-main.code-workspace.backup
+cp ia-ngcai-optimized.code-workspace ia-ngcai-optimized.code-workspace.backup
 ```
 
 ### Step 2: Update VS Code Settings
@@ -322,9 +322,9 @@ cp ia-ngcai-main.code-workspace ia-ngcai-main.code-workspace.backup
 2. Add the memory optimization settings from this guide
 3. Save and reload VS Code window
 
-### Step 3: Update or Replace Workspace File
-1. Update `ia-ngcai-main.code-workspace` with optimized configuration
-2. Or switch to single-folder mode (recommended)
+### Step 3: Use the Optimized Workspace File
+1. Open `ia-ngcai-optimized.code-workspace`
+2. Keep `ia-ngcai-main.code-workspace` removed unless a compatibility copy is intentionally needed
 
 ### Step 4: Test and Verify
 1. Open the repository in VS Code

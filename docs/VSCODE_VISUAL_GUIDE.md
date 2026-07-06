@@ -286,10 +286,9 @@ Repository Root
 ├── 📁 .vscode/
 │   └── 📄 settings.json                     ← ⭐ Optimized!
 │
-├── 📄 ia-ngcai-main.code-workspace          ← Original (backup)
-└── 📄 ia-ngcai-optimized.code-workspace     ← New alternative
+└── 📄 ia-ngcai-optimized.code-workspace     ← Active workspace
 ```
 
 ---
 
-**🎉 You're all set! Choose Single Folder Mode and enjoy your optimized setup! 🚀**
+**You're all set. Open `ia-ngcai-optimized.code-workspace` for the optimized setup.**

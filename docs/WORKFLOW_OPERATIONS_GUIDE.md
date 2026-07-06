@@ -64,7 +64,7 @@ which python3
 **What it is:**
 - Isolated Python environment specific to this project
 - Has its own `pip` and package installations
-- Located in a directory (typically `.venv/` or `venv/`)
+- Located in a directory (typically `.venv-1/` or `venv/`)
 
 **Pros:**
 - Project-specific dependencies (no conflicts)
@@ -89,31 +89,31 @@ which python3
 ```bash
 cd /path/to/InsightfulAffiliate_NextGenCopyAI
 
-# Create virtual environment in .venv directory
-python3 -m venv .venv
+# Create virtual environment in .venv-1 directory
+python3 -m venv .venv-1
 ```
 
 **What this does:**
-- Creates `.venv/` directory with isolated Python
+- Creates `.venv-1/` directory with isolated Python
 - Copies Python binary and creates pip/setuptools
-- `.venv/` is already in `.gitignore` (won't be committed)
+- `.venv-1/` is already in `.gitignore` (won't be committed)
 
 #### 2. Activate Virtual Environment (Before Each Work Session)
 
 **macOS/Linux:**
 ```bash
-source .venv/bin/activate
+source .venv-1/bin/activate
 ```
 
 **Windows:**
 ```cmd
-.venv\Scripts\activate
+.venv-1\Scripts\activate
 ```
 
 **How to tell it's active:**
-Your shell prompt will show `(.venv)` prefix:
+Your shell prompt will show `(.venv-1)` prefix:
 ```bash
-(.venv) user@machine:~/repo$
+(.venv-1) user@machine:~/repo$
 ```
 
 #### 3. Install Dependencies
@@ -150,7 +150,7 @@ deactivate
   4. Any directories in `PYTHONPATH` environment variable
 
 **In a virtual environment:**
-- `sys.path` automatically includes `.venv/lib/python3.x/site-packages/`
+- `sys.path` automatically includes `.venv-1/lib/python3.x/site-packages/`
 - No need to manually set `PYTHONPATH`
 
 #### Can I Set PYTHONPATH Elsewhere?
@@ -205,7 +205,7 @@ scripts/
 **Run scripts with virtual environment:**
 ```bash
 # Activate venv first
-source .venv/bin/activate
+source .venv-1/bin/activate
 
 # Run script
 ./scripts/agent_codex.py --help
@@ -231,20 +231,20 @@ python3 scripts/agent_codex.py --help
 
 **Temporary (current session only):**
 ```bash
-export OPENAI_API_KEY="sk-..."
+export OPENAI_API_KEY="OPENAI_API_KEY_PLACEHOLDER"  # pragma: allowlist secret
 ```
 
 **Persistent (recommended for macOS/Linux):**
 ```bash
 # Add to ~/.bashrc or ~/.zshrc
-echo 'export OPENAI_API_KEY="sk-..."' >> ~/.zshrc
+echo 'export OPENAI_API_KEY="OPENAI_API_KEY_PLACEHOLDER"' >> ~/.zshrc  # pragma: allowlist secret
 source ~/.zshrc
 ```
 
 **Verify it's set:**
 ```bash
 echo $OPENAI_API_KEY
-# Should output: sk-...
+# Should output: OPENAI_API_KEY_PLACEHOLDER
 
 # Or check if it's set without revealing value
 [ -n "$OPENAI_API_KEY" ] && echo "Set" || echo "Not set"
@@ -714,16 +714,16 @@ description: Brief description
 ./scripts/setup.sh
 
 # 2. Create Python virtual environment
-python3 -m venv .venv
+python3 -m venv .venv-1
 
 # 3. Activate virtual environment
-source .venv/bin/activate
+source .venv-1/bin/activate
 
 # 4. Install dependencies
 pip install -r requirements.txt
 
 # 5. Set OpenAI API key (if using AI features)
-export OPENAI_API_KEY="sk-..."
+export OPENAI_API_KEY="OPENAI_API_KEY_PLACEHOLDER"  # pragma: allowlist secret
 
 # 6. Install pre-commit hooks (optional but recommended)
 pre-commit install
@@ -740,10 +740,10 @@ git remote -v
 
 ```bash
 # 1. Activate virtual environment
-source .venv/bin/activate
+source .venv-1/bin/activate
 
 # 2. Ensure API key is set
-echo $OPENAI_API_KEY  # Should show sk-...
+echo $OPENAI_API_KEY  # Should show OPENAI_API_KEY_PLACEHOLDER
 
 # 3. Test with echo provider first
 ./scripts/agent_codex.py \
@@ -803,7 +803,7 @@ vim copywriting/product_pages/product-slug.md
 # Add FTC disclosure:
 ## Disclosure
 
-This post contains affiliate links. If you click through and make a 
+This post contains affiliate links. If you click through and make a
 purchase, I may receive a commission at no additional cost to you.
 
 # 3. Test the link
@@ -847,7 +847,7 @@ cat .gitignore | grep -E "key|pem|secret"
 
 ```bash
 # 1. Activate virtual environment
-source .venv/bin/activate
+source .venv-1/bin/activate
 
 # 2. Run all tests
 pytest
@@ -950,7 +950,7 @@ sudo apt update && sudo apt install python3 python3-pip python3-venv
 **Solution:**
 ```bash
 # Activate virtual environment
-source .venv/bin/activate
+source .venv-1/bin/activate
 
 # Install dependencies
 pip install -r requirements.txt
@@ -964,14 +964,14 @@ pip list | grep openai
 **Solution:**
 ```bash
 # 1. Check if virtual environment is activated
-# Shell prompt should show (.venv)
+# Shell prompt should show (.venv-1)
 
 # 2. If not activated:
-source .venv/bin/activate
+source .venv-1/bin/activate
 
 # 3. Verify Python is using virtual environment
 which python3
-# Should show: /path/to/repo/.venv/bin/python3
+# Should show: /path/to/repo/.venv-1/bin/python3
 
 # 4. Check sys.path in Python
 python3 -c "import sys; print('\n'.join(sys.path))"
@@ -985,14 +985,14 @@ pip install -r requirements.txt
 **Solution:**
 ```bash
 # Recreate virtual environment
-rm -rf .venv
-python3 -m venv .venv
+rm -rf .venv-1
+python3 -m venv .venv-1
 
 # Try activating again
-source .venv/bin/activate
+source .venv-1/bin/activate
 
 # Check permissions
-ls -la .venv/bin/activate
+ls -la .venv-1/bin/activate
 # Should be readable/executable
 
 # If still failing, check shell
@@ -1010,17 +1010,17 @@ echo $SHELL
 echo $OPENAI_API_KEY
 
 # Set for current session
-export OPENAI_API_KEY="sk-..."
+export OPENAI_API_KEY="OPENAI_API_KEY_PLACEHOLDER"  # pragma: allowlist secret
 
 # Verify
 echo $OPENAI_API_KEY
 
 # Make persistent (add to ~/.zshrc or ~/.bashrc)
-echo 'export OPENAI_API_KEY="sk-..."' >> ~/.zshrc
+echo 'export OPENAI_API_KEY="OPENAI_API_KEY_PLACEHOLDER"' >> ~/.zshrc  # pragma: allowlist secret
 source ~/.zshrc
 
 # Alternative: Use .env file (not in repository)
-echo 'OPENAI_API_KEY=sk-...' > .env
+echo 'OPENAI_API_KEY=OPENAI_API_KEY_PLACEHOLDER' > .env  # pragma: allowlist secret
 # Load with: source .env
 ```
 
@@ -1033,10 +1033,10 @@ export -p | grep OPENAI_API_KEY
 
 # Must use 'export', not just assignment
 # Wrong:
-OPENAI_API_KEY="sk-..."
+OPENAI_API_KEY="OPENAI_API_KEY_PLACEHOLDER"  # pragma: allowlist secret
 
 # Correct:
-export OPENAI_API_KEY="sk-..."
+export OPENAI_API_KEY="OPENAI_API_KEY_PLACEHOLDER"  # pragma: allowlist secret
 
 # Verify in Python
 python3 -c "import os; print(os.environ.get('OPENAI_API_KEY', 'NOT SET'))"
@@ -1252,12 +1252,12 @@ free -h   # Memory (Linux)
 
 ```bash
 # Python Environment
-source .venv/bin/activate              # Activate venv
+source .venv-1/bin/activate              # Activate venv
 deactivate                             # Deactivate venv
 pip install -r requirements.txt        # Install deps
 
 # Environment Variables
-export OPENAI_API_KEY="sk-..."         # Set API key
+export OPENAI_API_KEY="OPENAI_API_KEY_PLACEHOLDER"         # Set API key  # pragma: allowlist secret
 echo $OPENAI_API_KEY                   # Check API key
 
 # Content Generation
@@ -1304,6 +1304,6 @@ For questions or issues:
 
 ---
 
-**Last Updated:** 2025-01-05  
-**Maintained by:** Repository Contributors  
+**Last Updated:** 2025-01-05
+**Maintained by:** Repository Contributors
 **Repository:** [insightfulaf/InsightfulAffiliate_NextGenCopyAI](https://github.com/insightfulaf/InsightfulAffiliate_NextGenCopyAI)

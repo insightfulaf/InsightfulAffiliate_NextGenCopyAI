@@ -1,0 +1,105 @@
+{
+  "canonical_funnels": [
+    "ai-affiliate-launch-os",
+    "aeo-geo-affiliate-content-kit",
+    "nextgencopyai-conversion-prompt-vault",
+    "faceless-affiliate-content-studio",
+    "affiliate-offer-finder-profit-tracker",
+    "trust-first-affiliate-compliance-kit",
+    "ai-copy-to-commission-email-system"
+  ],
+  "funnel_patterns": {
+    "ai-affiliate-launch-os": [
+      "ai[-_ ]?affiliate[-_ ]?launch",
+      "affiliate[-_ ]?launch[-_ ]?os",
+      "launch[-_ ]?os"
+    ],
+    "aeo-geo-affiliate-content-kit": [
+      "\\baeo\\b",
+      "\\bgeo\\b",
+      "ai[-_ ]?search",
+      "answer[-_ ]?engine",
+      "generative[-_ ]?engine"
+    ],
+    "nextgencopyai-conversion-prompt-vault": [
+      "conversion[-_ ]?prompt",
+      "prompt[-_ ]?vault",
+      "nextgencopyai",
+      "ngcai"
+    ],
+    "faceless-affiliate-content-studio": [
+      "faceless",
+      "content[-_ ]?studio",
+      "carousel",
+      "short[-_ ]?form"
+    ],
+    "affiliate-offer-finder-profit-tracker": [
+      "offer[-_ ]?finder",
+      "profit[-_ ]?tracker",
+      "affiliate[-_ ]?offer",
+      "scoring[-_ ]?sheet"
+    ],
+    "trust-first-affiliate-compliance-kit": [
+      "trust[-_ ]?first",
+      "compliance",
+      "disclosure",
+      "\\bftc\\b",
+      "safe[-_ ]?claims"
+    ],
+    "ai-copy-to-commission-email-system": [
+      "copy[-_ ]?to[-_ ]?commission",
+      "email[-_ ]?system",
+      "welcome[-_ ]?sequence",
+      "soft[-_ ]?sell"
+    ]
+  },
+  "bucket_patterns": {
+    "lead-magnet": [
+      "lead[-_ ]?magnet",
+      "download",
+      "checklist"
+    ],
+    "landing-page": [
+      "landing",
+      "hero",
+      "headline",
+      "thank[-_ ]?you"
+    ],
+    "email": [
+      "email",
+      "sequence",
+      "broadcast",
+      "follow[-_ ]?up"
+    ],
+    "compliance": [
+      "compliance",
+      "disclosure",
+      "\\bftc\\b",
+      "safe[-_ ]?claims"
+    ],
+    "offer-tracking": [
+      "offer",
+      "tracker",
+      "scorecard",
+      "dashboard"
+    ],
+    "snippet": [
+      "snippet",
+      "head[-_ ]?snippet"
+    ]
+  },
+  "file_overrides": {
+    "hero-sections-ai-affiliate-launchpad.html.out.md": {
+      "funnel": "ai-affiliate-launch-os",
+      "bucket": "landing-page"
+    },
+    "thank-you-ai-affiliate-launchpad-thank-you.html.out.md": {
+      "funnel": "ai-affiliate-launch-os",
+      "bucket": "landing-page"
+    },
+    "head-snippet-v7-production.html.out.md": {
+      "funnel": "ai-affiliate-launch-os",
+      "bucket": "snippet"
+    }
+  }
+}

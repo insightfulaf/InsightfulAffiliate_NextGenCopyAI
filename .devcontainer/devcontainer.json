@@ -1,1 +1,4 @@
-{"image":"mcr.microsoft.com/devcontainers/universal:2"}
+{
+  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "description": "Future/Codespaces reference only. Local dev containers are intentionally inactive on this Mac unless Docker or another compatible runtime is installed."
+}
